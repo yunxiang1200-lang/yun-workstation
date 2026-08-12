@@ -1674,7 +1674,7 @@ function setupNewsDelegation() {
   }
 }
 
-function fetchRSSFeed(tabName, rssUrl, fallbackData, fallbackTag, appendMode) {
+function fetchRSSFeed(tabName, rssUrl, fallbackData, fallbackTag, appendMode, sourceName) {
   var apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rssUrl)
 
   fetch(apiUrl, { signal: AbortSignal.timeout(12000) })
@@ -1687,7 +1687,7 @@ function fetchRSSFeed(tabName, rssUrl, fallbackData, fallbackTag, appendMode) {
           articles.push({
             id: makeArticleId(items[i].link || items[i].title),
             tag: fallbackTag,
-            tagText: appendMode ? '聚合' : '实时',
+            tagText: sourceName || (appendMode ? '聚合' : '实时'),
             text: items[i].title,
             link: items[i].link || '',
             date: formatDate(items[i].pubDate)
@@ -1733,14 +1733,14 @@ loadStaticNews('designer', fallbackNews.designer)
 loadStaticNews('hot', fallbackNews.hot)
 loadStaticNews('order', fallbackNews.order)
 
-fetchRSSFeed('designer', 'https://www.woshipm.com/feed', fallbackNews.designer, 'skill')
+fetchRSSFeed('designer', 'https://www.woshipm.com/feed', fallbackNews.designer, 'skill', false, '人人产品')
 setTimeout(function() {
-  fetchRSSFeed('designer', 'https://dribbble.com/stories.rss', fallbackNews.designer, 'platform', true)
+  fetchRSSFeed('designer', 'https://dribbble.com/stories.rss', fallbackNews.designer, 'platform', true, 'Dribbble')
 }, 2000)
 
-fetchRSSFeed('hot', 'https://www.36kr.com/feed', fallbackNews.hot, 'trend')
+fetchRSSFeed('hot', 'https://www.36kr.com/feed', fallbackNews.hot, 'trend', false, '36氪')
 setTimeout(function() {
-  fetchRSSFeed('hot', 'https://www.smashingmagazine.com/feed', fallbackNews.hot, 'income', true)
+  fetchRSSFeed('hot', 'https://www.smashingmagazine.com/feed', fallbackNews.hot, 'income', true, 'Smashing')
 }, 4000)
 
 function switchBizTab(name, btn) {
