@@ -1349,15 +1349,15 @@ function switchTab(name, e, silent) {
 }
 
 document.querySelectorAll('.nav-item').forEach(function(btn) {
+  var onclick = btn.getAttribute('onclick')
+  btn.removeAttribute('onclick')
+  if (!onclick) return
   btn.addEventListener('click', function() {
-    var onclick = btn.getAttribute('onclick')
-    if (!onclick) return
     var match = onclick.match(/switchPage\('(\w+)'/)
     if (match) {
       switchPage(match[1], { currentTarget: btn })
     }
   })
-  btn.removeAttribute('onclick')
 })
 
 function shuffle(arr) {
