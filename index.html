@@ -673,7 +673,7 @@ body {
 .biz-news-item {
   padding: 10px 12px; border-radius: 8px; margin-bottom: 6px;
   border-left: 3px solid var(--blue); background: var(--blue-bg);
-  transition: all .15s ease; cursor: pointer;
+  transition: all .15s ease;
 }
 .biz-news-item:hover { transform: translateX(2px); }
 .biz-news-item.read {
@@ -1553,7 +1553,7 @@ function renderNewsHTML(tabName) {
     html += '<div class="biz-news-item' + (isRead ? ' read' : '') + '" data-id="' + n.id + '" data-tab="' + tabName + '">'
     html += '<span class="news-tag news-tag-' + n.tag + '">' + n.tagText + '</span>'
     if (n.link && (n.link.indexOf('http://') === 0 || n.link.indexOf('https://') === 0)) {
-      html += '<a class="news-link" href="' + n.link + '" target="_blank" rel="noopener noreferrer">' + n.text + '</a>'
+      html += '<a class="news-link" href="' + n.link + '" target="_blank" rel="noopener noreferrer" onclick="markNewsRead(\'' + n.id + '\')">' + n.text + '</a>'
     } else {
       html += '<span class="news-link" style="display:block;">' + n.text + '</span>'
     }
@@ -1567,7 +1567,10 @@ function renderNewsHTML(tabName) {
 
   html += '<div style="font-size:10px;color:var(--dim);text-align:right;margin-top:4px;">数据日期: ' + newsCurrentDate + '</div>'
   el.innerHTML = html
-  setTimeout(setupNewsDelegation, 0)
+}
+
+function markNewsRead(id) {
+  if (newsRead.indexOf(id) === -1) { newsRead.push(id); saveNewsState() }
 }
 
 function toggleRead(id, tabName) {
@@ -1648,35 +1651,6 @@ function loadStaticNews(tabName, source) {
   renderNewsHTML(tabName)
 }
 
-function setupNewsDelegation() {
-  var lists = document.querySelectorAll('.biz-news-list')
-  for (var i = 0; i < lists.length; i++) {
-    var el = lists[i]
-    if (el.getAttribute('data-delegated')) continue
-    el.setAttribute('data-delegated', '1')
-    el.addEventListener('click', function(e) {
-      if (e.target.tagName === 'BUTTON') return
-      var item = e.target.closest('.biz-news-item')
-      if (!item) return
-      var id = item.getAttribute('data-id')
-      var tab = item.getAttribute('data-tab')
-      if (e.target.tagName === 'A') {
-        if (tab && newsRead.indexOf(id) === -1) { newsRead.push(id); saveNewsState() }
-        return
-      }
-      var linkEl = item.querySelector('a.news-link')
-      if (linkEl && linkEl.href) {
-        window.open(linkEl.href, '_blank', 'noopener,noreferrer')
-        if (tab && newsRead.indexOf(id) === -1) { newsRead.push(id); saveNewsState() }
-        return
-      }
-      if (tab) {
-        if (newsRead.indexOf(id) === -1) { newsRead.push(id); saveNewsState(); renderNewsHTML(tab) }
-      }
-    })
-  }
-}
-
 function fetchRSSFeed(tabName, rssUrl, fallbackData, fallbackTag, appendMode, sourceName) {
   var apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rssUrl)
 
@@ -1684,18 +1658,30 @@ function fetchRSSFeed(tabName, rssUrl, fallbackData, fallbackTag, appendMode, so
     .then(function(resp) { return resp.json() })
     .then(function(data) {
       if (data && data.status === 'ok' && data.items && data.items.length > 0) {
+        var feedHomepage = (data.feed && data.feed.link) ? data.feed.link.replace(/\/+$/, '') : ''
+        console.log('[RSS:' + tabName + ':' + (sourceName||'') + '] feed首页=' + feedHomepage)
         var items = data.items.slice(0, 8)
         var articles = []
+        var skipped = 0
         for (var i = 0; i < items.length; i++) {
-          articles.push({
-            id: makeArticleId(items[i].link || items[i].title),
-            tag: fallbackTag,
-            tagText: sourceName || (appendMode ? '聚合' : '实时'),
-            text: items[i].title,
-            link: items[i].link || '',
-            date: formatDate(items[i].pubDate)
-          })
+          var rawLink = items[i].link || ''
+          var isHttp = rawLink.indexOf('http://') === 0 || rawLink.indexOf('https://') === 0
+          var isArticle = isHttp && rawLink.replace(/\/+$/, '') !== feedHomepage && rawLink.length > feedHomepage.length + 3
+          console.log('[RSS:' + tabName + ':' + (sourceName||'') + '][' + i + '] article=' + (isArticle?'VALID':'SKIP') + ' link=' + rawLink.substring(0,80) + ' title=' + (items[i].title||'').substring(0,40))
+          if (isArticle) {
+            articles.push({
+              id: makeArticleId(rawLink || items[i].title),
+              tag: fallbackTag,
+              tagText: sourceName || (appendMode ? '聚合' : '实时'),
+              text: items[i].title,
+              link: rawLink,
+              date: formatDate(items[i].pubDate)
+            })
+          } else {
+            skipped++
+          }
         }
+        console.log('[RSS:' + tabName + ':' + (sourceName||'') + '] 有效=' + articles.length + ' 跳过=' + skipped)
         if (appendMode && newsByTab[tabName] && newsByTab[tabName].length > 0) {
           var existingIds = {}
           for (var k = 0; k < newsByTab[tabName].length; k++) {
