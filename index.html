@@ -1658,15 +1658,18 @@ function setupNewsDelegation() {
       if (e.target.tagName === 'BUTTON') return
       var item = e.target.closest('.biz-news-item')
       if (!item) return
+      var id = item.getAttribute('data-id')
+      var tab = item.getAttribute('data-tab')
+      if (e.target.tagName === 'A') {
+        if (tab && newsRead.indexOf(id) === -1) { newsRead.push(id); saveNewsState() }
+        return
+      }
       var linkEl = item.querySelector('a.news-link')
       if (linkEl && linkEl.href) {
         window.open(linkEl.href, '_blank', 'noopener,noreferrer')
+        if (tab && newsRead.indexOf(id) === -1) { newsRead.push(id); saveNewsState() }
         return
       }
-      var spanEl = item.querySelector('span.news-link')
-      if (!spanEl) return
-      var id = item.getAttribute('data-id')
-      var tab = item.getAttribute('data-tab')
       if (tab) {
         if (newsRead.indexOf(id) === -1) { newsRead.push(id); saveNewsState(); renderNewsHTML(tab) }
       }
