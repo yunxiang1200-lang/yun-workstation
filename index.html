@@ -673,7 +673,7 @@ body {
 .biz-news-item {
   padding: 10px 12px; border-radius: 8px; margin-bottom: 6px;
   border-left: 3px solid var(--blue); background: var(--blue-bg);
-  transition: all .15s ease; cursor: default;
+  transition: all .15s ease;
 }
 .biz-news-item:hover { transform: translateX(2px); }
 .biz-news-item.read {
@@ -1552,10 +1552,10 @@ function renderNewsHTML(tabName) {
 
     html += '<div class="biz-news-item' + (isRead ? ' read' : '') + '" data-id="' + n.id + '" data-tab="' + tabName + '">'
     html += '<span class="news-tag news-tag-' + n.tag + '">' + n.tagText + '</span>'
-    if (n.link && n.link.indexOf('http') === 0) {
-      html += '<a class="news-link" href="' + n.link + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">' + n.text + '</a>'
+    if (n.link && (n.link.indexOf('http://') === 0 || n.link.indexOf('https://') === 0)) {
+      html += '<a class="news-link" href="' + n.link + '" target="_blank" rel="noopener noreferrer">' + n.text + '</a>'
     } else {
-      html += '<span class="news-link" style="display:block;cursor:default;">' + n.text + '</span>'
+      html += '<span class="news-link" style="display:block;">' + n.text + '</span>'
     }
     html += '<div class="news-meta">'
     html += '<span class="news-date">' + (n.date || '') + '</span>'
