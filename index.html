@@ -673,7 +673,7 @@ body {
 .biz-news-item {
   padding: 10px 12px; border-radius: 8px; margin-bottom: 6px;
   border-left: 3px solid var(--blue); background: var(--blue-bg);
-  transition: all .15s ease;
+  transition: all .15s ease; cursor: pointer;
 }
 .biz-news-item:hover { transform: translateX(2px); }
 .biz-news-item.read {
@@ -1567,6 +1567,7 @@ function renderNewsHTML(tabName) {
 
   html += '<div style="font-size:10px;color:var(--dim);text-align:right;margin-top:4px;">数据日期: ' + newsCurrentDate + '</div>'
   el.innerHTML = html
+  setTimeout(setupNewsDelegation, 0)
 }
 
 function toggleRead(id, tabName) {
@@ -1633,18 +1634,45 @@ function loadStaticNews(tabName, source) {
   var items = shuffle(source).slice(0, 6)
   var articles = []
   for (var i = 0; i < items.length; i++) {
+    var itemLink = items[i].link || 'https://www.baidu.com/s?wd=' + encodeURIComponent(items[i].text)
     articles.push({
       id: makeArticleId(items[i].text),
       tag: items[i].tag,
       tagText: items[i].tagText,
       text: items[i].text,
-      link: null,
+      link: itemLink,
       date: ''
     })
   }
   newsByTab[tabName] = articles
   saveNewsCache(tabName, articles)
   renderNewsHTML(tabName)
+}
+
+function setupNewsDelegation() {
+  var lists = document.querySelectorAll('.biz-news-list')
+  for (var i = 0; i < lists.length; i++) {
+    var el = lists[i]
+    if (el.getAttribute('data-delegated')) continue
+    el.setAttribute('data-delegated', '1')
+    el.addEventListener('click', function(e) {
+      if (e.target.tagName === 'BUTTON') return
+      var item = e.target.closest('.biz-news-item')
+      if (!item) return
+      var linkEl = item.querySelector('a.news-link')
+      if (linkEl && linkEl.href) {
+        window.open(linkEl.href, '_blank', 'noopener,noreferrer')
+        return
+      }
+      var spanEl = item.querySelector('span.news-link')
+      if (!spanEl) return
+      var id = item.getAttribute('data-id')
+      var tab = item.getAttribute('data-tab')
+      if (tab) {
+        if (newsRead.indexOf(id) === -1) { newsRead.push(id); saveNewsState(); renderNewsHTML(tab) }
+      }
+    })
+  }
 }
 
 function fetchRSSFeed(tabName, rssUrl, fallbackData, fallbackTag) {
