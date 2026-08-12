@@ -708,7 +708,7 @@ body {
     <div class="sidebar-header">导航</div>
 
     <button class="nav-item active" onclick="switchPage('data')">
-      <span class="nav-icon data">总</span>数据汇总
+      <span class="nav-icon data">总</span>总览
     </button>
 
     <button class="nav-item" onclick="switchPage('design')">
@@ -736,89 +736,61 @@ body {
 
   <main class="content-area">
 
-    <!-- ════════════════ 数据汇总 ════════════════ -->
+    <!-- ════════════════ 总览 ════════════════ -->
     <section id="page-data" class="page-section active">
       <div class="card" style="flex:1;">
         <div class="card-header">
-          <span class="card-title"><span class="dot dot-green"></span>数据汇总</span>
-          <span class="card-badge" id="market-time">总览</span>
+          <span class="card-title"><span class="dot dot-green"></span>总览</span>
+          <span class="card-badge">今日概览</span>
         </div>
         <div class="card-body">
-          <div class="index-row">
-            <div class="index-item">
-              <div class="index-name">上证指数</div>
-              <div class="index-value">3,345.67</div>
-              <div class="index-change up">+1.23%</div>
-            </div>
-            <div class="index-item">
-              <div class="index-name">深证成指</div>
-              <div class="index-value">10,892.34</div>
-              <div class="index-change down">-0.45%</div>
-            </div>
-            <div class="index-item">
-              <div class="index-name">创业板指</div>
-              <div class="index-value">2,156.78</div>
-              <div class="index-change up">+0.89%</div>
-            </div>
-            <div class="index-item">
-              <div class="index-name">科创50</div>
-              <div class="index-value">987.65</div>
-              <div class="index-change up">+2.15%</div>
-            </div>
-          </div>
-
-          <div class="cols-2" style="margin-top:16px;">
+          <div class="cols-2">
             <div class="summary-card">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
                 <span class="dot dot-cyan" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
                 <span class="section-label" style="margin:0;" onclick="switchPage('design')" title="点击进入交互设计工作">交互设计工作</span>
               </div>
-              <div class="summary-stats"><span class="s-num">2</span>个项目进行中</div>
-              <div class="summary-stats"><span class="s-num">4</span>项待办 · 1项今日截止</div>
-              <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill progress-cyan" style="width:45%"></div></div>
-              <div style="font-size:10px;color:var(--dim);margin-top:3px;">整体进度 45%</div>
+              <div class="summary-stats">总项目 <span class="s-num">5</span>个</div>
+              <div class="summary-stats">进行中 <span class="s-num">2</span> · 已完成 <span class="s-num">3</span></div>
+              <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill progress-cyan" style="width:60%"></div></div>
+              <div style="font-size:10px;color:var(--dim);margin-top:3px;">完成进度 60%</div>
             </div>
 
             <div class="summary-card">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
                 <span class="dot dot-red" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
-                <span class="section-label" style="margin:0;">股票市场</span>
+                <span class="section-label" style="margin:0;" onclick="switchPage('stock')" title="点击进入股票专题">股票市场</span>
               </div>
-              <div class="watch-item" style="padding:5px 0;">
-                <span class="watch-name">东山精密</span>
-                <span class="watch-price">182.50 <span class="up">+2.3%</span></span>
-                <span class="watch-signal signal-buy">买入区</span>
-              </div>
-              <div class="watch-item" style="padding:5px 0;">
-                <span class="watch-name">今日盈亏</span>
-                <span class="watch-price up">+1,250</span>
-              </div>
-              <div class="watch-item" style="padding:5px 0;">
-                <span class="watch-name">持仓市值</span>
-                <span class="watch-price">68,500</span>
-              </div>
+              <div class="summary-stats">持有股票 <span class="s-num">2</span>只</div>
+              <div class="summary-stats">今日收益率</div>
+              <div class="s-num up" style="font-size:24px;margin:6px 0;">+2.1%</div>
+              <div style="font-size:11px;color:var(--dim);">持仓市值 68,500</div>
             </div>
 
             <div class="summary-card">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
                 <span class="dot dot-purple" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
-                <span class="section-label" style="margin:0;">学习计划</span>
+                <span class="section-label" style="margin:0;" onclick="switchPage('study')" title="点击进入学习计划">学习计划</span>
               </div>
-              <div class="summary-stats"><span class="s-num">66%</span>本周进度 (4/6)</div>
-              <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill progress-purple" style="width:66%"></div></div>
-              <div class="summary-stats" style="margin-top:8px;">今日学习 <span class="s-num">1h50min</span> · 3项任务</div>
-              <div class="summary-stats">知识库: <span class="s-num">23</span>篇笔记 · <span class="s-num">3</span>本书</div>
+              <div class="summary-stats">今日学习进度</div>
+              <div class="s-num" style="font-size:24px;margin:4px 0;">67%</div>
+              <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill progress-purple" style="width:67%"></div></div>
+              <div class="summary-stats" style="margin-top:8px;">学习时长 <span class="s-num">1h50min</span></div>
+              <div class="summary-stats">待完成 <span class="s-num">2</span> · 已完成 <span class="s-num">4</span></div>
             </div>
 
             <div class="summary-card">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
                 <span class="dot dot-orange" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
-                <span class="section-label" style="margin:0;">副业发展</span>
+                <span class="section-label" style="margin:0;" onclick="switchPage('biz')" title="点击进入副业发展">副业发展</span>
               </div>
-              <div class="summary-stats">本月收入 <span class="s-num" style="color:var(--green);">3,200</span> / 目标 5,000</div>
-              <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill progress-cyan" style="width:64%"></div></div>
-              <div style="font-size:10px;color:var(--dim);margin-top:3px;">目标完成 64%</div>
-              <div class="summary-stats" style="margin-top:8px;">Idea孵化: <span class="s-num">4</span>个 · 活跃行动 <span class="s-num">2</span>项</div>
+              <div class="summary-stats">孵化数量 <span class="s-num">4</span>个</div>
+              <div class="summary-stats">今日待阅读 <span class="s-num">3</span>篇</div>
+              <div class="summary-stats">待执行 <span class="s-num">2</span>项</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+                <span style="font-size:11px;color:var(--dim);">执行状态:</span>
+                <span style="font-size:13px;font-weight:600;color:var(--green);">正常推进中</span>
+              </div>
             </div>
           </div>
         </div>
