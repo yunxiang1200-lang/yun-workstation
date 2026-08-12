@@ -1162,48 +1162,54 @@ body {
           </div>
           <div class="progress-bar" style="margin-bottom:20px;"><div class="progress-fill progress-cyan" style="width:64%"></div></div>
 
-          <div class="cols-2" style="grid-template-columns: 1.4fr 1fr;">
-            <div>
-              <div class="section-label">资讯区 <span style="font-weight:400;color:var(--dim);font-size:10px;text-transform:none;letter-spacing:0;">刷新页面获取最新推荐</span></div>
-              <div class="tab-bar" style="margin-bottom:14px;">
-                <button class="tab-btn active" onclick="switchBizTab('designer', this)">设计师副业</button>
-                <button class="tab-btn" onclick="switchBizTab('hot', this)">热门副业</button>
-                <button class="tab-btn" onclick="switchBizTab('order', this)">推荐接单</button>
-              </div>
-
-              <div class="biz-tab-content active" id="biz-tab-designer">
-                <div class="news-filter-bar" data-tab="designer">
-                  <button class="news-filter-btn active" onclick="filterNews('designer','all',this)">全部</button>
-                  <button class="news-filter-btn" onclick="filterNews('designer','unread',this)">未阅读</button>
-                  <button class="news-filter-btn" onclick="filterNews('designer','bookmarked',this)">已收藏</button>
-                  <span class="news-count" id="newsCount-designer"></span>
-                </div>
-                <div class="biz-news-list" id="bizNewsDesigner"></div>
-              </div>
-              <div class="biz-tab-content" id="biz-tab-hot">
-                <div class="news-filter-bar" data-tab="hot">
-                  <button class="news-filter-btn active" onclick="filterNews('hot','all',this)">全部</button>
-                  <button class="news-filter-btn" onclick="filterNews('hot','unread',this)">未阅读</button>
-                  <button class="news-filter-btn" onclick="filterNews('hot','bookmarked',this)">已收藏</button>
-                  <span class="news-count" id="newsCount-hot"></span>
-                </div>
-                <div class="biz-news-list" id="bizNewsHot"></div>
-              </div>
-              <div class="biz-tab-content" id="biz-tab-order">
-                <div class="news-filter-bar" data-tab="order">
-                  <button class="news-filter-btn active" onclick="filterNews('order','all',this)">全部</button>
-                  <button class="news-filter-btn" onclick="filterNews('order','unread',this)">未阅读</button>
-                  <button class="news-filter-btn" onclick="filterNews('order','bookmarked',this)">已收藏</button>
-                  <span class="news-count" id="newsCount-order"></span>
-                </div>
-                <div class="biz-news-list" id="bizNewsOrder"></div>
+          <div style="margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span class="section-label" style="margin:0;">资讯区</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <input type="date" id="newsDatePicker" style="font-size:11px;padding:4px 8px;border:1px solid var(--border);border-radius:8px;font-family:inherit;color:var(--text);background:var(--panel);" onchange="onDateChange(this.value)">
+                <button class="quick-btn" style="padding:4px 12px;font-size:11px;" onclick="goNewsToday()">今天</button>
               </div>
             </div>
+            <div class="tab-bar" style="margin-bottom:14px;">
+              <button class="tab-btn active" onclick="switchBizTab('designer', this)">设计师副业</button>
+              <button class="tab-btn" onclick="switchBizTab('hot', this)">热门副业</button>
+              <button class="tab-btn" onclick="switchBizTab('order', this)">推荐接单</button>
+            </div>
 
-            <div>
-              <div class="section-label">已接单</div>
-              <div class="summary-stats" style="margin-bottom:10px;">接单数量 <span class="s-num">3</span>单</div>
-              <div class="order-progress-item">
+            <div class="biz-tab-content active" id="biz-tab-designer">
+              <div class="news-filter-bar" data-tab="designer">
+                <button class="news-filter-btn active" onclick="filterNews('designer','all',this)">全部</button>
+                <button class="news-filter-btn" onclick="filterNews('designer','unread',this)">未阅读</button>
+                <button class="news-filter-btn" onclick="filterNews('designer','bookmarked',this)">已收藏</button>
+                <span class="news-count" id="newsCount-designer"></span>
+              </div>
+              <div class="biz-news-list" id="bizNewsDesigner"></div>
+            </div>
+            <div class="biz-tab-content" id="biz-tab-hot">
+              <div class="news-filter-bar" data-tab="hot">
+                <button class="news-filter-btn active" onclick="filterNews('hot','all',this)">全部</button>
+                <button class="news-filter-btn" onclick="filterNews('hot','unread',this)">未阅读</button>
+                <button class="news-filter-btn" onclick="filterNews('hot','bookmarked',this)">已收藏</button>
+                <span class="news-count" id="newsCount-hot"></span>
+              </div>
+              <div class="biz-news-list" id="bizNewsHot"></div>
+            </div>
+            <div class="biz-tab-content" id="biz-tab-order">
+              <div class="news-filter-bar" data-tab="order">
+                <button class="news-filter-btn active" onclick="filterNews('order','all',this)">全部</button>
+                <button class="news-filter-btn" onclick="filterNews('order','unread',this)">未阅读</button>
+                <button class="news-filter-btn" onclick="filterNews('order','bookmarked',this)">已收藏</button>
+                <span class="news-count" id="newsCount-order"></span>
+              </div>
+              <div class="biz-news-list" id="bizNewsOrder"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <div class="section-label">已接单</div>
+            <div class="summary-stats" style="margin-bottom:10px;">接单数量 <span class="s-num">3</span>单</div>
+            <div class="cols-3">
+              <div class="summary-card">
                 <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
                   <span style="font-size:13px;font-weight:500;">App UI 设计改版</span>
                   <span style="font-size:12px;color:var(--green);">进行中</span>
@@ -1211,7 +1217,7 @@ body {
                 <div class="progress-bar"><div class="progress-fill progress-cyan" style="width:70%"></div></div>
                 <div style="font-size:10px;color:var(--dim);margin-top:2px;">进度 70%</div>
               </div>
-              <div class="order-progress-item">
+              <div class="summary-card">
                 <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
                   <span style="font-size:13px;font-weight:500;">官网页面设计</span>
                   <span style="font-size:12px;color:var(--orange);">待验收</span>
@@ -1219,7 +1225,7 @@ body {
                 <div class="progress-bar"><div class="progress-fill progress-purple" style="width:95%"></div></div>
                 <div style="font-size:10px;color:var(--dim);margin-top:2px;">进度 95%</div>
               </div>
-              <div class="order-progress-item">
+              <div class="summary-card">
                 <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
                   <span style="font-size:13px;font-weight:500;">小程序交互稿</span>
                   <span style="font-size:12px;color:var(--blue);">刚启动</span>
@@ -1230,7 +1236,7 @@ body {
             </div>
           </div>
 
-          <div style="margin-top:20px;">
+          <div>
             <div class="section-label">孵化项目</div>
             <div class="cols-3">
               <div class="summary-card">
@@ -1464,10 +1470,32 @@ var newsState = {}
 var newsByTab = { designer: [], hot: [], order: [] }
 var newsRead = JSON.parse(localStorage.getItem('yun_news_read') || '[]')
 var newsBookmarked = JSON.parse(localStorage.getItem('yun_news_bookmarked') || '[]')
+var newsCurrentDate = ''
+
+function todayStr() {
+  var d = new Date()
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0')
+}
 
 function saveNewsState() {
   localStorage.setItem('yun_news_read', JSON.stringify(newsRead))
   localStorage.setItem('yun_news_bookmarked', JSON.stringify(newsBookmarked))
+}
+
+function saveNewsCache(tabName, articles) {
+  try {
+    var key = 'yun_news_cache_' + tabName
+    var cache = JSON.parse(localStorage.getItem(key) || '{}')
+    cache[newsCurrentDate] = articles
+    localStorage.setItem(key, JSON.stringify(cache))
+  } catch(e) {}
+}
+
+function loadNewsCache(tabName, dateStr) {
+  try {
+    var cache = JSON.parse(localStorage.getItem('yun_news_cache_' + tabName) || '{}')
+    return cache[dateStr] || null
+  } catch(e) { return null }
 }
 
 function makeArticleId(text) {
@@ -1510,7 +1538,9 @@ function renderNewsHTML(tabName) {
   }
 
   if (filtered.length === 0) {
-    el.innerHTML = '<div class="biz-news-item" style="opacity:0.5;text-align:center;">' + (filter === 'unread' ? '全部已阅读' : filter === 'bookmarked' ? '暂无收藏' : '暂无资讯') + '</div>'
+    var msg = filter === 'unread' ? '全部已阅读' : filter === 'bookmarked' ? '暂无收藏' : '暂无资讯'
+    if (newsCurrentDate !== todayStr()) msg = '该日期暂无缓存数据'
+    el.innerHTML = '<div class="biz-news-item" style="opacity:0.5;text-align:center;">' + msg + '</div>'
     return
   }
 
@@ -1522,10 +1552,10 @@ function renderNewsHTML(tabName) {
 
     html += '<div class="biz-news-item' + (isRead ? ' read' : '') + '" data-id="' + n.id + '" data-tab="' + tabName + '">'
     html += '<span class="news-tag news-tag-' + n.tag + '">' + n.tagText + '</span>'
-    if (n.link) {
-      html += '<a class="news-link" href="' + n.link + '" target="_blank" rel="noopener">' + n.text + '</a>'
+    if (n.link && n.link.indexOf('http') === 0) {
+      html += '<a class="news-link" href="' + n.link + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">' + n.text + '</a>'
     } else {
-      html += '<a class="news-link" href="javascript:void(0)" style="cursor:default;">' + n.text + '</a>'
+      html += '<span class="news-link" style="display:block;cursor:default;">' + n.text + '</span>'
     }
     html += '<div class="news-meta">'
     html += '<span class="news-date">' + (n.date || '') + '</span>'
@@ -1535,8 +1565,7 @@ function renderNewsHTML(tabName) {
     html += '</div></div></div>'
   }
 
-  var now = new Date()
-  html += '<div style="font-size:10px;color:var(--dim);text-align:right;margin-top:4px;">更新于 ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + '</div>'
+  html += '<div style="font-size:10px;color:var(--dim);text-align:right;margin-top:4px;">数据日期: ' + newsCurrentDate + '</div>'
   el.innerHTML = html
 }
 
@@ -1562,6 +1591,44 @@ function filterNews(tabName, filterType, btn) {
   renderNewsHTML(tabName)
 }
 
+function onDateChange(dateValue) {
+  if (!dateValue) return
+  setNewsDate(dateValue)
+}
+
+function goNewsToday() {
+  var t = todayStr()
+  document.getElementById('newsDatePicker').value = t
+  setNewsDate(t)
+}
+
+function setNewsDate(dateStr) {
+  newsCurrentDate = dateStr
+  var tabs = ['designer', 'hot', 'order']
+  var foundAny = false
+  for (var t = 0; t < tabs.length; t++) {
+    var cached = loadNewsCache(tabs[t], dateStr)
+    if (cached && cached.length > 0) {
+      newsByTab[tabs[t]] = cached
+      newsState[tabs[t]] = 'all'
+      var bar = document.querySelector('.news-filter-bar[data-tab="' + tabs[t] + '"]')
+      if (bar) {
+        bar.querySelectorAll('.news-filter-btn').forEach(function(b) { b.classList.remove('active') })
+        var firstBtn = bar.querySelector('.news-filter-btn')
+        if (firstBtn) firstBtn.classList.add('active')
+      }
+      renderNewsHTML(tabs[t])
+      foundAny = true
+    } else {
+      newsByTab[tabs[t]] = []
+      renderNewsHTML(tabs[t])
+    }
+  }
+  if (!foundAny && dateStr !== todayStr()) {
+    document.getElementById('bizNewsDesigner').innerHTML = '<div class="biz-news-item" style="opacity:0.5;text-align:center;padding:20px;">该日期暂无缓存数据，请切回"今天"获取最新资讯</div>'
+  }
+}
+
 function loadStaticNews(tabName, source) {
   var items = shuffle(source).slice(0, 6)
   var articles = []
@@ -1576,6 +1643,7 @@ function loadStaticNews(tabName, source) {
     })
   }
   newsByTab[tabName] = articles
+  saveNewsCache(tabName, articles)
   renderNewsHTML(tabName)
 }
 
@@ -1591,14 +1659,15 @@ function fetchRSSFeed(tabName, rssUrl, fallbackData, fallbackTag) {
         for (var i = 0; i < items.length; i++) {
           articles.push({
             id: makeArticleId(items[i].link || items[i].title),
-            tag: 'skill',
+            tag: fallbackTag,
             tagText: '实时',
             text: items[i].title,
-            link: items[i].link,
+            link: items[i].link || '',
             date: formatDate(items[i].pubDate)
           })
         }
         newsByTab[tabName] = articles
+        saveNewsCache(tabName, articles)
         newsState[tabName] = 'all'
         var bar = document.querySelector('.news-filter-bar[data-tab="' + tabName + '"]')
         if (bar) {
@@ -1612,9 +1681,13 @@ function fetchRSSFeed(tabName, rssUrl, fallbackData, fallbackTag) {
       }
     })
     .catch(function() {
+      newsByTab[tabName] = []
       loadStaticNews(tabName, fallbackData)
     })
 }
+
+newsCurrentDate = todayStr()
+document.getElementById('newsDatePicker').value = newsCurrentDate
 
 loadStaticNews('designer', fallbackNews.designer)
 loadStaticNews('hot', fallbackNews.hot)
