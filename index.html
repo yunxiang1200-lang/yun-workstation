@@ -872,6 +872,29 @@ body {
 .video-link:hover { text-decoration: underline; }
 .study-source { margin-top: 14px; padding: 12px 14px; background: var(--border-light); border-radius: 10px; font-size: 12px; color: var(--dim); line-height: 1.7; display: flex; gap: 8px; align-items: flex-start; }
 
+/* ── Study phase steps ── */
+.study-steps { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; background: var(--border-light); border-radius: 12px; padding: 6px; }
+.study-step { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border: none; background: transparent; border-radius: 10px; cursor: pointer; font-family: inherit; transition: all .2s ease; color: var(--dim); font-weight: 600; font-size: 13px; }
+.study-step:hover { color: var(--blue); }
+.study-step.active { background: var(--blue); color: #fff; box-shadow: 0 2px 8px rgba(59,130,246,0.25); }
+.study-step-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--border); color: var(--dim); font-size: 11px; font-weight: 700; }
+.study-step.active .study-step-num { background: rgba(255,255,255,0.25); color: #fff; }
+.study-phase-panel { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; background: var(--panel); }
+.study-phase-head { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.study-phase-range { font-size: 12px; color: var(--dim); font-weight: 500; margin-left: 8px; }
+.study-day-list { display: flex; flex-direction: column; gap: 8px; }
+.study-day-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--panel); cursor: pointer; font-family: inherit; text-align: left; transition: all .15s ease; }
+.study-day-item:hover { border-color: var(--blue); background: var(--blue-bg); transform: translateX(2px); }
+.study-day-num { font-size: 13px; font-weight: 700; color: var(--blue); white-space: nowrap; }
+.study-day-title { flex: 1; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.study-day-status { font-size: 12px; color: var(--green); font-weight: 600; white-space: nowrap; }
+.day-switcher-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.day-switcher-item { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--panel); cursor: pointer; font-family: inherit; text-align: left; transition: all .15s ease; }
+.day-switcher-item:hover { border-color: var(--blue); background: var(--blue-bg); }
+.day-switcher-item.active { border-color: var(--blue); background: var(--blue-bg); }
+.day-switcher-num { font-size: 13px; font-weight: 700; color: var(--blue); }
+.day-switcher-title { font-size: 12px; color: var(--dim); line-height: 1.5; }
+
 /* ── Quiz mode ── */
 .quiz-wrap { font-size: 14px; }
 .quiz-toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
@@ -928,6 +951,9 @@ body {
   .study-detail-header { flex-direction: column; }
   .study-detail-actions { width: 100%; }
   .video-grid { grid-template-columns: 1fr; }
+  .study-steps { flex-wrap: nowrap; overflow-x: auto; }
+  .study-step { flex-shrink: 0; }
+  .day-switcher-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1019,7 +1045,7 @@ body {
       <div class="card" style="flex:1;">
         <div class="card-header">
           <span class="card-title"><span class="dot dot-purple"></span>学习计划</span>
-          <span class="card-badge">经济学 · 30天</span>
+          <span class="card-badge" id="studyBadge">经济学 · 30天</span>
         </div>
         <div class="card-body" id="studyBody"></div>
       </div>
@@ -1114,6 +1140,18 @@ body {
     <div class="modal-footer">
       <button class="quick-btn" onclick="closeModal()">取消</button>
       <button class="modal-save" onclick="submitModal()">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="studyDayOverlay">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-header">
+      <span>切换学习天数</span>
+      <button class="modal-close" onclick="closeStudyDaySwitcher()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="day-switcher-grid" id="studyDaySwitcherGrid"></div>
     </div>
   </div>
 </div>
@@ -1500,7 +1538,41 @@ var ECON_PLAN = [
   { name: '冲刺阶段', icon: '🎯', days: [25, 26, 27, 28, 29, 30], folder: '冲刺阶段' }
 ]
 
+var DAY_TITLES = {
+  1: '经济学原理第1章（导论）+ 公共经济学第1章（导论）',
+  2: '经济学原理第2章（需求与供给）+ 公共经济学第1章（深化）',
+  3: '经济学原理第3章（边际效用分析）+ 公共经济学第2章（市场失灵）',
+  4: '经济学原理第4章（无差异曲线分析）+ 公共经济学第2章（外部性理论）',
+  5: '经济学原理第5章（生产函数）+ 公共经济学第2章（政府干预深入）',
+  6: '经济学原理第6章（成本分析）+ 公共经济学第1-2章复习',
+  7: '经济学原理第7章（完全竞争市场：短期均衡）+ 公共经济学第3章（公共产品理论）',
+  8: '经济学原理第7章（完全竞争市场：长期均衡）+ 公共经济学第3章（公共产品的供给）',
+  9: '经济学原理第8章（完全竞争市场效率分析）+ 公共经济学第4章（外部性理论）',
+  10: '经济学原理第9章（垄断市场）+ 公共经济学第4章（外部性的治理）',
+  11: '经济学原理第10章（垄断竞争市场）+ 公共经济学第5章（公共选择理论）',
+  12: '经济学原理第11章（寡头市场·上）+ 公共经济学第5章（公共选择理论深化）',
+  13: '要素市场理论（劳动与资本）+ 公共支出理论',
+  14: '一般均衡与市场失灵 + 公共收入理论（税收概论）',
+  15: '国民收入核算与简单国民收入决定（上）+ 税收制度',
+  16: '简单国民收入决定（下）+ IS-LM模型（上）+ 财政体制与转移支付',
+  17: 'IS-LM模型（下）+ AD-AS模型 + 公共规制',
+  18: '财政货币政策 + 失业与通货膨胀 + 公共经济政策',
+  19: '经济学原理第1-7章回顾 + 公共经济学第1-2章回顾',
+  20: '经济学原理第8-14章回顾 + 公共经济学第3-4章回顾',
+  21: '经济学原理第15-22章回顾 + 公共经济学第5-6章回顾',
+  22: '经济学原理第23-28章回顾 + 公共经济学第7-8章回顾',
+  23: '经济学原理全范围真题模拟 + 公共经济学全范围真题模拟',
+  24: '经济学原理论述题专题 + 公共经济学论述题/材料分析题专题',
+  25: '冲刺阶段——核心考点深度复习',
+  26: '冲刺阶段——四种市场结构与公共经济学深化',
+  27: '冲刺阶段——宏观经济学核心模型与公共经济深化',
+  28: '冲刺阶段——经济增长与国际经济 + 财政体制与规制',
+  29: '全真模拟考试日',
+  30: '考前最后一天——终极冲刺与核心总复习'
+}
+
 var STUDY_SELECTED = null
+var STUDY_PHASE = 0
 
 function isStudyDone(day) {
   return !!(DATA.study && DATA.study.done && DATA.study.done[day])
@@ -1529,6 +1601,7 @@ function goBackToStudyList() {
 function selectStudyDay(phaseIndex, day) {
   var phase = ECON_PLAN[phaseIndex] || ECON_PLAN[0]
   var sel = { phaseIndex: phaseIndex, day: day, html: null, tab: 'am' }
+  STUDY_PHASE = phaseIndex
   STUDY_SELECTED = sel
   renderStudy()
   fetch('study/' + phase.folder + '/第' + day + '天.html')
@@ -1583,6 +1656,7 @@ function renderStudy() {
   var html = renderStudyBreadcrumb()
   html += STUDY_SELECTED ? renderStudyDetailPage() : renderStudyList()
   el.innerHTML = html
+  renderStudyBadge()
 }
 
 function renderStudyList() {
@@ -1599,17 +1673,79 @@ function renderStudyList() {
   html += '<div class="econ-resource">📺 视频资源：经济学原理 B站 <strong>BV1uhLb6zEeT</strong>；公共经济学 B站 <strong>BV1V8411V7kv</strong></div>'
   html += '<div class="econ-resource" style="border-left:4px solid #e74c3c;"><a href="study/练习册.html" target="_blank" rel="noopener">📥 打开完整练习册（30天练习题 + 答案解析）</a></div>'
 
-  for (var i = 0; i < ECON_PLAN.length; i++) {
-    var phase = ECON_PLAN[i]
-    html += '<div class="econ-phase"><div class="econ-phase-title">' + phase.icon + ' ' + phase.name + '</div><div class="econ-days">'
-    for (var j = 0; j < phase.days.length; j++) {
-      var d = phase.days[j]
-      var done = isStudyDone(d)
-      html += '<button class="econ-day' + (done ? ' done' : '') + '" onclick="selectStudyDay(' + i + ',' + d + ')">第' + d + '天' + (done ? ' ✓' : '') + '</button>'
-    }
-    html += '</div></div>'
+  html += '<div class="study-steps">'
+  for (var s = 0; s < ECON_PLAN.length; s++) {
+    var step = ECON_PLAN[s]
+    html += '<button class="study-step' + (s === STUDY_PHASE ? ' active' : '') + '" onclick="selectStudyPhase(' + s + ')">'
+    html += '<span class="study-step-num">' + (s + 1) + '</span>'
+    html += '<span>' + step.icon + ' ' + step.name + '</span>'
+    html += '</button>'
   }
+  html += '</div>'
+
+  var phase = ECON_PLAN[STUDY_PHASE] || ECON_PLAN[0]
+  html += '<div class="study-phase-panel">'
+  html += '<div class="study-phase-head">' + phase.icon + ' ' + phase.name + '<span class="study-phase-range">第 ' + phase.days[0] + ' - ' + phase.days[phase.days.length - 1] + ' 天</span></div>'
+  html += '<div class="study-day-list">'
+  for (var j = 0; j < phase.days.length; j++) {
+    var d = phase.days[j]
+    var done = isStudyDone(d)
+    html += '<button class="study-day-item" onclick="selectStudyDay(' + STUDY_PHASE + ',' + d + ')">'
+    html += '<span class="study-day-num">第' + d + '天</span>'
+    html += '<span class="study-day-title">' + escapeHtml(DAY_TITLES[d] || '') + '</span>'
+    if (done) html += '<span class="study-day-status">✓ 已完成</span>'
+    html += '</button>'
+  }
+  html += '</div></div>'
+
   return html
+}
+
+function selectStudyPhase(i) {
+  STUDY_PHASE = i
+  renderStudy()
+}
+
+function renderStudyBadge() {
+  var badge = document.getElementById('studyBadge')
+  if (!badge) return
+  if (STUDY_SELECTED) {
+    badge.textContent = '第' + STUDY_SELECTED.day + '天：30天'
+    badge.style.cursor = 'pointer'
+    badge.setAttribute('onclick', 'openStudyDaySwitcher()')
+  } else {
+    badge.textContent = '经济学 · 30天'
+    badge.style.cursor = 'default'
+    badge.removeAttribute('onclick')
+  }
+}
+
+function phaseIndexForDay(day) {
+  for (var i = 0; i < ECON_PLAN.length; i++) {
+    if (ECON_PLAN[i].days.indexOf(day) >= 0) return i
+  }
+  return 0
+}
+
+function openStudyDaySwitcher() {
+  var html = ''
+  for (var d = 1; d <= 30; d++) {
+    html += '<button class="day-switcher-item' + (STUDY_SELECTED && STUDY_SELECTED.day === d ? ' active' : '') + '" onclick="switchStudyDay(' + d + ')">'
+    html += '<span class="day-switcher-num">第' + d + '天</span>'
+    html += '<span class="day-switcher-title">' + escapeHtml(DAY_TITLES[d] || '') + '</span>'
+    html += '</button>'
+  }
+  document.getElementById('studyDaySwitcherGrid').innerHTML = html
+  document.getElementById('studyDayOverlay').classList.remove('hidden')
+}
+
+function closeStudyDaySwitcher() {
+  document.getElementById('studyDayOverlay').classList.add('hidden')
+}
+
+function switchStudyDay(day) {
+  closeStudyDaySwitcher()
+  selectStudyDay(phaseIndexForDay(day), day)
 }
 
 function renderStudyDetailPage() {
