@@ -945,6 +945,19 @@ body {
 .quiz-dot.wrong { background: var(--red-bg); color: var(--red); }
 .quiz-dot.pending { background: var(--border-light); color: var(--dim); }
 .quiz-attempt-summary { font-size: 12px; color: var(--dim); }
+.quiz-layout { display: grid; grid-template-columns: 1fr 220px; gap: 16px; align-items: start; }
+.quiz-main { min-width: 0; }
+.quiz-nav { border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: var(--panel); }
+.quiz-nav-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.quiz-nav-subject { font-size: 12px; font-weight: 700; color: var(--dim); margin: 8px 0 6px; }
+.quiz-nav-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.quiz-nav-num { width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--panel); color: var(--text-secondary); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all .15s ease; }
+.quiz-nav-num:hover { border-color: var(--blue); color: var(--blue); }
+.quiz-nav-num.current { border-color: var(--blue); background: var(--blue); color: #fff; box-shadow: 0 0 0 2px rgba(59,130,246,0.35); }
+.quiz-nav-num.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+.quiz-nav-num.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+.quiz-controls { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.quiz-controls .quiz-btn[disabled] { opacity: .45; cursor: not-allowed; }
 
 @media (max-width: 768px) {
   .study-detail { padding: 14px; }
@@ -954,6 +967,7 @@ body {
   .study-steps { flex-wrap: nowrap; overflow-x: auto; }
   .study-step { flex-shrink: 0; }
   .day-switcher-grid { grid-template-columns: 1fr; }
+  .quiz-layout { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1883,7 +1897,7 @@ function parseQuizQuestions(html) {
     var tag = node.tagName
 
     if (tag === 'H3') {
-      subject = node.textContent.replace(/^[一二三四五六七八九十]+[、.．]\s*/, '').trim()
+      subject = node.textContent.replace(/^[一二三四五六七八九十]+[、.．]\s*/, '').replace(/练习题$/, '').trim()
     } else if (tag === 'H4') {
       var c = classify(node.textContent.trim())
       type = c.type
@@ -1936,6 +1950,24 @@ function parseQuizQuestions(html) {
   return questions
 }
 
+function buildQuizGroups(questions) {
+  var groups = []
+  var map = {}
+  for (var i = 0; i < questions.length; i++) {
+    var subj = questions[i].subject || '其他'
+    if (!map[subj]) {
+      map[subj] = { subject: subj, indices: [] }
+      groups.push(map[subj])
+    }
+    map[subj].indices.push(i)
+  }
+  return groups
+}
+
+function displaySubject(s) {
+  return (s || '').replace(/练习题$/, '')
+}
+
 function ensureQuizState(day, sec) {
   if (STUDY_SELECTED && STUDY_SELECTED.quiz && STUDY_SELECTED.quiz.day === day && STUDY_SELECTED.quiz.questions) {
     return STUDY_SELECTED.quiz
@@ -1948,6 +1980,9 @@ function ensureQuizState(day, sec) {
     day: day,
     questions: questions,
     order: order,
+    groups: buildQuizGroups(questions),
+    current: 0,
+    answers: {},
     submitted: false,
     results: {}
   }
@@ -1982,6 +2017,10 @@ function formatTime(ts) {
 
 function renderQuizPanel(day, sec) {
   var q = ensureQuizState(day, sec)
+  return renderQuizPanelContent(day, q)
+}
+
+function renderQuizPanelContent(day, q) {
   var html = '<div class="quiz-wrap">'
 
   if (!q.questions.length) {
@@ -1990,18 +2029,17 @@ function renderQuizPanel(day, sec) {
     return html
   }
 
-  html += '<div class="quiz-toolbar">'
-  if (!q.submitted) {
-    html += '<button class="quiz-btn primary" onclick="submitQuiz()">提交批改</button>'
-  }
-  html += '<button class="quiz-btn" onclick="reshuffleQuiz()">重新打乱做题</button>'
+  html += '<div class="quiz-layout">'
+
+  html += '<div class="quiz-main">'
+  html += renderQuizQuestionView(q)
+  html += renderQuizControls(q)
   html += '</div>'
 
-  html += '<div class="quiz-list">'
-  for (var i = 0; i < q.order.length; i++) {
-    var qi = q.order[i]
-    html += renderQuizQuestion(qi, i, q, q.submitted)
-  }
+  html += '<div class="quiz-nav">'
+  html += renderQuizNavigator(q)
+  html += '</div>'
+
   html += '</div>'
 
   html += renderQuizHistory(day)
@@ -2010,63 +2048,161 @@ function renderQuizPanel(day, sec) {
   return html
 }
 
-function renderQuizQuestion(qi, displayIndex, q, submitted) {
+function renderQuizQuestionView(q) {
+  var qi = q.order[q.current]
   var question = q.questions[qi]
-  var result = q.results ? q.results[qi] : null
-  var isCorrect = submitted && result === true
-  var isWrong = submitted && result === false
+  var result = q.submitted ? q.results[qi] : null
+  var cardCls = 'quiz-question'
+  if (q.submitted) {
+    if (result === true) cardCls += ' q-correct'
+    else if (result === false) cardCls += ' q-wrong'
+  }
 
-  var html = '<div class="quiz-question' + (isCorrect ? ' q-correct' : (isWrong ? ' q-wrong' : '')) + '">'
+  var html = '<div class="' + cardCls + '">'
 
   html += '<div class="quiz-q-head">'
-  html += '<span class="quiz-q-num">' + (displayIndex + 1) + '</span>'
+  html += '<span class="quiz-q-subject">' + escapeHtml(displaySubject(question.subject)) + '</span>'
   html += '<span class="quiz-q-type">' + escapeHtml(question.typeLabel) + '</span>'
-  html += '<span class="quiz-q-subject">' + escapeHtml(question.subject) + '</span>'
+  html += '<span class="quiz-q-num">第' + question.number + '题</span>'
   html += '</div>'
 
   html += '<div class="quiz-q-stem">' + escapeHtml(question.stem) + '</div>'
 
-  if (question.type === 'single' || question.type === 'multiple') {
+  if (question.type === 'single') {
     html += '<div class="quiz-options">'
-    var correctLetters = parseAnswerLetters(question.answer)
+    var val = q.answers[qi]
     for (var o = 0; o < question.options.length; o++) {
       var opt = question.options[o]
-      var isCorrectOpt = submitted && correctLetters.indexOf(opt.label) >= 0
-      html += '<label class="quiz-option' + (isCorrectOpt ? ' correct-option' : '') + '">'
-      if (question.type === 'single') {
-        html += '<input type="radio" name="quiz-opt-' + qi + '" value="' + opt.label + '"' + (submitted ? ' disabled' : '') + '>'
-      } else {
-        html += '<input type="checkbox" name="quiz-opt-' + qi + '" value="' + opt.label + '"' + (submitted ? ' disabled' : '') + '>'
-      }
-      html += '<span>' + opt.label + '. ' + escapeHtml(opt.text) + '</span>'
-      html += '</label>'
+      var checked = (val === opt.label) ? ' checked' : ''
+      html += '<label class="quiz-option"><input type="radio" name="quiz-opt-' + qi + '" value="' + opt.label + '"' + checked + (q.submitted ? ' disabled' : '') + ' onchange="quizSetAnswer(' + qi + ', this.value)"><span>' + opt.label + '. ' + escapeHtml(opt.text) + '</span></label>'
+    }
+    html += '</div>'
+  } else if (question.type === 'multiple') {
+    html += '<div class="quiz-options">'
+    var arr = (q.answers[qi] && q.answers[qi].constructor === Array) ? q.answers[qi] : []
+    for (var o2 = 0; o2 < question.options.length; o2++) {
+      var opt2 = question.options[o2]
+      var checked = (arr.indexOf(opt2.label) >= 0) ? ' checked' : ''
+      html += '<label class="quiz-option"><input type="checkbox" name="quiz-opt-' + qi + '" value="' + opt2.label + '"' + checked + (q.submitted ? ' disabled' : '') + ' onchange="quizToggleAnswer(' + qi + ', this.value, this.checked)"><span>' + opt2.label + '. ' + escapeHtml(opt2.text) + '</span></label>'
     }
     html += '</div>'
   } else {
-    html += '<textarea class="quiz-textarea" id="quiz-text-' + qi + '" rows="5" placeholder="请在此输入你的答案…"' + (submitted ? ' disabled' : '') + '></textarea>'
+    html += '<textarea class="quiz-textarea" id="quiz-text-' + qi + '" rows="6" placeholder="请在此输入你的答案…"' + (q.submitted ? ' disabled' : '') + ' oninput="quizSetAnswer(' + qi + ', this.value)">' + escapeHtml(q.answers[qi] || '') + '</textarea>'
   }
 
-  if (submitted) {
-    html += '<div class="quiz-result">'
-    if (question.type === 'single' || question.type === 'multiple') {
-      html += '<div class="quiz-feedback ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? '✓ 回答正确' : '✗ 回答错误') + '</div>'
-      html += '<div class="quiz-answer"><b>正确答案：</b>' + escapeHtml(question.answer) + '</div>'
-    } else {
-      html += '<div class="quiz-answer"><b>参考答案：</b></div>'
-      html += '<div class="quiz-ref-answer">' + escapeHtml(question.answer) + '</div>'
-      html += '<div class="quiz-selfmark"><span>自我评价：</span>'
-      html += '<button class="mini-btn' + (result === true ? ' self-on' : '') + '" onclick="selfMarkQuiz(' + qi + ', true)">✓ 答对了</button>'
-      html += '<button class="mini-btn' + (result === false ? ' self-on danger' : '') + '" onclick="selfMarkQuiz(' + qi + ', false)">✗ 答错了</button>'
-      html += '</div>'
-    }
-    if (question.explanation) {
-      html += '<div class="quiz-explain"><b>解析：</b>' + escapeHtml(question.explanation) + '</div>'
-    }
-    html += '</div>'
+  if (q.submitted) {
+    html += renderQuizFeedback(question, result, qi)
   }
 
   html += '</div>'
   return html
+}
+
+function renderQuizControls(q) {
+  var html = '<div class="quiz-controls">'
+  html += '<button class="quiz-btn" onclick="quizPrev()"' + (q.current === 0 ? ' disabled' : '') + '>上一题</button>'
+  html += '<button class="quiz-btn" onclick="quizNext()"' + (q.current >= q.order.length - 1 ? ' disabled' : '') + '>下一题</button>'
+  if (!q.submitted) {
+    html += '<button class="quiz-btn primary" onclick="submitQuiz()">提交</button>'
+  } else {
+    html += '<button class="quiz-btn primary" onclick="reshuffleQuiz()">打乱重做</button>'
+  }
+  html += '</div>'
+  return html
+}
+
+function renderQuizNavigator(q) {
+  var html = '<div class="quiz-nav-title">题目导航</div>'
+  for (var g = 0; g < q.groups.length; g++) {
+    var group = q.groups[g]
+    html += '<div class="quiz-nav-subject">' + escapeHtml(displaySubject(group.subject)) + '</div>'
+    html += '<div class="quiz-nav-grid">'
+    for (var k = 0; k < group.indices.length; k++) {
+      var qi = group.indices[k]
+      var question = q.questions[qi]
+      var isCurrent = (q.order[q.current] === qi)
+      var cls = 'quiz-nav-num'
+      if (isCurrent) cls += ' current'
+      if (q.submitted) {
+        var r = q.results[qi]
+        if (r === true) cls += ' correct'
+        else if (r === false) cls += ' wrong'
+      }
+      html += '<button class="' + cls + '" onclick="quizJumpTo(' + qi + ')">' + question.number + '</button>'
+    }
+    html += '</div>'
+  }
+  return html
+}
+
+function renderQuizFeedback(question, result, qi) {
+  var html = '<div class="quiz-result">'
+  if (question.type === 'single' || question.type === 'multiple') {
+    if (result === true) html += '<div class="quiz-feedback correct">✓ 回答正确</div>'
+    else if (result === false) html += '<div class="quiz-feedback wrong">✗ 回答错误</div>'
+    html += '<div class="quiz-answer"><b>正确答案：</b>' + escapeHtml(question.answer) + '</div>'
+  } else {
+    html += '<div class="quiz-answer"><b>参考答案：</b></div>'
+    html += '<div class="quiz-ref-answer">' + escapeHtml(question.answer) + '</div>'
+    html += '<div class="quiz-selfmark"><span>自我评价：</span>'
+    html += '<button class="mini-btn' + (result === true ? ' self-on' : '') + '" onclick="selfMarkQuiz(' + qi + ', true)">✓ 答对了</button>'
+    html += '<button class="mini-btn' + (result === false ? ' self-on danger' : '') + '" onclick="selfMarkQuiz(' + qi + ', false)">✗ 答错了</button>'
+    html += '</div>'
+  }
+  if (question.explanation) {
+    html += '<div class="quiz-explain"><b>解析：</b>' + escapeHtml(question.explanation) + '</div>'
+  }
+  html += '</div>'
+  return html
+}
+
+function renderQuizPanelLive() {
+  var q = STUDY_SELECTED && STUDY_SELECTED.quiz
+  if (!q) return
+  var panel = document.getElementById('studyPanel-quiz')
+  if (!panel) return
+  var titleEl = panel.querySelector('.study-panel-title')
+  var titleHtml = titleEl ? titleEl.outerHTML : ''
+  panel.innerHTML = titleHtml + renderQuizPanelContent(STUDY_SELECTED.day, q)
+}
+
+function quizPrev() {
+  var q = STUDY_SELECTED && STUDY_SELECTED.quiz
+  if (!q) return
+  if (q.current > 0) { q.current--; renderQuizPanelLive() }
+}
+
+function quizNext() {
+  var q = STUDY_SELECTED && STUDY_SELECTED.quiz
+  if (!q) return
+  if (q.current < q.order.length - 1) { q.current++; renderQuizPanelLive() }
+}
+
+function quizJumpTo(qi) {
+  var q = STUDY_SELECTED && STUDY_SELECTED.quiz
+  if (!q) return
+  var pos = q.order.indexOf(qi)
+  if (pos >= 0) { q.current = pos; renderQuizPanelLive() }
+}
+
+function quizSetAnswer(qi, value) {
+  var q = STUDY_SELECTED && STUDY_SELECTED.quiz
+  if (!q) return
+  q.answers[qi] = value
+}
+
+function quizToggleAnswer(qi, value, checked) {
+  var q = STUDY_SELECTED && STUDY_SELECTED.quiz
+  if (!q) return
+  var arr = q.answers[qi]
+  if (!arr || arr.constructor !== Array) arr = []
+  if (checked) {
+    if (arr.indexOf(value) < 0) arr.push(value)
+  } else {
+    var idx = arr.indexOf(value)
+    if (idx >= 0) arr.splice(idx, 1)
+  }
+  q.answers[qi] = arr
 }
 
 function renderQuizHistory(day) {
@@ -2121,14 +2257,10 @@ function submitQuiz() {
   for (var i = 0; i < q.questions.length; i++) {
     var question = q.questions[i]
     if (question.type === 'single') {
-      var sel = document.querySelector('input[name="quiz-opt-' + i + '"]:checked')
-      var user = sel ? sel.value : ''
-      results[i] = (normalizeAnswer(user) === normalizeAnswer(question.answer))
+      results[i] = (normalizeAnswer(q.answers[i]) === normalizeAnswer(question.answer))
     } else if (question.type === 'multiple') {
-      var checks = document.querySelectorAll('input[name="quiz-opt-' + i + '"]:checked')
-      var userArr = []
-      for (var c = 0; c < checks.length; c++) userArr.push(checks[c].value)
-      results[i] = sameSet(userArr, parseAnswerLetters(question.answer))
+      var arr = (q.answers[i] && q.answers[i].constructor === Array) ? q.answers[i] : []
+      results[i] = sameSet(arr, parseAnswerLetters(question.answer))
     } else {
       results[i] = null
     }
@@ -2140,16 +2272,18 @@ function submitQuiz() {
   var history = getQuizHistory(STUDY_SELECTED.day)
   history.push({ time: Date.now(), results: results })
   saveData()
-  renderStudy()
+  renderQuizPanelLive()
 }
 
 function reshuffleQuiz() {
   if (!STUDY_SELECTED || !STUDY_SELECTED.quiz) return
   var q = STUDY_SELECTED.quiz
   q.order = shuffle(q.order)
+  q.current = 0
+  q.answers = {}
   q.submitted = false
   q.results = {}
-  renderStudy()
+  renderQuizPanelLive()
 }
 
 function selfMarkQuiz(qi, correct) {
@@ -2162,7 +2296,7 @@ function selfMarkQuiz(qi, correct) {
   attempt.results[qi] = correct
   if (STUDY_SELECTED.quiz.results) STUDY_SELECTED.quiz.results[qi] = correct
   saveData()
-  renderStudy()
+  renderQuizPanelLive()
 }
 
 function renderDesign() {
