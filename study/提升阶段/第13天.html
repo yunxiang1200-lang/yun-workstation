@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown 预览</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    line-height: 1.9;
+    font-size: 15px;
+    color: #2c3e50;
+    background: #fdfdff;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 50px;
+}
+h1 { font-size: 26px; color: #1a1a2e; border-bottom: 3px solid #2c3e50; padding-bottom: 10px; margin: 40px 0 20px; }
+h2 { font-size: 20px; color: #16213e; border-bottom: 2px solid #bdc3c7; padding-bottom: 6px; margin: 35px 0 15px; }
+h3 { font-size: 17px; color: #0f3460; margin: 25px 0 12px; }
+h4 { font-size: 15px; color: #533483; margin: 20px 0 10px; }
+h5, h6 { font-size: 14px; color: #666; margin: 15px 0 8px; }
+p { margin: 10px 0; }
+blockquote { background: #f8f9fa; border-left: 4px solid #3498db; padding: 12px 18px; margin: 14px 0; border-radius: 0 6px 6px 0; color: #555; }
+pre { background: #282c34; color: #abb2bf; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; font-size: 13px; line-height: 1.6; }
+code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 13px; color: #e74c3c; }
+pre code { background: none; padding: 0; color: #abb2bf; }
+ul, ol { margin: 10px 0; padding-left: 28px; }
+li { margin: 5px 0; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 30px 0; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+td, th { border: 1px solid #e0e0e0; padding: 10px 14px; text-align: left; font-size: 14px; }
+tr:nth-child(even) { background: #fafafa; }
+tr:first-child { background: #2c3e50; color: white; font-weight: bold; }
+tr:first-child td { border-color: #2c3e50; }
+b, strong { color: #c0392b; }
+a { color: #2980b9; text-decoration: none; }
+a:hover { text-decoration: underline; }
+@media (max-width: 768px) {
+    body { padding: 20px 24px; font-size: 14px; }
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<h1>第13天：经济学原理第7章（完全竞争市场：短期均衡）+ 公共经济学第3章（公共产品理论）</h1>
+
+<hr>
+
+<h2>【上午：经济学原理（中级）——完全竞争市场：短期均衡】</h2>
+
+<h3>一、完全竞争市场的含义与条件</h3>
+
+<p><b>完全竞争市场（Perfectly Competitive Market）</b> 是指一种不受任何阻碍和干扰的市场结构，是经济学中市场结构的理想模型。它需要满足以下四个严格条件：</p>
+
+<p><b>1. 市场上有大量买者和卖者</b>。每个参与者都是<b>价格接受者（Price Taker）</b>，即单个买者或卖者的交易量相对于整个市场来说微不足道，无法影响市场价格。这就好比农贸市场中成千上万的菜农，任何一位菜农的蔬菜供给量变动不会影响整个市场的菜价。</p>
+
+<p><b>2. 产品是同质的（Homogeneous Product）</b>。所有厂商生产的产品在质量、规格、包装等方面完全相同，消费者无法区分产品来自哪个厂商。例如，大米、小麦等农产品，不同农户生产的大米几乎没有差别。</p>
+
+<p><b>3. 资源完全自由流动（Free Entry and Exit）</b>。厂商可以无障碍地进入或退出该行业，不存在任何进入壁垒（如专利、政府特许、规模经济等）。这意味着当行业有利可图时，新厂商会迅速涌入；当行业亏损时，原有厂商可以迅速撤出。</p>
+
+<p><b>4. 完全信息（Perfect Information）</b>。所有市场参与者都掌握与交易相关的全部信息，包括产品的价格、质量、生产技术等。消费者知道哪里有最低价格，厂商知道最先进的生产技术。</p>
+
+<blockquote><b>贵州历年高频考点</b>：完全竞争市场的四个条件几乎每年都考，常以<b>多选题</b>或<b>简答题</b>形式出现。2021年4月、2022年10月均考查了"价格接受者"的概念。</blockquote>
+
+<h3>二、完全竞争厂商面临的需求曲线</h3>
+
+<p>在完全竞争市场中，单个厂商面临的需求曲线是一条<b>水平线</b>，即具有<b>完全弹性</b>（Elasticity = ∞）。这是因为厂商是价格接受者，只能按市场决定的价格P<em>出售产品，若厂商试图以高于P</em>的价格出售，消费者会立即转向其他厂商购买；而厂商也没有必要以低于P<em>的价格出售，因为在P</em>的价格下他可以卖出任意数量的产品。</p>
+
+<p><b>图形描述</b>：</p>
+<ul>
+<li>整个市场的需求曲线D是一条向右下方倾斜的曲线（符合需求定律）</li>
+<li>但单个厂商面临的需求曲线d是一条位于市场价格P*处的水平线</li>
+<li>这意味着<b>P = MR = AR</b>，即价格等于边际收益等于平均收益</li>
+</ul>
+
+<p>数学推导：</p>
+<ul>
+<li><b>总收益（TR）</b> = P × Q，由于P是常数，TR是一条从原点出发的射线</li>
+<li><b>平均收益（AR）</b> = TR / Q = P，AR曲线与需求曲线重合</li>
+<li><b>边际收益（MR）</b> = dTR / dQ = P，MR曲线也与需求曲线重合</li>
+<li>因此在完全竞争市场中：<b>P = MR = AR = d</b></li>
+</ul>
+
+<h3>三、完全竞争厂商的短期均衡</h3>
+
+<h4>3.1 利润最大化的条件</h4>
+
+<p>厂商的目标是<b>利润最大化（Profit Maximization）</b>。利润函数为：</p>
+<ul>
+<li><b>π = TR - TC</b></li>
+<li>利润最大化的必要条件（一阶条件）：<b>MR = MC</b></li>
+<li>在完全竞争市场中，MR = P，因此利润最大化条件简化为：<b>P = MC</b></li>
+</ul>
+
+<p>为什么要满足MR = MC？我们可以这样理解：</p>
+<ul>
+<li>当MR > MC时，多生产一单位产品带来的收益大于成本，增加产量可以增加利润</li>
+<li>当MR < MC时，多生产一单位产品带来的收益小于成本，减少产量可以增加利润</li>
+<li>只有当MR = MC时，利润达到最大值</li>
+</ul>
+
+<p><b>二阶条件</b>：d²π/dQ² < 0，即MC曲线的斜率大于MR曲线的斜率（MC从下方穿过MR）。</p>
+
+<h4>3.2 短期均衡的三种情况</h4>
+
+<p>在短期内，厂商有固定成本（FC），不能自由退出市场。根据市场价格P与平均成本的关系，短期均衡可分为三种情况：</p>
+
+<p><b>情况一：获得超额利润（P > SAC）</b></p>
+
+<p>当市场价格高于厂商的平均总成本（SAC）时，厂商获得超额利润（经济利润）。</p>
+
+<ul>
+<li>均衡条件：P = SMC，且P > SAC</li>
+<li>利润量：π = (P - SAC) × Q*，即图中矩形面积</li>
+<li>此时厂商有动力扩大生产，但受限于短期生产能力</li>
+</ul>
+
+<p><b>情况二：获得正常利润（P = SAC）——盈亏平衡点</b></p>
+
+<p>当市场价格等于厂商的<b>平均总成本最低点</b>时，厂商获得正常利润（经济利润为零）。</p>
+
+<ul>
+<li><b>盈亏平衡点（Break-even Point）</b>是SAC曲线的最低点</li>
+<li>此时P = SAC = SMC，厂商的经济利润为零，但包括了所有隐性成本（正常利润）</li>
+<li>之所以叫"正常利润"，是因为厂商获得了足以留在行业中的回报</li>
+</ul>
+
+<p><b>情况三：亏损但继续生产（AVC < P < SAC）</b></p>
+
+<p>当市场价格低于SAC但高于<b>平均可变成本（AVC）</b>时，厂商处于亏损状态，但继续生产。</p>
+
+<ul>
+<li>为什么亏损还要生产？因为固定成本是<b>沉淀成本（Sunk Cost）</b>，无论是否生产都已支出</li>
+<li>只要P > AVC，厂商的收益除了弥补全部可变成本外，还能弥补一部分固定成本</li>
+<li>停产的话，全部固定成本都会亏损，亏损额 = FC</li>
+<li>继续生产的话，亏损额 = FC - (P - AVC) × Q，小于FC</li>
+<li>因此继续生产比停产损失更小</li>
+</ul>
+
+<p><b>情况四：停止营业点（P = AVC）——</b>停业点（Shutdown Point）**</p>
+
+<ul>
+<li><b>停业点</b>是AVC曲线的最低点</li>
+<li>当P = AVC的最低点时，厂商的收益刚好弥补全部可变成本，固定成本全部亏损</li>
+<li>此时生产与不生产的结果相同，亏损都等于全部固定成本</li>
+</ul>
+
+<p><b>情况五：停产（P < AVC）</b></p>
+
+<p>当市场价格低于AVC的最低点时，厂商生产不仅无法弥补固定成本，连可变成本都无法全部弥补，此时应当<b>立即停产</b>，亏损止于固定成本。</p>
+
+<blockquote><b>贵州历年高频考点</b>：停止营业点和盈亏平衡点的区别是贵州自考的必考内容，2020年8月、2021年10月、2022年4月均以<b>单选题</b>或<b>名词解释</b>形式考查。特别注意：<b>短期停业点 ≠ 长期退出点</b>。</blockquote>
+
+<h4>3.3 完全竞争厂商的短期供给曲线</h4>
+
+<p><b>完全竞争厂商的短期供给曲线</b>就是<b>SMC曲线位于AVC曲线最低点以上的部分</b>。</p>
+
+<ul>
+<li>这是因为厂商的利润最大化条件P = MC决定了在每一个市场价格P下，厂商愿意并且能够提供的产量Q</li>
+<li>当P ≥ AVC最小值时，厂商会生产，供给量与价格呈正相关</li>
+<li>当P < AVC最小值时，厂商停产，供给量为零</li>
+</ul>
+
+<p>整个行业的短期供给曲线是所有厂商短期供给曲线的<b>水平加总</b>。</p>
+
+<h3>四、例题讲解</h3>
+
+<p><b>例题1</b>：某完全竞争厂商的总成本函数为TC = Q³ - 6Q² + 30Q + 40，求：</p>
+<p>（1）该厂商的SMC、AVC、SAC函数</p>
+<p>（2）该厂商的停止营业点</p>
+<p>（3）当市场价格P = 66时，厂商的最优产量和利润</p>
+
+<p><b>解</b>：</p>
+<p>（1）SMC = dTC/dQ = 3Q² - 12Q + 30</p>
+<p>AVC = TVC/Q = (Q³ - 6Q² + 30Q)/Q = Q² - 6Q + 30</p>
+<p>SAC = TC/Q = Q² - 6Q + 30 + 40/Q</p>
+
+<p>（2）停止营业点是AVC的最低点，AVC' = 2Q - 6 = 0，得Q = 3</p>
+<p>代入AVC函数：AVC最小 = 3² - 6×3 + 30 = 9 - 18 + 30 = 21</p>
+<p>即当P = 21时，厂商处于停止营业点</p>
+
+<p>（3）利润最大化条件：P = SMC</p>
+<p>66 = 3Q² - 12Q + 30</p>
+<p>3Q² - 12Q - 36 = 0</p>
+<p>Q² - 4Q - 12 = 0</p>
+<p>(Q + 2)(Q - 6) = 0</p>
+<p>Q = 6（舍去负值）</p>
+
+<p>利润π = TR - TC = 66×6 - (6³ - 6×6² + 30×6 + 40)</p>
+<p>= 396 - (216 - 216 + 180 + 40)</p>
+<p>= 396 - 220</p>
+<p>= 176</p>
+
+<p>因此当P = 66时，最优产量为6单位，利润为176<b>（获得超额利润）</b>。</p>
+
+<hr>
+
+<h2>【下午：公共经济学——公共产品理论】</h2>
+
+<h3>一、公共产品的定义与特征</h3>
+
+<p><b>公共产品（Public Goods）</b> 是指具有<b>非竞争性（Non-rivalry）</b>和<b>非排他性（Non-excludability）</b>的产品。这是公共经济学的核心概念，由美国经济学家<b>保罗·萨缪尔森（Paul Samuelson）</b>在1954年发表的《公共支出的纯理论》中首次系统阐述。</p>
+
+<h4>1.1 两大基本特征</h4>
+
+<p><b>特征一：非竞争性（Non-rivalry in Consumption）</b></p>
+
+<p>非竞争性是指一个人对某种产品的消费不会减少其他人对该产品的消费数量或质量。换句话说，<b>增加一个消费者的边际成本为零</b>。</p>
+
+<p>举例：灯塔信号——一艘船使用灯塔导航并不妨碍其他船只同时使用；国防——新增一名公民享受国防保护并不会降低原有公民的保护程度；电视信号——一个人收看电视节目不会影响他人收看。</p>
+
+<p><b>特征二：非排他性（Non-excludability in Consumption）</b></p>
+
+<p>非排他性是指无法将某人排除在某种产品的消费之外，或者排除的成本高得不可行。也就是说，<b>技术上无法实现排他，或者排他的经济成本过高</b>。</p>
+
+<p>举例：国防——国家无法只保护交税的公民而不保护未交税的公民；空气污染治理——改善了空气质量无法只让部分人呼吸；街道照明——不能只照亮付费的路人。</p>
+
+<h4>1.2 产品分类矩阵</h4>
+
+<p>根据是否具备非竞争性和非排他性，可将产品分为四类：</p>
+
+<table>
+<tr><td>分类</td><td>排他性（有）</td><td>排他性（无）</td></tr>
+<tr><td><b>竞争性（有）</b></td><td><b>私人物品</b>（食品、衣物、汽车）</td><td><b>公共资源</b>（公共牧场、渔场、地下水）</td></tr>
+<tr><td><b>竞争性（无）</b></td><td><b>俱乐部产品</b>（有线电视、收费公路、健身房）</td><td><b>纯公共产品</b>（国防、灯塔、基础研究）</td></tr>
+</table>
+
+<ul>
+<li><b>纯公共产品（Pure Public Goods）</b>：同时具备非竞争性和非排他性，如国防、灯塔、基础科学研究</li>
+<li><b>准公共产品（Quasi-public Goods）</b>：只具备其中一个特征，包括：</li>
+<li><b>俱乐部产品（Club Goods）</b>：有排他性但无竞争性，如有线电视、收费公路</li>
+<li><b>公共资源（Common Resources）</b>：有竞争性但无排他性，如公共渔场、公共牧场</li>
+</ul>
+
+<blockquote><b>贵州历年高频考点</b>：产品分类矩阵是高频考点，2020年8月、2021年4月、2022年10月均以<b>单选题</b>或<b>多选题</b>形式考查。特别注意俱乐部产品和公共资源的区分。</blockquote>
+
+<h3>二、公共产品与市场失灵</h3>
+
+<h4>2.1 搭便车问题（Free Rider Problem）</h4>
+
+<p>由于公共产品具有非排他性，每个人都希望他人付费购买公共产品，而自己免费享用。这种"<b>搭便车</b>"行为导致市场无法有效提供公共产品。</p>
+
+<p><b>搭便车问题的数学表述</b>：</p>
+<p>假设一个社区有n个人，公共产品的总供给量为G，第i个人的贡献为gᵢ，G = Σgᵢ。</p>
+<p>第i个人的效用函数为：Uᵢ(xᵢ, G)，其中xᵢ是私人物品消费量。</p>
+<p>预算约束为：xᵢ + gᵢ = wᵢ（收入）。</p>
+<p>每个人最大化自己效用的结果是<b>贡献不足（Under-provision）</b>，因为每个人都希望别人多贡献而自己"搭便车"。</p>
+
+<h4>2.2 公共产品导致的市场失灵</h4>
+
+<p><b>市场失灵（Market Failure）</b> 是指市场机制无法实现资源配置的<b>帕累托最优（Pareto Optimality）</b>。公共产品导致的市场失灵表现为：</p>
+
+<ul>
+<li><b>供给不足</b>：由于搭便车行为，私人部门提供的公共产品数量远低于社会最优水平</li>
+<li><b>价格信号缺失</b>：公共产品的非竞争性使得边际成本为零，但市场价格无法为零（厂商无法收回成本）</li>
+<li><b>显示偏好困难</b>：消费者没有动机真实表达对公共产品的偏好（偏好隐瞒问题）</li>
+</ul>
+
+<h3>三、公共产品的有效供给条件</h3>
+
+<h4>3.1 萨缪尔森条件（Samuelson Condition）</h4>
+
+<p>对于纯公共产品，<b>有效供给条件</b>是所有消费者的边际替代率之和等于生产的边际转换率：</p>
+
+<p><b>ΣMRSᵢ = MRT</b></p>
+
+<p>其中MRSᵢ是第i个消费者对公共产品和私人物品的边际替代率，MRT是生产中的边际转换率。</p>
+
+<p>与私人物品的有效供给条件（每个人的MRS都等于MRT）不同，公共产品的有效供给条件要求<b>所有人的MRS之和等于MRT</b>。这是因为公共产品可以被所有人同时消费，每个人的边际收益需要加总起来与边际成本比较。</p>
+
+<h4>3.2 林达尔均衡（Lindahl Equilibrium）</h4>
+
+<p><b>林达尔均衡</b>是瑞典经济学家<b>埃里克·林达尔（Erik Lindahl）</b>提出的公共产品自愿交换模型。该模型试图模拟市场竞争机制来确定公共产品的供给量和每个人的"税收价格"。</p>
+
+<ul>
+<li>假设每个人根据自己从公共产品中获得的边际收益支付不同的"税收价格"</li>
+<li>当每个人对公共产品的需求与供给达到一致时，就实现了林达尔均衡</li>
+<li>林达尔均衡是<b>帕累托最优</b>的，且实现了"受益原则"——每个人按其受益程度付费</li>
+</ul>
+
+<p>然而，林达尔均衡在实际中难以实现，因为存在<b>偏好隐瞒问题</b>——消费者有激励低报自己的真实偏好以降低自己的税收价格。</p>
+
+<blockquote><b>贵州历年高频考点</b>：萨缪尔森条件和林达尔均衡在贵州自考中经常以<b>简答题</b>或<b>名词解释</b>形式出现，2021年10月考过"萨缪尔森条件的含义"，2022年4月考过"林达尔均衡的基本思想"。</blockquote>
+
+<div style="text-align:center;margin:30px auto;border:1px solid #ddd;border-radius:8px;padding:20px;background:#fafafa;max-width:660px;">
+<h4 style="margin-top:0;color:#2c3e50;">图表：完全竞争市场均衡</h4>
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+  <defs>
+    <marker id="arrow7" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#555"/></marker>
+  </defs>
+  <!-- ============ 左图：市场 ============ -->
+  <!-- 坐标轴 -->
+  <line x1="35" y1="330" x2="285" y2="330" stroke="#555" stroke-width="1.5" marker-end="url(#arrow7)"/>
+  <line x1="35" y1="330" x2="35" y2="45" stroke="#555" stroke-width="1.5" marker-end="url(#arrow7)"/>
+  <text x="280" y="350" font-size="13" fill="#333" text-anchor="end" font-weight="bold">Q</text>
+  <text x="28" y="45" font-size="13" fill="#333" text-anchor="end" font-weight="bold">P</text>
+  <text x="35" y="345" font-size="11" fill="#555" text-anchor="middle">O</text>
+  <!-- 市场 D 曲线 -->
+  <path d="M 50,60 Q 100,100 160,185 Q 230,270 270,320" fill="none" stroke="#3498db" stroke-width="2.5"/>
+  <text x="270" y="325" font-size="13" fill="#3498db" font-weight="bold" transform="translate(5,0)">D</text>
+  <!-- 市场 S 曲线 -->
+  <path d="M 65,320 Q 110,255 160,185 Q 210,120 255,60" fill="none" stroke="#e74c3c" stroke-width="2.5"/>
+  <text x="255" y="55" font-size="13" fill="#e74c3c" font-weight="bold" transform="translate(0,-3)">S</text>
+  <!-- 均衡点 -->
+  <circle cx="160" cy="185" r="4" fill="#f39c12"/>
+  <text x="170" y="175" font-size="13" fill="#e67e22" font-weight="bold">E</text>
+  <!-- 价格水平线 -->
+  <line x1="35" y1="185" x2="300" y2="185" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="300" y="188" font-size="12" fill="#e67e22" font-weight="bold">P*</text>
+  <!-- 左图标题 -->
+  <text x="160" y="25" font-size="13" fill="#333" text-anchor="middle" font-weight="bold">市场</text>
+
+  <!-- ============ 右图：厂商 ============ -->
+  <!-- 坐标轴 -->
+  <line x1="300" y1="330" x2="575" y2="330" stroke="#555" stroke-width="1.5" marker-end="url(#arrow7)"/>
+  <line x1="300" y1="330" x2="300" y2="45" stroke="#555" stroke-width="1.5" marker-end="url(#arrow7)"/>
+  <text x="570" y="350" font-size="13" fill="#333" text-anchor="end" font-weight="bold">q</text>
+  <!-- 厂商需求线 d = P* = MR = AR -->
+  <line x1="305" y1="185" x2="565" y2="185" stroke="#3498db" stroke-width="2.5"/>
+  <text x="560" y="178" font-size="13" fill="#3498db" font-weight="bold">d = P* = MR = AR</text>
+  <!-- MC 曲线 -->
+  <path d="M 315,320 Q 400,60 480,185 Q 530,260 570,320" fill="none" stroke="#2ecc71" stroke-width="2.5"/>
+  <text x="570" y="320" font-size="13" fill="#2ecc71" font-weight="bold" transform="translate(0,0)">MC</text>
+  <!-- ATC 曲线 -->
+  <path d="M 340,310 Q 430,100 510,250 Q 540,290 570,320" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="570" y="320" font-size="13" fill="#e74c3c" font-weight="bold" transform="translate(-20,0)">ATC</text>
+  <!-- P=MC 决定 Q* -->
+  <circle cx="480" cy="185" r="4" fill="#f39c12"/>
+  <line x1="480" y1="185" x2="480" y2="330" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="480" y="348" font-size="12" fill="#555" text-anchor="middle">q*</text>
+  <text x="340" y="195" font-size="11" fill="#e67e22" font-weight="bold">P = MC</text>
+  <!-- 右图标题 -->
+  <text x="440" y="25" font-size="13" fill="#333" text-anchor="middle" font-weight="bold">代表性厂商</text>
+  <!-- 图例 -->
+  <rect x="460" y="45" width="10" height="10" fill="#3498db"/>
+  <text x="476" y="55" font-size="11" fill="#555">d = P* = MR = AR</text>
+  <rect x="460" y="62" width="10" height="10" fill="#2ecc71"/>
+  <text x="476" y="72" font-size="11" fill="#555">边际成本 MC</text>
+  <rect x="460" y="79" width="10" height="10" fill="#e74c3c"/>
+  <text x="476" y="89" font-size="11" fill="#555">平均总成本 ATC</text>
+</svg>
+</div>
+
+<hr>
+
+<h2>【今日练习题】</h2>
+
+<h3>经济学原理部分</h3>
+
+<p><b>1.（单选题）</b> 在完全竞争市场中，单个厂商面临的需求曲线是：</p>
+<p>A. 向右下方倾斜的曲线</p>
+<p>B. 向左下方倾斜的曲线</p>
+<p>C. 一条水平线</p>
+<p>D. 一条垂直线</p>
+
+<p><b>答案：C</b></p>
+<p><b>解析</b>：完全竞争厂商是价格接受者，只能按市场决定的价格出售产品，因此面临的需求曲线是一条位于市场价格处的水平线（完全弹性）。选项A描述的是整个市场的需求曲线，不是单个厂商的需求曲线。</p>
+
+<p><b>2.（单选题）</b> 完全竞争厂商短期均衡时，如果P < AVC的最低点，厂商应当：</p>
+<p>A. 继续生产，因为可以弥补部分固定成本</p>
+<p>B. 减少产量，使P = MC</p>
+<p>C. 立即停产</p>
+<p>D. 增加产量，以摊薄固定成本</p>
+
+<p><b>答案：C</b></p>
+<p><b>解析</b>：当P < AVC的最低点时，厂商生产不仅无法弥补固定成本，连可变成本都无法全部收回。此时继续生产的亏损大于停产的亏损（停产的亏损等于全部固定成本），因此应当立即停产。这是贵州自考的高频考点。</p>
+
+<p><b>3.（多选题）</b> 完全竞争市场的条件包括：</p>
+<p>A. 市场上有大量买者和卖者</p>
+<p>B. 产品存在差异性</p>
+<p>C. 资源完全自由流动</p>
+<p>D. 买卖双方具有完全信息</p>
+<p>E. 存在较高的进入壁垒</p>
+
+<p><b>答案：ACD</b></p>
+<p><b>解析</b>：完全竞争市场的四个条件是：大量买者和卖者、产品同质（无差异）、资源自由流动、完全信息。选项B（产品存在差异性）是垄断竞争市场的特征，选项E（高进入壁垒）是垄断市场的特征。注意区分不同市场结构的特征。</p>
+
+<p><b>4.（计算题）</b> 已知完全竞争市场中某厂商的短期成本函数为STC = 0.1Q³ - 2Q² + 15Q + 10，当前市场价格P = 20，求该厂商利润最大化时的产量和利润。</p>
+
+<p><b>答案与解析</b>：</p>
+<p>（1）求SMC函数：SMC = dSTC/dQ = 0.3Q² - 4Q + 15</p>
+<p>（2）利润最大化条件：P = SMC</p>
+<p>20 = 0.3Q² - 4Q + 15</p>
+<p>0.3Q² - 4Q - 5 = 0</p>
+<p>两边乘以10：3Q² - 40Q - 50 = 0</p>
+<p>使用求根公式：Q = [40 ± √(1600 + 600)] / 6 = [40 ± √2200] / 6 = [40 ± 46.9] / 6</p>
+<p>Q = 14.48 或 Q = -1.15（舍去）</p>
+<p>故Q ≈ 14.5</p>
+<p>（3）利润：π = TR - TC = 20×14.5 - (0.1×14.5³ - 2×14.5² + 15×14.5 + 10)</p>
+<p>= 290 - (0.1×3048.6 - 2×210.25 + 217.5 + 10)</p>
+<p>= 290 - (304.9 - 420.5 + 217.5 + 10)</p>
+<p>= 290 - 111.9</p>
+<p>= 178.1</p>
+
+<p>该厂商利润最大化产量约为14.5单位，利润约为178.1。</p>
+
+<p><b>5.（简答题）</b> 简述为什么完全竞争厂商的短期供给曲线是SMC曲线在AVC最低点以上的部分。</p>
+
+<p><b>答案</b>：完全竞争厂商利润最大化的条件是P = SMC。当市场价格P变化时，厂商会根据P = SMC的条件选择最优产量Q*。当P ≥ AVC的最低点时，厂商的收益可以弥补全部可变成本和部分固定成本，因此厂商会选择生产，对应的SMC曲线上的点（P, Q）就是供给曲线上的点。当P < AVC的最低点时，厂商生产连可变成本都无法弥补，因此选择停产，供给量为零。因此，完全竞争厂商的短期供给曲线就是SMC曲线上位于AVC曲线最低点以上的部分，体现了价格与供给量之间的正向关系。</p>
+
+<hr>
+
+<h3>公共经济学部分</h3>
+
+<p><b>1.（单选题）</b> 下列哪项属于纯公共产品的特征：</p>
+<p>A. 竞争性和排他性</p>
+<p>B. 非竞争性和非排他性</p>
+<p>C. 竞争性和非排他性</p>
+<p>D. 非竞争性和排他性</p>
+
+<p><b>答案：B</b></p>
+<p><b>解析</b>：纯公共产品同时具有非竞争性（增加消费者边际成本为零）和非排他性（无法排除任何人消费）。选项A是私人物品，选项C是公共资源，选项D是俱乐部产品。</p>
+
+<p><b>2.（单选题）</b> "搭便车问题"主要源于公共产品的：</p>
+<p>A. 竞争性</p>
+<p>B. 非竞争性</p>
+<p>C. 排他性</p>
+<p>D. 非排他性</p>
+
+<p><b>答案：D</b></p>
+<p><b>解析</b>：搭便车问题源于公共产品的非排他性。因为无法将不付费者排除在消费之外，所以每个人都有激励不付费而享受他人提供的公共产品，导致市场供给不足。</p>
+
+<p><b>3.（多选题）</b> 下列产品中属于准公共产品的有：</p>
+<p>A. 国防</p>
+<p>B. 有线电视</p>
+<p>C. 公共渔场</p>
+<p>D. 面包</p>
+<p>E. 收费公路</p>
+
+<p><b>答案：BCE</b></p>
+<p><b>解析</b>：准公共产品是只具备非竞争性或非排他性其中一个特征的产品。有线电视和收费公路有排他性但无竞争性（俱乐部产品），公共渔场有竞争性但无排他性（公共资源）。A国防是纯公共产品，D面包是私人物品。</p>
+
+<p><b>4.（简答题）</b> 简述萨缪尔森条件的内容及其经济含义。</p>
+
+<p><b>答案</b>：萨缪尔森条件是纯公共产品帕累托最优供给的条件，表示为ΣMRSᵢ = MRT，即所有消费者对公共产品与私人物品的边际替代率之和等于公共产品与私人物品生产的边际转换率。经济含义是：公共产品的社会边际收益（所有消费者边际收益之和）等于社会边际成本。与私人物品不同，公共产品可以被所有人同时消费，因此需要将每个人的边际收益加总来与边际成本比较。这是判断公共产品是否实现有效配置的重要标准。</p>
+
+<p><b>5.（简答题）</b> 什么是林达尔均衡？它为什么在实际中难以实现？</p>
+
+<p><b>答案</b>：林达尔均衡是林达尔提出的公共产品自愿交换模型，通过模拟市场竞争机制确定公共产品的供给量和每个人的税收价格。在均衡状态下，每个人根据自己的边际收益支付不同价格，且所有人对公共产品供给量达成一致，实现帕累托最优。然而在实际中难以实现，因为存在偏好隐瞒问题：理性的消费者有激励低报自己对公共产品的真实偏好，以降低自己的税收价格，结果导致公共产品供给不足。这就是"搭便车"行为阻碍了林达尔均衡的实现。</p>
+
+<hr>
+
+<h2>【今日学习提示】</h2>
+
+<ul>
+<li><b>完全竞争市场的短期均衡是微观经济学的核心内容</b>，务必理解P = MC（MR = MC）的利润最大化原理，并能熟练运用计算题。</li>
+<li>区分"停业点（Shutdown Point）"和"盈亏平衡点（Break-even Point）"：前者在AVC最低点，后者在SAC最低点。这是高频考点。</li>
+<li>公共产品两大特征（非竞争性和非排他性）是公共经济学的基础，需要与产品分类矩阵结合记忆。</li>
+<li>注意萨缪尔森条件ΣMRS = MRT和私人物品条件MRS = MRT的区别，这是常考辨析点。</li>
+<li>搭便车问题是理解公共产品市场失灵的关键，要能解释为什么市场机制无法有效提供公共产品。</li>
+<li><b>贵州考试特别提醒</b>：贵州自考常考完全竞争市场条件（单选/多选）、短期均衡的三种情况（简答/计算）、公共产品分类（单选/多选）、萨缪尔森条件（简答/名词解释）。</li>
+</ul>
+
+</body>
+</html>

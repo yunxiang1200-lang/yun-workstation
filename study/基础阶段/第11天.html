@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown 预览</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    line-height: 1.9;
+    font-size: 15px;
+    color: #2c3e50;
+    background: #fdfdff;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 50px;
+}
+h1 { font-size: 26px; color: #1a1a2e; border-bottom: 3px solid #2c3e50; padding-bottom: 10px; margin: 40px 0 20px; }
+h2 { font-size: 20px; color: #16213e; border-bottom: 2px solid #bdc3c7; padding-bottom: 6px; margin: 35px 0 15px; }
+h3 { font-size: 17px; color: #0f3460; margin: 25px 0 12px; }
+h4 { font-size: 15px; color: #533483; margin: 20px 0 10px; }
+h5, h6 { font-size: 14px; color: #666; margin: 15px 0 8px; }
+p { margin: 10px 0; }
+blockquote { background: #f8f9fa; border-left: 4px solid #3498db; padding: 12px 18px; margin: 14px 0; border-radius: 0 6px 6px 0; color: #555; }
+pre { background: #282c34; color: #abb2bf; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; font-size: 13px; line-height: 1.6; }
+code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 13px; color: #e74c3c; }
+pre code { background: none; padding: 0; color: #abb2bf; }
+ul, ol { margin: 10px 0; padding-left: 28px; }
+li { margin: 5px 0; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 30px 0; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+td, th { border: 1px solid #e0e0e0; padding: 10px 14px; text-align: left; font-size: 14px; }
+tr:nth-child(even) { background: #fafafa; }
+tr:first-child { background: #2c3e50; color: white; font-weight: bold; }
+tr:first-child td { border-color: #2c3e50; }
+b, strong { color: #c0392b; }
+a { color: #2980b9; text-decoration: none; }
+a:hover { text-decoration: underline; }
+@media (max-width: 768px) {
+    body { padding: 20px 24px; font-size: 14px; }
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<h1>第11天：经济学原理第6章（成本分析）+ 公共经济学第1-2章复习</h1>
+
+<hr>
+
+<h2>【上午】经济学原理（中级）第6章：成本分析</h2>
+
+<h3>一、成本的概念</h3>
+
+<h4>1. 显性成本与隐性成本</h4>
+
+<p><b>显性成本（Explicit Cost）</b>：企业支付给外部生产要素所有者的货币支出，如原材料费、工人工资、租金等。这些成本在会计账目上有明确记录。</p>
+
+<p><b>隐性成本（Implicit Cost）</b>：企业使用自有生产要素应获得但未实际支付的报酬，如自有资金的利息、企业主放弃的工资收入等。<b>隐性成本在会计账上不体现</b>，但在经济决策中必须考虑。</p>
+
+<p><b>举例</b>：小张用自己的店面开店，不付租金。从会计角度看，店面成本为0。但从经济学角度看，如果店面出租每月可得5000元租金，这5000元就是隐性成本（机会成本）。</p>
+
+<h4>2. 经济成本、会计成本与机会成本的关系</h4>
+
+<ul>
+<li><b>会计成本</b> = 显性成本（会计账目记录）</li>
+<li><b>经济成本</b> = 显性成本 + 隐性成本</li>
+<li><b>机会成本</b> = 经济成本（因为都体现了"放弃的次优选择"的价值）</li>
+</ul>
+
+<p><b>经济利润与会计利润的区别：</b></p>
+
+<table>
+<tr><td>利润类型</td><td>公式</td><td>说明</td></tr>
+<tr><td><b>会计利润</b></td><td>总收益 - 会计成本（显性成本）</td><td>大于经济利润</td></tr>
+<tr><td><b>经济利润</b></td><td>总收益 - 经济成本（显性+隐性）</td><td>也称为"超额利润"</td></tr>
+<tr><td><b>正常利润</b></td><td>企业家才能的隐性成本</td><td>经济利润=0时，企业仍获得正常利润</td></tr>
+</table>
+
+<blockquote><b>核心考点</b>：经济利润 = 0 ≠ 企业不赚钱！此时企业获得了正常利润（即企业家才能的正常报酬）。经济利润为零意味着企业刚好赚到了和次优选择一样多的钱。</blockquote>
+
+<p><b>贵州高频考点</b>：区分会计利润和经济利润、正常利润的概念，几乎是每年的必考选择题。</p>
+
+<h3>二、短期成本分析</h3>
+
+<h4>1. 短期成本的分类</h4>
+
+<table>
+<tr><td>成本类型</td><td>符号</td><td>定义</td><td>公式</td></tr>
+<tr><td><b>总固定成本</b></td><td>TFC</td><td>不随产量变化的成本</td><td>TFC = 常数</td></tr>
+<tr><td><b>总可变成本</b></td><td>TVC</td><td>随产量变化而变化的成本</td><td>TVC = f(Q)</td></tr>
+<tr><td><b>总成本</b></td><td>TC</td><td>固定成本与可变成本之和</td><td>TC = TFC + TVC</td></tr>
+<tr><td><b>平均固定成本</b></td><td>AFC</td><td>每单位产品分摊的固定成本</td><td>AFC = TFC / Q</td></tr>
+<tr><td><b>平均可变成本</b></td><td>AVC</td><td>每单位产品分摊的可变成本</td><td>AVC = TVC / Q</td></tr>
+<tr><td><b>平均总成本</b></td><td>ATC</td><td>每单位产品的总成本</td><td>ATC = TC / Q = AFC + AVC</td></tr>
+<tr><td><b>边际成本</b></td><td>MC</td><td>增加一单位产量所增加的总成本</td><td>MC = ΔTC / ΔQ</td></tr>
+</table>
+
+<h4>2. 短期成本曲线及其形状</h4>
+
+<p><b>（1）TFC、TVC、TC曲线</b></p>
+<ul>
+<li><b>TFC</b>：一条水平直线（与Q轴平行），不随产量变化</li>
+<li><b>TVC</b>：从原点出发，先以递减速率上升（边际报酬递增阶段），后以递增速率上升（边际报酬递减阶段），呈S形</li>
+<li><b>TC</b>：与TVC形状相同，但在纵轴上向上平移TFC的距离</li>
+</ul>
+
+<pre><code>
+成本
+↑
+|   TC
+|  /  TVC
+| /  /
+|/  /
+|<b>/</b><b><em></b><b></em></b><em>_</em>_→ 产量Q
+|  TFC（水平线）
+</code></pre>
+
+<p><b>（2）AFC、AVC、ATC、MC曲线</b></p>
+
+<pre><code>
+成本
+↑
+|    MC
+|   / \
+|  /   \  ATC
+| /     \   /AVC
+|/       \ /
+|         \
+|<b><em></b><b></em></b>\<b><em>AFC</b><b></em></b>_→ 产量Q
+</code></pre>
+
+<ul>
+<li><b>AFC</b>：向右下方倾斜（产量越大，每单位分摊的固定成本越少），呈双曲线状</li>
+<li><b>AVC</b>：先下降后上升，呈U形（先边际报酬递增阶段下降，后递减阶段上升）</li>
+<li><b>ATC</b>：先下降后上升，呈U形（位于AVC上方，两者差距为AFC）</li>
+<li><b>MC</b>：先下降后上升，呈U形（下降更快，上升也更陡峭）</li>
+</ul>
+
+<h4>3. 成本曲线之间的关系（U形成本曲线的成因）</h4>
+
+<p><b>U形成本曲线的原因</b>：<b>边际报酬递减规律</b>。</p>
+<ul>
+<li>当MP递增时，MC递减（产出增加快于成本增加）</li>
+<li>当MP递减时，MC递增（产出增加慢于成本增加）</li>
+<li>MC的最低点对应MP的最高点</li>
+</ul>
+
+<p><b>MC与AVC、ATC的关系</b>：</p>
+<ul>
+<li><b>MC < AVC</b> → AVC递减</li>
+<li><b>MC = AVC</b> → AVC达到最小值（MC穿过AVC的最低点）</li>
+<li><b>MC > AVC</b> → AVC递增</li>
+<li><b>MC < ATC</b> → ATC递减</li>
+<li><b>MC = ATC</b> → ATC达到最小值（MC穿过ATC的最低点）</li>
+<li><b>MC > ATC</b> → ATC递增</li>
+</ul>
+
+<blockquote><b>记忆要点</b>：MC曲线一定穿过AVC和ATC的最低点。这与MP穿过AP最高点的原理一样——"边际值拉动平均值"。</blockquote>
+
+<p><b>图形总结</b>：</p>
+<pre><code>
+成本
+↑
+|      MC
+|    ↗ ↘
+|   /   ATC
+|  /   ↗ ↘
+| /   /   AVC
+|/   /   ↗ ↘
+|   /   /
+|  /   /
+| /   /
+|/   /
+|   /
+|  /
+| /
+|/
+|<b><em></b><b></em></b><b><em></b></em>→ Q
+   MC穿过AVC和ATC的最低点
+</code></pre>
+
+<h3>三、长期成本分析</h3>
+
+<h4>1. 长期总成本（LTC）</h4>
+
+<p><b>长期总成本（Long-run Total Cost，LTC）</b> 是指在所有生产要素都可变的条件下，生产各种产量所需的最小成本。</p>
+
+<p>长期中，企业可以根据产量调整所有要素投入量，因此 <b>长期成本是短期成本的下包络线</b>——长期中企业可以选择最优的工厂规模。</p>
+
+<h4>2. 长期平均成本（LAC）</h4>
+
+<p><b>长期平均成本（Long-run Average Cost，LAC）</b> = LTC / Q</p>
+
+<p><b>LAC曲线的形状</b>：<b>呈U形</b>（与短期ATC类似，但成因不同）</p>
+
+<pre><code>
+成本
+↑
+|   SAC1  SAC2  SAC3  SAC4
+|  \    / \    / \    /
+|   \  /   \  /   \  /
+|    \/     \/     \/
+|     \     /\     /
+|      \   /  \   /   LAC
+|       \ /    \ /
+|<b><em></b><b></em>V</b><b><em>_V</b></em><em>_</em>→ Q
+</code></pre>
+
+<ul>
+<li>LAC是无数条短期平均成本（SAC）曲线的 <b>下包络线</b></li>
+<li>LAC上的每一点都代表该产量下的最低平均成本</li>
+<li>规模报酬递增阶段：LAC递减（产出增加快于成本增加）</li>
+<li>规模报酬不变阶段：LAC水平</li>
+<li>规模报酬递减阶段：LAC递增（管理成本上升）</li>
+</ul>
+
+<h4>3. LAC曲线U形的原因——规模经济与规模不经济</h4>
+
+<p>与短期不同（短期U形源于边际报酬递减），<b>长期U形源于规模经济</b>。</p>
+
+<table>
+<tr><td>概念</td><td>定义</td><td>原因</td></tr>
+<tr><td><b>规模经济</b></td><td>产量↑ → LAC↓</td><td>分工细化、专业化设备、批量采购折扣、管理效率</td></tr>
+<tr><td><b>规模不经济</b></td><td>产量↑ → LAC↑</td><td>管理协调困难、信息传递扭曲、官僚主义</td></tr>
+</table>
+
+<p><b>规模经济与规模报酬的区别</b>：</p>
+<ul>
+<li>规模报酬是 <b>实物量</b> 概念（投入与产出的实物比例）</li>
+<li>规模经济是 <b>货币量</b> 概念（考虑了要素价格变化、管理效率等因素）</li>
+</ul>
+
+<h4>4. 长期边际成本（LMC）</h4>
+
+<p><b>长期边际成本（Long-run Marginal Cost，LMC）</b> 是指长期中增加一单位产量所增加的总成本。</p>
+
+<ul>
+<li>LMC曲线穿过LAC的最低点（LMC = LAC时，LAC最小）</li>
+<li>在LAC下降阶段：LMC < LAC</li>
+<li>在LAC上升阶段：LMC > LAC</li>
+</ul>
+
+<h4>5. 学习曲线（Learning Curve）</h4>
+
+<p><b>学习曲线</b>（也称经验曲线）反映了 <b>累积产量增加导致平均成本下降</b> 的现象。随着工人和管理者经验的积累，生产效率提高，成本下降。</p>
+
+<pre><code>
+平均成本
+↑
+|   \
+|    \
+|     \
+|      \
+|<b><em></b></em>_\
+|<b><em></b></em>__\
+|<b><em></b><b></em><em>\</b><b></em></b>_→ 累积产量
+</code></pre>
+
+<p>学习效应与规模经济的区别：</p>
+<ul>
+<li>学习效应：<b>时间维度</b>——随累积产量增加，经验积累降低成本</li>
+<li>规模经济：<b>规模维度</b>——随当期产量增加，分摊固定成本、提高效率</li>
+</ul>
+
+<h3>四、成本函数与生产函数的关系</h3>
+
+<p>成本函数和生产函数是 <b>互为对偶关系（Duality）</b>：</p>
+
+<ul>
+<li>当边际报酬递增时（MP↑），边际成本递减（MC↓）</li>
+<li>当边际报酬递减时（MP↓），边际成本递增（MC↑）</li>
+</ul>
+
+<p><b>数学关系：</b></p>
+<p>$$</p>
+<p>MC = \frac{w}{MP_L}</p>
+<p>$$</p>
+
+<p>其中w为工资率。这个关系说明：</p>
+<ul>
+<li>MP_L越高，MC越低（生产效率高→成本低）</li>
+<li>MP_L越低，MC越高（生产效率低→成本高）</li>
+</ul>
+
+<h3>五、收益与利润最大化</h3>
+
+<h4>1. 总收益、平均收益与边际收益</h4>
+
+<table>
+<tr><td>概念</td><td>符号</td><td>定义</td><td>公式</td></tr>
+<tr><td><b>总收益</b></td><td>TR</td><td>销售产品获得的全部收入</td><td>TR = P × Q</td></tr>
+<tr><td><b>平均收益</b></td><td>AR</td><td>每单位产品的销售收入</td><td>AR = TR / Q = P</td></tr>
+<tr><td><b>边际收益</b></td><td>MR</td><td>多销售一单位产品增加的收入</td><td>MR = ΔTR / ΔQ</td></tr>
+</table>
+
+<p>在完全竞争市场：P = AR = MR（水平的需求曲线）</p>
+<p>在不完全竞争市场：P > MR（MR曲线在需求曲线下方）</p>
+
+<h4>2. 利润最大化条件</h4>
+
+<p><b>利润（π）</b> = 总收益 - 总成本 = TR - TC</p>
+
+<p><b>利润最大化的必要条件</b>（一阶条件）：</p>
+<p>$$</p>
+<p>MR = MC</p>
+<p>$$</p>
+
+<p><b>二阶条件</b>（确保是最大值）：</p>
+<p>$$</p>
+<p>\frac{dMR}{dQ} < \frac{dMC}{dQ}</p>
+<p>$$</p>
+<p>即：MR曲线斜率 < MC曲线斜率（在交点处，MC上升快于MR下降）</p>
+
+<p><b>经济含义</b>：</p>
+<ul>
+<li>如果 MR > MC：增产量 → 利润增加 → 应继续增产</li>
+<li>如果 MR < MC：减产量 → 利润增加 → 应减产</li>
+<li>MR = MC 时：利润最大</li>
+</ul>
+
+<blockquote><b>贵州高频考点</b>：利润最大化条件 MR = MC 是微观经济学的核心命题，在各类题型中反复出现，必须牢记。</blockquote>
+
+<h4>3. 短期停业决策</h4>
+
+<p>在短期，企业即使亏损也可能继续生产，只要 <b>价格（平均收益）大于平均可变成本（AVC）</b>。</p>
+
+<ul>
+<li>P > ATC：盈利</li>
+<li>AVC < P < ATC：亏损但仍继续生产（可以弥补部分固定成本）</li>
+<li>P < AVC：停业（收入连可变成本都覆盖不了）</li>
+</ul>
+
+<p><b>停业点（Shutdown Point）</b>：P = AVC的最低点。</p>
+
+<blockquote>推荐观看B站视频：经济学原理 BV1uhLb6zEeT 第6集，对成本分析有系统讲解。</blockquote>
+
+<hr>
+
+<h2>【下午】公共经济学第1-2章复习与综合</h2>
+
+<h3>一、第1章核心要点回顾</h3>
+
+<h4>1. 公共经济学的研究对象</h4>
+
+<p>公共经济学研究 <b>公共部门（政府）的经济行为及其经济效应</b>，包括：</p>
+<ul>
+<li>政府如何筹集收入（税收、公债）</li>
+<li>政府如何安排支出（购买性支出、转移性支出）</li>
+<li>政府如何调节经济（财政政策、货币政策）</li>
+</ul>
+
+<h4>2. 政府三大经济职能（马斯格雷夫）</h4>
+
+<table>
+<tr><td>职能</td><td>核心问题</td><td>政策工具</td></tr>
+<tr><td><b>资源配置职能</b></td><td>效率</td><td>公共产品供给、外部性矫正、反垄断</td></tr>
+<tr><td><b>收入分配职能</b></td><td>公平</td><td>累进税、社会保障、转移支付</td></tr>
+<tr><td><b>经济稳定职能</b></td><td>稳定</td><td>财政政策（增减税收/支出）、货币政策</td></tr>
+</table>
+
+<h4>3. 混合经济</h4>
+
+<p>现代经济的典型特征是 <b>市场机制与政府干预并存</b>。市场在资源配置中起 <b>基础性</b> 作用，政府在此基础上矫正市场失灵。</p>
+
+<h4>4. 帕累托最优与卡尔多-希克斯标准</h4>
+
+<ul>
+<li><b>帕累托最优</b>：无法在不使任何人变差的情况下使任何人变好</li>
+<li><b>帕累托改进</b>：至少一人变好，无人变差</li>
+<li><b>卡尔多-希克斯标准</b>：受益者的所得 > 受损者的所失</li>
+</ul>
+
+<h4>5. 公共经济学的效率标准</h4>
+
+<p>效率与公平的权衡是公共经济学的核心问题。<b>奥肯的漏桶实验</b>生动地说明了这一点。</p>
+
+<h3>二、第2章核心要点回顾</h3>
+
+<h4>1. 市场失灵</h4>
+
+<table>
+<tr><td>市场失灵类型</td><td>核心问题</td><td>解决方法</td></tr>
+<tr><td><b>公共产品</b></td><td>非排他性导致搭便车</td><td>政府提供或政府补贴</td></tr>
+<tr><td><b>外部性</b></td><td>私人成本/收益≠社会成本/收益</td><td>庇古税/补贴、科斯谈判、管制</td></tr>
+<tr><td><b>垄断</b></td><td>价格过高、产量过少</td><td>反垄断法、价格管制</td></tr>
+<tr><td><b>信息不对称</b></td><td>逆向选择、道德风险</td><td>信息披露、政府监管</td></tr>
+<tr><td><b>收入分配不公</b></td><td>贫富差距</td><td>累进税、转移支付</td></tr>
+</table>
+
+<h4>2. 公共产品的四象限分类</h4>
+
+<pre><code>
+             竞争性（Rivalry）
+              有
+        ┌──────┬──────┐
+        │ 公共  │ 纯私 │
+    有  │ 资源  │ 人产 │
+        │      │ 品   │
+排他性  ├──────┼──────┤
+        │ 纯公  │ 俱乐 │
+    无  │ 共产  │ 部产 │
+        │ 品    │ 品   │
+        └──────┴──────┘
+              无
+</code></pre>
+
+<h4>3. 外部性的矫正</h4>
+
+<p><b>市场方式</b>：</p>
+<ul>
+<li>科斯定理：明确产权 + 低交易成本 → 市场自行解决</li>
+</ul>
+
+<p><b>政府方式</b>：</p>
+<ul>
+<li>庇古税（对负外部性征税，税额=边际外部成本）</li>
+<li>庇古补贴（对正外部性补贴，金额=边际外部收益）</li>
+<li>行政管制（排放标准、技术标准、生产禁令）</li>
+<li>可交易排污许可证（总量控制 + 市场交易）</li>
+</ul>
+
+<h4>4. 政府失灵</h4>
+
+<ul>
+<li>政府失灵的原因：信息不对称、寻租、时滞、官僚主义</li>
+<li>公共选择理论：政府官员也是"理性经济人"</li>
+<li>寻租：通过影响政府政策获取超额利润的非生产性活动</li>
+</ul>
+
+<h3>三、公共经济学1-2章重点公式</h3>
+
+<ul>
+<li><b>萨缪尔森条件（公共产品最优供给）</b>：</li>
+</ul>
+<p>$$\sum<em>{i=1}^{n} MRS</em>i = MRT$$</p>
+
+<ul>
+<li><b>庇古税税额</b>：</li>
+</ul>
+<p>$$t = MEC \text{（边际外部成本）}$$</p>
+
+<ul>
+<li><b>帕累托最优的条件</b>：</li>
+<li>交换效率：$MRS<em>{XY}^A = MRS</em>{XY}^B$</li>
+<li>生产效率：$MRTS<em>{LK}^X = MRTS</em>{LK}^Y$</li>
+<li>总体效率：$MRS<em>{XY} = MRT</em>{XY}$</li>
+</ul>
+
+<blockquote>推荐观看B站视频：公共经济学 BV1V8411V7kv 第1-2集复习。</blockquote>
+
+<div style="text-align:center;margin:30px auto;border:1px solid #ddd;border-radius:8px;padding:20px;background:#fafafa;max-width:660px;">
+<h4 style="margin-top:0;color:#2c3e50;">图表：短期成本曲线</h4>
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+  <defs>
+    <marker id="arrow6" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#555"/></marker>
+  </defs>
+  <!-- 坐标轴 -->
+  <line x1="50" y1="350" x2="570" y2="350" stroke="#555" stroke-width="1.5" marker-end="url(#arrow6)"/>
+  <line x1="50" y1="350" x2="50" y2="30" stroke="#555" stroke-width="1.5" marker-end="url(#arrow6)"/>
+  <!-- 轴标签 -->
+  <text x="560" y="375" font-size="15" fill="#333" text-anchor="end" font-weight="bold">产量 Q</text>
+  <text x="40" y="30" font-size="15" fill="#333" text-anchor="middle" font-weight="bold">成本</text>
+  <text x="50" y="370" font-size="13" fill="#555" text-anchor="middle">O</text>
+  <!-- MC 曲线 -->
+  <path d="M 70,320 Q 200,55 310,140 Q 400,230 540,350" fill="none" stroke="#2ecc71" stroke-width="2.5"/>
+  <text x="540" y="355" font-size="14" fill="#2ecc71" font-weight="bold" transform="translate(5,0)">MC</text>
+  <!-- ATC 曲线 -->
+  <path d="M 100,340 Q 240,65 360,120 Q 470,210 540,340" fill="none" stroke="#3498db" stroke-width="2.5"/>
+  <text x="540" y="340" font-size="14" fill="#3498db" font-weight="bold" transform="translate(10,0)">ATC</text>
+  <!-- AVC 曲线 -->
+  <path d="M 130,340 Q 250,110 310,140 Q 440,250 540,340" fill="none" stroke="#e74c3c" stroke-width="2.5"/>
+  <text x="540" y="350" font-size="14" fill="#e74c3c" font-weight="bold" transform="translate(10,0)">AVC</text>
+  <!-- AFC 曲线 -->
+  <path d="M 70,80 Q 200,190 540,340" fill="none" stroke="#9b59b6" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="540" y="338" font-size="14" fill="#9b59b6" font-weight="bold" transform="translate(10,0)">AFC</text>
+  <!-- MC穿过AVC最低点 -->
+  <circle cx="310" cy="140" r="4" fill="#e74c3c"/>
+  <text x="280" y="130" font-size="11" fill="#e74c3c" text-anchor="end">MC = AVC</text>
+  <!-- MC穿过ATC最低点 -->
+  <circle cx="360" cy="120" r="4" fill="#3498db"/>
+  <text x="330" y="110" font-size="11" fill="#3498db" text-anchor="end">MC = ATC</text>
+  <!-- 图例 -->
+  <rect x="400" y="45" width="12" height="12" fill="#2ecc71"/>
+  <text x="418" y="56" font-size="12" fill="#555">边际成本 MC</text>
+  <rect x="400" y="65" width="12" height="12" fill="#3498db"/>
+  <text x="418" y="76" font-size="12" fill="#555">平均总成本 ATC</text>
+  <rect x="400" y="85" width="12" height="12" fill="#e74c3c"/>
+  <text x="418" y="96" font-size="12" fill="#555">平均可变成本 AVC</text>
+  <rect x="400" y="105" width="12" height="12" fill="#9b59b6"/>
+  <text x="418" y="116" font-size="12" fill="#555">平均固定成本 AFC</text>
+</svg>
+</div>
+
+<hr>
+
+<h2>【今日练习题】</h2>
+
+<h3>一、经济学原理练习题</h3>
+
+<h4>（一）单项选择题</h4>
+
+<p><b>第1题</b>：经济学中的"正常利润"属于（ ）</p>
+<p>A. 显性成本</p>
+<p>B. 隐性成本</p>
+<p>C. 会计成本</p>
+<p>D. 经济利润</p>
+
+<p><b>答案</b>：B</p>
+<p><b>解析</b>：正常利润是企业家才能的报酬，属于隐性成本（机会成本的一部分）。它不被计入会计成本，但在经济成本中必须考虑。当经济利润=0时，企业获得了正常利润。</p>
+
+<hr>
+
+<p><b>第2题</b>：当边际成本低于平均总成本时，平均总成本（ ）</p>
+<p>A. 递增</p>
+<p>B. 递减</p>
+<p>C. 不变</p>
+<p>D. 达到最小值</p>
+
+<p><b>答案</b>：B</p>
+<p><b>解析</b>：当MC < ATC时，新增一单位产品的成本低于平均成本，会"拉低"平均值，因此ATC递减。当MC = ATC时，ATC达到最小值。当MC > ATC时，ATC递增。这是"边际值拉动平均值"的基本规律。</p>
+
+<hr>
+
+<p><b>第3题</b>：短期中，企业的最低停业条件是（ ）</p>
+<p>A. P < ATC</p>
+<p>B. P < AVC</p>
+<p>C. P < MC</p>
+<p>D. P < AFC</p>
+
+<p><b>答案</b>：B</p>
+<p><b>解析</b>：短期中，如果价格（平均收益）低于平均可变成本（P < AVC），每生产一单位产品连可变成本都收不回来，越生产亏损越大，应停业。P < ATC但仍大于AVC时，虽然亏损，但可以弥补部分固定成本，继续生产比停业好。</p>
+
+<hr>
+
+<p><b>第4题</b>：在长期中，LAC曲线呈U形的原因是（ ）</p>
+<p>A. 边际报酬递减规律</p>
+<p>B. 规模经济与规模不经济</p>
+<p>C. 边际效用递减规律</p>
+<p>D. 边际替代率递减</p>
+
+<p><b>答案</b>：B</p>
+<p><b>解析</b>：长期平均成本曲线U形的原因不是边际报酬递减（那是短期的原因），而是规模经济（产量扩大使LAC下降）和规模不经济（产量过大使LAC上升）的综合结果。A是短期成本U形的原因。</p>
+
+<hr>
+
+<p><b>第5题</b>：利润最大化的条件是（ ）</p>
+<p>A. TR = TC</p>
+<p>B. MR = MC</p>
+<p>C. AR = AC</p>
+<p>D. P = ATC</p>
+
+<p><b>答案</b>：B</p>
+<p><b>解析</b>：无论市场结构如何，利润最大化的条件都是边际收益等于边际成本（MR = MC）。当MR > MC时增加产量可以增加利润，当MR < MC时减少产量可以增加利润，只有MR = MC时利润最大。A、C、D是盈亏平衡条件。</p>
+
+<hr>
+
+<h4>（二）多项选择题</h4>
+
+<p><b>第6题</b>：以下关于经济利润的描述，正确的是（ ）</p>
+<p>A. 经济利润 = 总收益 - 经济成本</p>
+<p>B. 经济利润也称为超额利润</p>
+<p>C. 经济利润为0时，企业应该停业</p>
+<p>D. 经济利润包含了正常利润</p>
+
+<p><b>答案</b>：A、B</p>
+<p><b>解析</b>：A正确，经济利润=总收益-经济成本（包括显性成本和隐性成本）。B正确，经济利润超过正常利润的部分是超额利润。C错误，经济利润为0意味着企业获得了正常利润，在长期竞争性市场中这是常态。D错误，经济利润中不包含正常利润，因为正常利润已经作为隐性成本被扣除了。</p>
+
+<hr>
+
+<p><b>第7题</b>：短期成本曲线中，呈U形的是（ ）</p>
+<p>A. AFC</p>
+<p>B. AVC</p>
+<p>C. ATC</p>
+<p>D. MC</p>
+
+<p><b>答案</b>：B、C、D</p>
+<p><b>解析</b>：AVC、ATC和MC曲线均呈U形（先下降后上升），这是由边际报酬递减规律决定的。AFC曲线始终向右下方倾斜（产量越大，固定成本摊得越薄），不是U形。</p>
+
+<hr>
+
+<h4>（三）简答题</h4>
+
+<p><b>第8题</b>：简述MC曲线与AVC曲线和ATC曲线的关系，并画图说明。</p>
+
+<p><b>答案</b>：</p>
+<p>（1）MC曲线与AVC曲线的关系：</p>
+<ul>
+<li>MC < AVC时，AVC递减</li>
+<li>MC = AVC时，AVC达到最小值（MC穿过AVC的最低点）</li>
+<li>MC > AVC时，AVC递增</li>
+</ul>
+
+<p>（2）MC曲线与ATC曲线的关系：</p>
+<ul>
+<li>MC < ATC时，ATC递减</li>
+<li>MC = ATC时，ATC达到最小值（MC穿过ATC的最低点）</li>
+<li>MC > ATC时，ATC递增</li>
+</ul>
+
+<p>（3）图形特征：</p>
+<pre><code>
+成本
+↑
+|   MC穿过AVC和ATC的最低点
+|  /
+| /  ATC
+|/  /
+|  /  AVC
+| /
+|/
+|<b><em></b><b></em></b><b><em></b></em>→ Q
+</code></pre>
+<p>MC曲线最先达到最低点，然后上升，依次穿过AVC和ATC的最低点。这是因为平均成本包含固定成本的分摊，所以ATC最低点位于AVC最低点的右上方。</p>
+
+<hr>
+
+<h4>（四）计算题</h4>
+
+<p><b>第9题</b>：某企业的短期总成本函数为 TC = 100 + 10Q + Q²。</p>
+<p>（1）写出TFC、TVC、AFC、AVC、ATC、MC的表达式。</p>
+<p>（2）求AVC的最小值及其对应的产量。</p>
+<p>（3）如果产品市场价格为30元，求利润最大化产量和最大利润。</p>
+
+<p><b>答案</b>：</p>
+<p>（1）TC = 100 + 10Q + Q²</p>
+<p>TFC = 100</p>
+<p>TVC = 10Q + Q²</p>
+<p>AFC = 100/Q</p>
+<p>AVC = 10 + Q</p>
+<p>ATC = 100/Q + 10 + Q</p>
+<p>MC = dTC/dQ = 10 + 2Q</p>
+
+<p>（2）AVC最小值条件：d(AVC)/dQ = 0</p>
+<p>AVC = 10 + Q</p>
+<p>d(AVC)/dQ = 1 > 0（AVC单调递增，最小值在Q=0处）</p>
+<p>但注意，Q=0时AVC=10。</p>
+<p>实际上，由生产函数特征，更加合理的情况：</p>
+<p>令 MC = AVC：10 + 2Q = 10 + Q → Q = 0</p>
+<p>所以AVC最小值在Q=0时，AVC_min = 10。</p>
+
+<p>（3）利润最大化条件：MR = MC</p>
+<p>完全竞争市场中，MR = P = 30</p>
+<p>MC = 10 + 2Q</p>
+<p>30 = 10 + 2Q</p>
+<p>2Q = 20</p>
+<p>Q = 10（利润最大化产量）</p>
+
+<p>最大利润 π = TR - TC = P×Q - (100 + 10Q + Q²)</p>
+<p>= 30×10 - (100 + 10×10 + 10²)</p>
+<p>= 300 - (100 + 100 + 100)</p>
+<p>= 300 - 300</p>
+<p>= 0</p>
+
+<p>经济利润为0，企业获得正常利润。</p>
+
+<p><b>第10题（拓展）</b>：接上题，如果市场价格下降到18元，企业是否应该继续生产？</p>
+
+<p><b>答案</b>：</p>
+<p>利润最大化：MR = MC</p>
+<p>18 = 10 + 2Q</p>
+<p>Q = 4</p>
+
+<p>此时：</p>
+<p>TR = 18×4 = 72</p>
+<p>TC = 100 + 10×4 + 4² = 100 + 40 + 16 = 156</p>
+<p>利润 = 72 - 156 = -84（亏损）</p>
+
+<p>检查停业条件：P = 18，AVC = 10 + Q = 10 + 4 = 14</p>
+<p>P = 18 > AVC = 14，虽然亏损，但可以弥补部分固定成本</p>
+<p>继续生产的亏损 = 84</p>
+<p>停业的亏损 = TFC = 100</p>
+<p>继续生产比停业少亏损16，所以应该继续生产。</p>
+
+<hr>
+
+<h3>二、公共经济学综合复习题</h3>
+
+<h4>（一）单项选择题</h4>
+
+<p><b>第1题</b>：公共经济学的研究对象是（ ）</p>
+<p>A. 私人企业的利润最大化</p>
+<p>B. 公共部门的经济行为</p>
+<p>C. 国际贸易政策</p>
+<p>D. 金融市场监管</p>
+
+<p><b>答案</b>：B</p>
+
+<p><b>第2题</b>：以下属于纯公共产品的是（ ）</p>
+<p>A. 面包</p>
+<p>B. 国防</p>
+<p>C. 高等教育</p>
+<p>D. 收费高速路</p>
+
+<p><b>答案</b>：B</p>
+
+<p><b>第3题</b>：负外部性导致私人成本与社会成本的关系是（ ）</p>
+<p>A. 私人成本 > 社会成本</p>
+<p>B. 私人成本 = 社会成本</p>
+<p>C. 私人成本 < 社会成本</p>
+<p>D. 关系不确定</p>
+
+<p><b>答案</b>：C</p>
+<p><b>解析</b>：负外部性使企业将部分成本转嫁给社会，因此私人成本低于社会成本。私人成本 < 社会成本 = 私人成本 + 边际外部成本。</p>
+
+<p><b>第4题</b>：科斯定理认为，解决外部性问题的关键是（ ）</p>
+<p>A. 政府征税</p>
+<p>B. 明确产权</p>
+<p>C. 政府补贴</p>
+<p>D. 国有化</p>
+
+<p><b>答案</b>：B</p>
+
+<p><b>第5题</b>：寻租行为的社会代价是（ ）</p>
+<p>A. 增加财政收入</p>
+<p>B. 提高生产效率</p>
+<p>C. 消耗资源但不创造价值</p>
+<p>D. 促进技术进步</p>
+
+<p><b>答案</b>：C</p>
+
+<hr>
+
+<h4>（二）多项选择题</h4>
+
+<p><b>第6题</b>：市场失灵的主要表现包括（ ）</p>
+<p>A. 公共产品供给不足</p>
+<p>B. 外部性问题</p>
+<p>C. 垄断导致的效率损失</p>
+<p>D. 信息不对称</p>
+
+<p><b>答案</b>：A、B、C、D</p>
+<p><b>解析</b>：四种都是市场失灵的主要表现。A：搭便车问题导致公共产品市场供给不足；B：外部性导致价格信号扭曲；C：垄断导致产量过少、价格过高；D：逆向选择和道德风险导致市场效率下降。</p>
+
+<p><b>第7题</b>：矫正负外部性的政府措施包括（ ）</p>
+<p>A. 征收庇古税</p>
+<p>B. 设定排放标准</p>
+<p>C. 发放可交易排污许可证</p>
+<p>D. 给予正外部性补贴</p>
+
+<p><b>答案</b>：A、B、C</p>
+<p><b>解析</b>：A：通过税收使私人成本等于社会成本；B：直接行政管制；C：总量控制加市场交易。D是促进正外部性（如教育补贴）的措施，不是解决负外部性的直接手段。</p>
+
+<hr>
+
+<h4>（三）名词解释</h4>
+
+<p><b>第8题</b>：解释"搭便车"问题。</p>
+
+<p><b>答案</b>：</p>
+<p>搭便车（Free Rider）是指在公共产品消费中，人们不付费或少付费而享受公共产品利益的行为。由于公共产品具有非排他性，无法阻止不付费者消费，每个人都想"搭便车"，导致市场无法通过自愿交易有效提供公共产品。这是市场失灵的重要表现，也是政府必须介入提供公共产品的根本原因。</p>
+
+<p><b>第9题</b>：解释"帕累托最优"。</p>
+
+<p><b>答案</b>：</p>
+<p>帕累托最优（Pareto Optimality）是经济学中衡量资源配置效率的理想状态。当资源配置达到帕累托最优时，在不使任何人境况变差的条件下，不可能使任何人的境况变得更好。如果某种变动能使至少一人变好而无人变差，称为"帕累托改进"。当所有帕累托改进都已实现时，就达到了帕累托最优。</p>
+
+<hr>
+
+<h4>（四）简答题</h4>
+
+<p><b>第10题</b>：比较政府干预的三种矫正负外部性措施的优缺点。</p>
+
+<p><b>答案</b>：</p>
+<p>（1）<b>庇古税</b>：</p>
+<ul>
+<li>优点：将外部成本内部化，通过价格信号引导企业行为，同时增加政府收入。</li>
+<li>缺点：需要政府准确知道边际外部成本的信息（现实中很难确定合适的税率）。</li>
+</ul>
+
+<p>（2）<b>行政管制（排放标准）</b>：</p>
+<ul>
+<li>优点：效果确定，直接规定最大排放量，执行简单。</li>
+<li>缺点：缺乏弹性，所有企业适用同一标准，忽视了不同企业减排成本的差异，效率较低。</li>
+</ul>
+
+<p>（3）<b>可交易排污许可证</b>：</p>
+<ul>
+<li>优点：总量控制有明确的环境目标，市场交易使许可证流向减排成本最高的企业（效率高），激励企业技术创新以降低减排成本。</li>
+<li>缺点：初始分配存在公平问题（拍卖还是免费发放），需要有效的监管和执行机制。</li>
+</ul>
+
+<hr>
+
+<h2>【今日学习提示】</h2>
+
+<h3>重点提示</h3>
+
+<ul>
+<li><b>成本概念的分辨是基础</b>：显性成本、隐性成本、会计成本、经济成本、正常利润、经济利润——这些概念极易混淆，但选择题出现频率高。记住：经济成本=显性+隐性，正常利润是隐性成本的一部分。</li>
+</ul>
+
+<ul>
+<li><b>短期成本曲线的关系</b>：MC穿过AVC和ATC的最低点——这是必考知识点。理解"边际值拉动平均值"的数学逻辑。</li>
+</ul>
+
+<ul>
+<li><b>利润最大化的 MR = MC 条件</b>：这是微观经济学的黄金法则，各类题型都会涉及，必须灵活运用。</li>
+</ul>
+
+<ul>
+<li><b>停业决策分析</b>：P < AVC时停业（短期），P < ATC时亏损（但仍可能生产）。会判断是否继续生产。</li>
+</ul>
+
+<ul>
+<li><b>LAC曲线的U形原因</b>：与短期不同，长期U形源于规模经济和规模不经济，而不是边际报酬递减。</li>
+</ul>
+
+<ul>
+<li><b>公共经济学1-2章综合</b>：</li>
+<li>公共产品的两大特征（非排他性、非竞争性）和四种分类</li>
+<li>外部性的效率分析（负外部性→生产过多，正外部性→生产不足）</li>
+<li>庇古税 vs 科斯定理</li>
+<li>政府失灵的原因（寻租、时滞、信息不对称等）</li>
+<li>三大经济职能（资源配置、收入分配、经济稳定）</li>
+</ul>
+
+<ul>
+<li><b>贵州高频考点汇总（前6天）</b>：</li>
+<li>机会成本的计算</li>
+<li>需求供给均衡分析（弹性计算必考）</li>
+<li>消费者均衡条件（MU/P相等）</li>
+<li>无差异曲线和预算线分析</li>
+<li>边际报酬递减规律</li>
+<li>成本曲线的关系（MC穿AVC和ATC最低点）</li>
+<li>利润最大化条件（MR=MC）</li>
+<li>公共经济学：公共产品、外部性、政府市场失灵对比</li>
+</ul>
+
+<blockquote>💡 <b>学习建议</b>：第6天完成了基础阶段的学习。建议今天花时间回顾前6天的所有内容，做一遍错题，将薄弱环节标注出来。明天将进入提升阶段（第7-12天），内容难度会有所增加。建议先复习今天的内容，然后观看经济学原理BV1uhLb6zEeT第6集和公共经济学BV1V8411V7kv第1-2集，为下一阶段做准备。</blockquote>
+<p>></p>
+<blockquote><b>基础阶段小结</b>（第1-6天）：</blockquote>
+<blockquote>- 经济学原理：第1-6章（导论、需求供给、消费者行为、生产者行为、成本分析）</blockquote>
+<blockquote>- 公共经济学：第1-2章（导论、市场失灵与政府干预）</blockquote>
+<blockquote>- 接下来第7-12天将进入提升阶段，学习市场结构、要素市场和一般均衡分析，难度加大，请做好准备！</blockquote>
+
+</body>
+</html>

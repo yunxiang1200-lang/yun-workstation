@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown 预览</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    line-height: 1.9;
+    font-size: 15px;
+    color: #2c3e50;
+    background: #fdfdff;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 50px;
+}
+h1 { font-size: 26px; color: #1a1a2e; border-bottom: 3px solid #2c3e50; padding-bottom: 10px; margin: 40px 0 20px; }
+h2 { font-size: 20px; color: #16213e; border-bottom: 2px solid #bdc3c7; padding-bottom: 6px; margin: 35px 0 15px; }
+h3 { font-size: 17px; color: #0f3460; margin: 25px 0 12px; }
+h4 { font-size: 15px; color: #533483; margin: 20px 0 10px; }
+h5, h6 { font-size: 14px; color: #666; margin: 15px 0 8px; }
+p { margin: 10px 0; }
+blockquote { background: #f8f9fa; border-left: 4px solid #3498db; padding: 12px 18px; margin: 14px 0; border-radius: 0 6px 6px 0; color: #555; }
+pre { background: #282c34; color: #abb2bf; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; font-size: 13px; line-height: 1.6; }
+code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 13px; color: #e74c3c; }
+pre code { background: none; padding: 0; color: #abb2bf; }
+ul, ol { margin: 10px 0; padding-left: 28px; }
+li { margin: 5px 0; }
+hr { border: none; border-top: 1px solid #e0e0e0; margin: 30px 0; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+td, th { border: 1px solid #e0e0e0; padding: 10px 14px; text-align: left; font-size: 14px; }
+tr:nth-child(even) { background: #fafafa; }
+tr:first-child { background: #2c3e50; color: white; font-weight: bold; }
+tr:first-child td { border-color: #2c3e50; }
+b, strong { color: #c0392b; }
+a { color: #2980b9; text-decoration: none; }
+a:hover { text-decoration: underline; }
+@media (max-width: 768px) {
+    body { padding: 20px 24px; font-size: 14px; }
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<h1>第55天：冲刺阶段——经济增长与国际经济 + 财政体制与规制</h1>
+
+<h2>【上午：经济学原理（中级）- 高频考点冲刺】</h2>
+
+<h3>核心考点一：通货膨胀与失业（<b>绝对高频</b>）</h3>
+
+<h4>1. 通货膨胀</h4>
+
+<p><b>定义：</b> 物价总水平持续显著上涨的过程。</p>
+
+<p><b>衡量指标：</b></p>
+<table>
+<tr><td>指标</td><td>含义</td><td>特点</td></tr>
+<tr><td><b>CPI（消费者价格指数）</b></td><td>一篮子消费品价格变化</td><td>反映居民生活成本</td></tr>
+<tr><td><b>GDP平减指数</b></td><td>名义GDP/实际GDP</td><td>涵盖所有商品和服务</td></tr>
+<tr><td><b>PPI（生产者价格指数）</b></td><td>生产资料价格变化</td><td>先行指标</td></tr>
+</table>
+
+<p><b>通货膨胀的分类（按严重程度）：</b></p>
+<ul>
+<li><b>爬行式通胀</b>（1-3%）：正常，可刺激经济</li>
+<li><b>步行式通胀</b>（3-10%）：需关注</li>
+<li><b>奔腾式通胀</b>（10-100%）：严重问题</li>
+<li><b>恶性通胀</b>（>100%）：经济崩溃</li>
+</ul>
+
+<p><b>通货膨胀的成因（</b>简答/论述核心<b>）：</b></p>
+
+<table>
+<tr><td>成因</td><td>机理</td><td>典型时期</td></tr>
+<tr><td><b>需求拉动型</b></td><td>AD右移→P↑（"过多的货币追逐过少的商品"）</td><td>经济过热时期</td></tr>
+<tr><td><b>成本推动型</b></td><td>AS左移→P↑（工资上涨、原材料涨价）</td><td>1970年代石油危机</td></tr>
+<tr><td><b>结构性通胀</b></td><td>经济结构变动导致物价上升</td><td>发展中国家转型期</td></tr>
+<tr><td><b>货币数量论</b></td><td>MV=PY，M↑→P↑（长期来看）</td><td>长期通胀的根本原因</td></tr>
+</table>
+
+<p><b>费雪方程（货币数量论）：</b></p>
+<p>$$MV = PY$$</p>
+<ul>
+<li>M：货币供给量，V：货币流通速度，P：价格水平，Y：实际产出</li>
+<li>长期中V和Y稳定→M变动导致P同比例变动</li>
+</ul>
+
+<h4>2. 失业</h4>
+
+<p><b>失业的分类：</b></p>
+<table>
+<tr><td>类型</td><td>定义</td><td>例子</td><td>政策</td></tr>
+<tr><td><b>摩擦性失业</b></td><td>正常流动中的短期失业</td><td>换工作间隙</td><td>改善信息匹配</td></tr>
+<tr><td><b>结构性失业</b></td><td>技能与需求不匹配</td><td>产业升级淘汰旧技能</td><td>再培训</td></tr>
+<tr><td><b>周期性失业</b></td><td>经济衰退导致的需求不足</td><td>金融危机后失业</td><td>扩张性宏观政策</td></tr>
+<tr><td><b>季节性失业</b></td><td>季节变动导致</td><td>农业、旅游业</td><td>无需干预</td></tr>
+</table>
+
+<p><b>自然失业率 = 摩擦性失业率 + 结构性失业率</b></p>
+
+<p><b>充分就业 ≠ 零失业，而是失业率=自然失业率</b></p>
+
+<h4>3. 菲利普斯曲线（Philips Curve）——<b>绝对核心</b></h4>
+
+<p><b>短期菲利普斯曲线（向下倾斜）：</b></p>
+<p>$$\pi = \pi^e - \beta(u - u_n) + v$$</p>
+<ul>
+<li>π：实际通胀率，πe：预期通胀率</li>
+<li>u：实际失业率，un：自然失业率</li>
+<li>v：供给冲击</li>
+</ul>
+
+<p><b>政策含义：</b> 短期中通胀与失业存在<b>交替关系</b>（trade-off）。</p>
+<ul>
+<li>降低失业→通胀上升</li>
+<li>降低通胀→失业上升</li>
+</ul>
+
+<p><b>长期菲利普斯曲线（垂直）：</b></p>
+<ul>
+<li>在长期，通胀与失业<b>无交替关系</b></li>
+<li>无论通胀率多高，失业率都会回到自然失业率水平</li>
+<li>长期菲利普斯曲线位于自然失业率处，垂直</li>
+</ul>
+
+<p><b>适应性预期 vs 理性预期：</b></p>
+<ul>
+<li><b>适应性预期</b>：人们根据过去通胀预测未来（渐进调整）</li>
+<li><b>理性预期</b>：人们利用所有可得信息预测未来（卢卡斯批判的理论基础）</li>
+</ul>
+
+<hr>
+
+<h3>核心考点二：经济增长理论（<b>高频</b>）</h3>
+
+<h4>1. 经济增长的源泉</h4>
+
+<p><b>生产函数：</b> Y = A × f(L, K, N)</p>
+<ul>
+<li>A：技术进步（全要素生产率TFP）</li>
+<li>L：劳动力</li>
+<li>K：资本</li>
+<li>N：自然资源</li>
+</ul>
+
+<p><b>增长核算公式：</b></p>
+<p>$$\frac{\Delta Y}{Y} = \frac{\Delta A}{A} + \alpha \frac{\Delta L}{L} + \beta \frac{\Delta K}{K}$$</p>
+<ul>
+<li>α：劳动收入份额</li>
+<li>β：资本收入份额（α+β=1，规模报酬不变假设下）</li>
+</ul>
+
+<h4>2. 索洛增长模型（Solow Growth Model）</h4>
+
+<p><b>基本方程：</b></p>
+<p>$$k = sy - (n + \delta)k$$</p>
+<ul>
+<li>k：人均资本，s：储蓄率，y：人均产出</li>
+<li>n：人口增长率，δ：折旧率</li>
+</ul>
+
+<p><b>稳态（Steady State）：</b></p>
+<ul>
+<li>人均资本k和人均产出y不再变化</li>
+<li>总产出Y按人口增长率n增长</li>
+</ul>
+
+<p><b>黄金律水平（Golden Rule Level）：</b></p>
+<ul>
+<li>使<b>人均消费最大化的资本存量</b></li>
+<li>条件：MPK = n + δ（资本的边际产量=折旧率+人口增长率）</li>
+</ul>
+
+<p><b>索洛剩余（技术进步率）：</b></p>
+<p>$$\frac{\Delta A}{A} = \frac{\Delta Y}{Y} - \alpha \frac{\Delta L}{L} - \beta \frac{\Delta K}{K}$$</p>
+<ul>
+<li>衡量<b>技术进步对经济增长的贡献</b></li>
+<li>也称为<b>全要素生产率增长率</b></li>
+</ul>
+
+<h4>3. 内生增长理论（AK模型）</h4>
+
+<p><b>生产函数：</b> Y = AK（A为常数，K包括人力资本）</p>
+
+<p><b>核心思想：</b> 技术进步不是外生的，而是经济系统内部决定的。</p>
+<ul>
+<li>R&D投入→技术创新→经济增长</li>
+<li>人力资本投资→知识积累→经济增长</li>
+<li>政府政策可以影响长期增长率</li>
+</ul>
+
+<hr>
+
+<h3>核心考点三：国际经济（<b>高频</b>）</h3>
+
+<h4>1. 国际贸易理论</h4>
+
+<table>
+<tr><td>理论</td><td>提出者</td><td>核心观点</td></tr>
+<tr><td><b>绝对优势理论</b></td><td>亚当·斯密</td><td>各国应生产自己效率最高的产品</td></tr>
+<tr><td><b>比较优势理论</b></td><td>李嘉图</td><td>即使一国所有产品都无绝对优势，也应生产相对优势最大的产品</td></tr>
+<tr><td><b>要素禀赋理论（H-O理论）</b></td><td>赫克歇尔-俄林</td><td>各国出口密集使用其丰富要素的产品</td></tr>
+<tr><td><b>里昂惕夫悖论</b></td><td>里昂惕夫</td><td>美国（资本丰富）出口劳动密集型产品——与H-O理论矛盾</td></tr>
+</table>
+
+<p><b>比较优势的计算（</b>常考计算<b>）：</b></p>
+
+<blockquote><b>例题：</b> 中国1单位劳动生产10件衣服或5部手机，美国1单位劳动生产6件衣服或3部手机。</blockquote>
+<blockquote>求：中国和美国各自的生产机会成本，并分析贸易方向。</blockquote>
+<p>></p>
+<blockquote><b>解：</b></blockquote>
+<blockquote>- 中国：1件衣服的机会成本=0.5部手机；1部手机的机会成本=2件衣服</blockquote>
+<blockquote>- 美国：1件衣服的机会成本=0.5部手机；1部手机的机会成本=2件衣服</blockquote>
+<blockquote>- 两国机会成本相同→<b>不存在比较优势差异</b>→无贸易基础</blockquote>
+
+<h4>2. 汇率理论</h4>
+
+<p><b>名义汇率：</b> 两国货币兑换比率</p>
+<p><b>实际汇率：</b> 名义汇率经物价调整后的比率</p>
+<p>$$E<em>{real} = E</em>{nominal} \times \frac{P<em>{domestic}}{P</em>{foreign}}$$</p>
+
+<p><b>汇率制度：</b></p>
+<table>
+<tr><td>类型</td><td>特点</td><td>例子</td></tr>
+<tr><td><b>固定汇率制</b></td><td>政府维持汇率稳定</td><td>香港联系汇率制</td></tr>
+<tr><td><b>浮动汇率制</b></td><td>市场供求决定汇率</td><td>美国、日本</td></tr>
+<tr><td><b>管理浮动制</b></td><td>有管理的浮动</td><td>中国</td></tr>
+</table>
+
+<p><b>购买力平价（PPP，Purchasing Power Parity）：</b></p>
+<p>$$E = \frac{P<em>{domestic}}{P</em>{foreign}}$$</p>
+
+<p><b>利率平价（IRP）：</b> 两国利率差≈远期汇率与即期汇率的升贴水率</p>
+
+<p><b>汇率变动的影响：</b></p>
+<ul>
+<li>本币<b>贬值</b>→出口↑进口↓→净出口↑→AD右移→Y↑</li>
+<li>本币<b>升值</b>→出口↓进口↑→净出口↓→AD左移→Y↓</li>
+</ul>
+
+<h4>3. 国际收支平衡表</h4>
+
+<table>
+<tr><td>账户</td><td>内容</td></tr>
+<tr><td><b>经常账户</b></td><td>货物贸易+服务贸易+收益+经常转移</td></tr>
+<tr><td><b>资本与金融账户</b></td><td>直接投资+证券投资+其他投资</td></tr>
+<tr><td><b>官方储备资产</b></td><td>外汇储备变动</td></tr>
+</table>
+
+<p><b>国际收支平衡：</b> 经常账户差额 + 资本与金融账户差额 + 官方储备变动 = 0</p>
+
+<hr>
+
+<h2>【下午：公共经济学 - 高频考点冲刺】</h2>
+
+<h3>核心考点一：财政体制（<b>绝对高频</b>）</h3>
+
+<h4>1. 财政分权理论</h4>
+
+<p><b>蒂布特模型（Tiebout Model）——"用脚投票"：</b></p>
+<blockquote>居民通过在不同地区之间自由迁徙来选择自己偏好的公共产品与税收组合。</blockquote>
+<blockquote>条件：居民充分流动、信息完全、各地区有不同公共服务组合、无就业限制。</blockquote>
+
+<p><b>财政分权的优势与劣势：</b></p>
+
+<table>
+<tr><td>优势</td><td>劣势</td></tr>
+<tr><td>满足地方差异化需求</td><td>可能导致地区间不平等</td></tr>
+<tr><td>提高资源配置效率</td><td>产生外部性（溢出效应）</td></tr>
+<tr><td>促进政府间竞争</td><td>规模不经济</td></tr>
+<tr><td>增强地方责任意识</td><td>协调困难</td></tr>
+</table>
+
+<h4>2. 政府间财政关系</h4>
+
+<p><b>事权与支出责任划分：</b></p>
+
+<table>
+<tr><td>政府层级</td><td>主要事权</td></tr>
+<tr><td><b>中央政府</b></td><td>国防、外交、全国性基础设施、宏观稳定、跨区域事务</td></tr>
+<tr><td><b>地方政府</b></td><td>地方教育、医疗、地方基础设施、社会治安</td></tr>
+</table>
+
+<p><b>政府间转移支付：</b></p>
+
+<table>
+<tr><td>类型</td><td>特点</td><td>例子</td></tr>
+<tr><td><b>一般性转移支付</b></td><td>无条件，可用于一般支出</td><td>均衡性转移支付</td></tr>
+<tr><td><b>专项转移支付</b></td><td>指定用途，专款专用</td><td>教育专项、扶贫专项</td></tr>
+<tr><td><b>分类转移支付</b></td><td>指定大类用途</td><td>公共服务类转移支付</td></tr>
+</table>
+
+<h4>3. 中国的分税制改革（1994年）</h4>
+
+<p><b>核心内容：</b></p>
+<ul>
+<li>按税种划分中央与地方收入</li>
+<li><b>中央税：</b> 消费税、关税、中央企业所得税</li>
+<li><b>地方税：</b> 营业税（已改征增值税）、个人所得税（央地共享）、房产税</li>
+<li><b>共享税：</b> 增值税（中央75%：地方25%，后改为50%：50%）</li>
+</ul>
+
+<hr>
+
+<h3>核心考点二：公共规制理论（<b>高频</b>）</h3>
+
+<h4>1. 规制的分类</h4>
+
+<table>
+<tr><td>类型</td><td>定义</td><td>例子</td></tr>
+<tr><td><b>经济性规制</b></td><td>对价格、进入退出、投资等的管制</td><td>电信、电力、铁路定价</td></tr>
+<tr><td><b>社会性规制</b></td><td>健康、安全、环境等方面的规制</td><td>食品安全标准、环保标准</td></tr>
+<tr><td><b>反垄断规制</b></td><td>防止垄断和不正当竞争</td><td>反垄断法执法</td></tr>
+</table>
+
+<h4>2. 规制理论</h4>
+
+<table>
+<tr><td>理论</td><td>核心观点</td></tr>
+<tr><td><b>公共利益理论</b></td><td>政府规制是为了纠正市场失灵、保护公共利益</td></tr>
+<tr><td><b>俘获理论（规制俘获）</b></td><td>规制的制定和执行最终被被规制行业俘获，为行业利益服务</td></tr>
+<tr><td><b>寻租理论</b></td><td>规制创造租金，企业通过寻租获取规制利益</td></tr>
+<tr><td><b>激励性规制</b></td><td>设计激励机制（价格上限、区域间竞争）提高规制效率</td></tr>
+</table>
+
+<h4>3. 中国的反垄断规制</h4>
+
+<ul>
+<li><b>《反垄断法》</b> 2008年实施，2022年修订</li>
+<li>规制对象：垄断协议、滥用市场支配地位、经营者集中、行政垄断</li>
+<li><b>贵州高频考点</b>：近年来对平台经济的反垄断规制（阿里巴巴、美团等案例）</li>
+</ul>
+
+<hr>
+
+<h3>核心考点三：公共政策分析（<b>高频</b>）</h3>
+
+<h4>1. 政策评估标准</h4>
+
+<table>
+<tr><td>标准</td><td>含义</td></tr>
+<tr><td><b>效率</b></td><td>政策收益是否大于成本</td></tr>
+<tr><td><b>公平</b></td><td>政策收益和成本在不同群体间如何分配</td></tr>
+<tr><td><b>可行性</b></td><td>政策在政治、行政、技术上是否可行</td></tr>
+<tr><td><b>可持续性</b></td><td>政策效果能否长期维持</td></tr>
+</table>
+
+<h4>2. 渐进主义 vs 理性主义</h4>
+
+<table>
+<tr><td>模式</td><td>特点</td><td>适用场景</td></tr>
+<tr><td><b>理性主义模式</b></td><td>全面收集信息→系统分析→最优决策</td><td>重大决策、资源充足</td></tr>
+<tr><td><b>渐进主义模式</b></td><td>在现有政策基础上小幅调整</td><td>日常决策、信息有限</td></tr>
+</table>
+
+<hr>
+
+<h3>必背核心概念汇总</h3>
+
+<table>
+<tr><td>概念</td><td>核心定义</td><td>关键词</td></tr>
+<tr><td><b>菲利普斯曲线</b></td><td>通胀与失业的交替关系（短期）</td><td>短期负相关/长期垂直</td></tr>
+<tr><td><b>自然失业率</b></td><td>经济正常运转时的失业率</td><td>摩擦+结构性失业</td></tr>
+<tr><td><b>索洛模型</b></td><td>经济增长的长期决定因素</td><td>储蓄率、人口增长、技术进步</td></tr>
+<tr><td><b>比较优势</b></td><td>机会成本较低的产品的专业化生产</td><td>机会成本</td></tr>
+<tr><td><b>购买力平价</b></td><td>汇率由两国物价水平决定</td><td>一价定律</td></tr>
+<tr><td><b>蒂布特模型</b></td><td>用脚投票选择公共产品</td><td>地方公共产品</td></tr>
+<tr><td><b>规制俘获</b></td><td>规制者被被规制者控制</td><td>行业利益</td></tr>
+<tr><td><b>分税制</b></td><td>中央与地方按税种划分收入</td><td>1994年改革</td></tr>
+</table>
+
+<h4>📊 图表一：菲利普斯曲线与政策选择</h4>
+<div style="border:2px solid #ddd;border-radius:12px;padding:20px;margin:20px auto;max-width:660px;text-align:center;background:#fafafa;">
+<svg width="600" height="280" viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" style="font-family:'PingFang SC','Microsoft YaHei',sans-serif;font-size:10px;">
+  <defs>
+    <marker id="arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#888"/></marker>
+    <marker id="arrR" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#e74c3c"/></marker>
+    <marker id="arrB" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#2980b9"/></marker>
+  </defs>
+
+  <!-- Chart 1: Phillips Curve -->
+  <g transform="translate(10,20)">
+    <text x="130" y="15" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">菲利普斯曲线与政策取舍</text>
+    <!-- Axis -->
+    <line x1="30" y1="30" x2="30" y2="230" stroke="#aaa" stroke-width="1"/>
+    <line x1="30" y1="230" x2="270" y2="230" stroke="#aaa" stroke-width="1"/>
+    <text x="12" y="135" font-size="9" fill="#888" transform="rotate(-90,12,135)">通胀率 π</text>
+    <text x="150" y="248" font-size="9" fill="#888" text-anchor="middle">失业率 u</text>
+    <!-- Short-run PC -->
+    <path d="M 50,45 Q 100,100 150,150 Q 200,195 260,230" stroke="#3498db" stroke-width="2" fill="none"/>
+    <text x="255" y="228" font-size="9" fill="#3498db">SRPC</text>
+    <!-- Long-run PC vertical -->
+    <line x1="150" y1="30" x2="150" y2="230" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,3"/>
+    <text x="140" y="28" font-size="9" fill="#e74c3c">LRPC</text>
+    <!-- Point A: high inflation, low unemployment -->
+    <circle cx="80" cy="75" r="4.5" fill="#e67e22"/>
+    <text x="60" y="68" font-size="10" fill="#e67e22" font-weight="bold">A</text>
+    <text x="55" y="55" font-size="8" fill="#e67e22">高通胀</text>
+    <text x="55" y="65" font-size="8" fill="#e67e22">低失业</text>
+    <!-- Point B: low inflation, high unemployment -->
+    <circle cx="200" cy="185" r="4.5" fill="#e67e22"/>
+    <text x="212" y="192" font-size="10" fill="#e67e22" font-weight="bold">B</text>
+    <text x="208" y="180" font-size="8" fill="#e67e22">低通胀</text>
+    <text x="208" y="170" font-size="8" fill="#e67e22">高失业</text>
+    <!-- Arrow from A to B -->
+    <line x1="85" y1="78" x2="195" y2="182" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrR)" stroke-dasharray="4,3"/>
+    <text x="110" y="115" font-size="8" fill="#e74c3c">紧缩政策</text>
+    <!-- Natural rate -->
+    <text x="152" y="242" font-size="9" fill="#e74c3c">uⁿ（自然失业率）</text>
+  </g>
+
+  <!-- Chart 2: Purchasing Power Parity -->
+  <g transform="translate(310,20)">
+    <text x="130" y="15" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">购买力平价（PPP）示意图</text>
+    <!-- Box diagram -->
+    <rect x="30" y="35" width="105" height="70" rx="6" fill="#eaf2f8" stroke="#3498db" stroke-width="1.5"/>
+    <text x="82" y="60" text-anchor="middle" fill="#2c3e50" font-weight="bold" font-size="11">国家A</text>
+    <text x="82" y="75" text-anchor="middle" fill="#555" font-size="9">物价水平 Pₐ</text>
+    <text x="82" y="90" text-anchor="middle" fill="#555" font-size="9">一篮子商品</text>
+
+    <!-- Exchange rate arrow -->
+    <line x1="135" y1="60" x2="170" y2="60" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrR)"/>
+    <line x1="170" y1="90" x2="135" y2="90" stroke="#2980b9" stroke-width="2" marker-end="url(#arrB)"/>
+    <text x="148" y="50" text-anchor="middle" fill="#e74c3c" font-size="8">汇率E</text>
+    <text x="148" y="105" text-anchor="middle" fill="#2980b9" font-size="8">E=Pₐ/Pᵦ</text>
+
+    <rect x="175" y="35" width="105" height="70" rx="6" fill="#fef5e7" stroke="#e67e22" stroke-width="1.5"/>
+    <text x="227" y="60" text-anchor="middle" fill="#2c3e50" font-weight="bold" font-size="11">国家B</text>
+    <text x="227" y="75" text-anchor="middle" fill="#555" font-size="9">物价水平 Pᵦ</text>
+    <text x="227" y="90" text-anchor="middle" fill="#555" font-size="9">一篮子商品</text>
+
+    <!-- PPP condition -->
+    <text x="152" y="150" text-anchor="middle" font-size="10" fill="#2c3e50" font-weight="bold">一价定律：同商品同价格</text>
+    <line x1="30" y1="165" x2="270" y2="165" stroke="#aaa" stroke-width="0.5"/>
+    <text x="152" y="180" text-anchor="middle" font-size="9" fill="#888">若 Pₐ &gt; Pᵦ·E → 从B进口→A物价↓</text>
+    <text x="152" y="195" text-anchor="middle" font-size="9" fill="#888">若 Pₐ &lt; Pᵦ·E → 向B出口→A物价↑</text>
+    <text x="152" y="215" text-anchor="middle" font-size="10" fill="#e74c3c" font-weight="bold">长期汇率趋近 E = Pₐ/Pᵦ</text>
+  </g>
+</svg>
+<div style="margin-top:8px;font-size:12px;color:#888;text-align:left;padding-left:20px;">
+● 左图：短期SPC负相关——A(高通胀低失业)与B(低通胀高失业)间取舍<br>
+● 右图：购买力平价——汇率E由两国物价水平之比决定，长期趋于均衡
+</div>
+</div>
+
+<h4>📊 图表二：购买力平价示意图（汇率与物价关系）</h4>
+<div style="border:2px solid #ddd;border-radius:12px;padding:12px 20px;margin:20px auto;max-width:660px;text-align:center;background:#fafafa;">
+<svg width="600" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="font-family:'PingFang SC','Microsoft YaHei',sans-serif;font-size:11px;">
+  <defs>
+    <marker id="arrPP" markerWidth="8" markerHeight="5" refX="8" refY="2.5" orient="auto"><path d="M0,0 L8,2.5 L0,5 Z" fill="#888"/></marker>
+  </defs>
+  <!-- Inflation differential drives exchange rate -->
+  <rect x="20" y="20" width="130" height="50" rx="8" fill="#3498db" opacity="0.9"/>
+  <text x="85" y="42" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">高通胀国家</text>
+  <text x="85" y="58" text-anchor="middle" fill="#eaf2f8" font-size="10">货币购买力↓</text>
+
+  <line x1="150" y1="45" x2="190" y2="45" stroke="#888" stroke-width="2" marker-end="url(#arrPP)"/>
+
+  <rect x="200" y="20" width="130" height="50" rx="8" fill="#e74c3c" opacity="0.9"/>
+  <text x="265" y="42" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">本币汇率贬值</text>
+  <text x="265" y="58" text-anchor="middle" fill="#fdebd0" font-size="10">E↑（本币↓）</text>
+
+  <line x1="330" y1="45" x2="370" y2="45" stroke="#888" stroke-width="2" marker-end="url(#arrPP)"/>
+
+  <rect x="380" y="20" width="130" height="50" rx="8" fill="#27ae60" opacity="0.9"/>
+  <text x="445" y="42" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">出口竞争力↑</text>
+  <text x="445" y="58" text-anchor="middle" fill="#eaf2f8" font-size="10">NX↑→AD右移</text>
+
+  <!-- Bottom formula -->
+  <rect x="100" y="110" width="400" height="50" rx="10" fill="#f8f9fa" stroke="#ddd" stroke-width="1"/>
+  <text x="300" y="132" text-anchor="middle" fill="#2c3e50" font-size="13" font-weight="bold">实际汇率 = 名义汇率 × (P国内 / P国外)</text>
+  <text x="300" y="150" text-anchor="middle" fill="#888" font-size="10">实际汇率上升(本币实际升值)→出口↓进口↑；实际汇率下降→出口↑进口↓</text>
+</svg>
+</div>
+
+<hr>
+
+<h2>【今日冲刺练习题】</h2>
+
+<h3>一、经济学原理冲刺题（5道高频易错题）</h3>
+
+<p><b>第1题（单选）：</b> 菲利普斯曲线表明在短期内：</p>
+<p>A. 通胀与失业正相关  B. 通胀与失业负相关</p>
+<p>C. 通胀与失业无关  D. 通胀与经济增长正相关</p>
+
+<p><b>第2题（单选）：</b> 根据索洛增长模型，在稳态时，人均产出增长率取决于：</p>
+<p>A. 储蓄率  B. 人口增长率  C. 技术进步率  D. 折旧率</p>
+
+<p><b>第3题（计算）：</b> 某国经济数据如下：名义GDP为5000亿元，实际GDP为4000亿元，货币供给量为2000亿元。求：</p>
+<p>（1）GDP平减指数</p>
+<p>（2）货币流通速度</p>
+<p>（3）若货币供给增加到2500亿元，其他条件不变，名义GDP将变为多少？</p>
+
+<p><b>第4题（简答）：</b> 简述通货膨胀的三种主要成因，并举例说明。</p>
+
+<p><b>第5题（多选）：</b> 以下哪些因素会导致一国的长期经济增长？</p>
+<p>A. 资本积累  B. 劳动力增加  C. 技术进步  D. 扩张性货币政策  E. 人力资本投资</p>
+
+<h3>二、公共经济学冲刺题（5道高频易错题）</h3>
+
+<p><b>第6题（单选）：</b> 1994年中国分税制改革后，以下哪项属于中央与地方共享税？</p>
+<p>A. 消费税  B. 关税  C. 增值税  D. 房产税</p>
+
+<p><b>第7题（单选）：</b> "规制俘获理论"的核心观点是：</p>
+<p>A. 规制保护公共利益  B. 规制最终服务于被规制行业</p>
+<p>C. 规制提高市场效率  D. 规制减少寻租行为</p>
+
+<p><b>第8题（名词解释）：</b> 蒂布特模型（用脚投票）</p>
+
+<p><b>第9题（简答）：</b> 简述财政分权的优缺点。</p>
+
+<p><b>第10题（论述）：</b> 运用公共规制理论，分析中国对互联网平台经济的规制实践。</p>
+
+<h3>三、完整答案与解析</h3>
+
+<p><b>第1题答案：B</b></p>
+<blockquote>解析：短期菲利普斯曲线向右下方倾斜，表明通货膨胀率与失业率之间存在<b>负相关关系</b>——通胀率上升时失业率下降，反之亦然。但长期菲利普斯曲线是垂直的。</blockquote>
+
+<p><b>第2题答案：C</b></p>
+<blockquote>解析：在索洛模型的稳态中，人均产出的长期增长率完全由<b>外生的技术进步率</b>决定。储蓄率和人口增长率影响的是稳态水平（人均产出的绝对值），而不是增长率。</blockquote>
+
+<p><b>第3题答案：</b></p>
+<blockquote>（1）GDP平减指数=名义GDP/实际GDP×100=5000/4000×100=125</blockquote>
+<blockquote>（2）货币数量方程MV=PY（名义GDP）</blockquote>
+<blockquote>V=名义GDP/M=5000/2000=2.5</blockquote>
+<blockquote>（3）假设V不变，MV=名义GDP</blockquote>
+<blockquote>名义GDP=2500×2.5=6250亿元</blockquote>
+
+<p><b>第4题答案：</b></p>
+<blockquote>① <b>需求拉动型通胀：</b> 总需求超过总供给导致物价上涨。</blockquote>
+<blockquote>  例：经济过热时，消费和投资旺盛，政府扩张性政策导致。</blockquote>
+<blockquote>② <b>成本推动型通胀：</b> 生产成本上升导致总供给减少。</blockquote>
+<blockquote>  例：1970年代石油危机，油价暴涨推高生产成本。</blockquote>
+<blockquote>③ <b>结构性通胀：</b> 经济结构变动导致某些部门价格上涨传导至整体。</blockquote>
+<blockquote>  例：中国在改革开放过程中，农产品价格改革推动整体物价上升。</blockquote>
+
+<p><b>第5题答案：ABCE</b></p>
+<blockquote>解析：经济增长的源泉包括资本积累（A）、劳动力增长（B）、技术进步（C）和人力资本投资（E）。D扩张性货币政策可能在短期内刺激总需求，但从长期看，它主要影响价格水平而非实际产出（货币中性）。</blockquote>
+
+<p><b>第6题答案：C</b></p>
+<blockquote>解析：1994年分税制改革后，增值税是中央与地方共享税（最初中央75%：地方25%，后调整为50%：50%）。消费税和关税属于中央税，房产税属于地方税。</blockquote>
+
+<p><b>第7题答案：B</b></p>
+<blockquote>解析：规制俘获理论认为，规制机构最初可能为公共利益目的设立，但随着时间推移，会被被规制行业通过游说、贿赂等手段"俘获"，最终规制政策服务于行业利益而非公共利益。</blockquote>
+
+<p><b>第8题答案：</b></p>
+<blockquote>蒂布特模型由经济学家蒂布特提出，核心观点是：居民可以通过在不同地区之间自由迁徙（"用脚投票"）来选择自己偏好的公共产品与税收组合。如果存在足够多的辖区且居民可以自由流动，地方公共产品的供给可以达到类似私人产品的帕累托效率。该模型为<b>财政分权</b>提供了重要理论依据。</blockquote>
+
+<p><b>第9题答案：</b></p>
+<blockquote><b>优点：</b></blockquote>
+<blockquote>① 满足地方居民差异化需求</blockquote>
+<blockquote>② 地方政府更了解本地情况，决策效率高</blockquote>
+<blockquote>③ 地方政府间竞争促进效率提升</blockquote>
+<blockquote>④ 有利于公共产品供给的多样化</blockquote>
+<p>></p>
+<blockquote><b>缺点：</b></blockquote>
+<blockquote>① 可能导致地区间公共服务差距扩大</blockquote>
+<blockquote>② 地方保护主义倾向</blockquote>
+<blockquote>③ 地方政府可能缺乏专业人才和管理能力</blockquote>
+<blockquote>④ 跨区域外部性问题（如污染）难以协调</blockquote>
+
+<p><b>第10题答案：</b></p>
+<blockquote><b>核心论点：</b> 中国对互联网平台经济的规制经历了从"包容审慎"到"规范发展"的转变。</blockquote>
+<p>></p>
+<blockquote><b>一、平台经济发展中的问题（规制理由）：</b></blockquote>
+<blockquote>① <b>垄断行为：</b> "二选一"、大数据杀熟、算法合谋</blockquote>
+<blockquote>② <b>信息不对称：</b> 消费者权益保护不足，数据隐私泄露</blockquote>
+<blockquote>③ <b>负外部性：</b> 对传统产业的冲击、金融风险</blockquote>
+<p>></p>
+<blockquote><b>二、规制实践（可结合规制理论分析）：</b></blockquote>
+<blockquote>① <b>反垄断规制：</b> 2021年对阿里巴巴罚款182.28亿元（滥用市场支配地位）</blockquote>
+<blockquote>② <b>数据安全规制：</b> 《数据安全法》《个人信息保护法》颁布</blockquote>
+<blockquote>③ <b>金融规制：</b> 蚂蚁集团整改，纳入金融监管框架</blockquote>
+<blockquote>④ <b>算法规制：</b> 《互联网信息服务算法推荐管理规定》</blockquote>
+<p>></p>
+<blockquote><b>三、规制效果与展望：</b></blockquote>
+<blockquote>① 短期：平台经济增速放缓，但竞争环境改善</blockquote>
+<blockquote>② 长期：促进平台经济规范健康可持续发展</blockquote>
+<blockquote>③ 平衡：在<b>创新激励</b>和<b>风险防控</b>间寻求平衡</blockquote>
+
+<hr>
+
+<h2>【今日学习提示与考试策略】</h2>
+
+<h3>考前心理调节</h3>
+
+<ul>
+<li><b>距离考试还有2天</b>，现在是"查漏补缺"阶段，不要再试图学新内容</li>
+<li><b>重点知识可视化</b>：用思维导图将每章的核心概念连接起来</li>
+<li><b>自我测试法</b>：合上书本，试着默写出今天复习的所有公式</li>
+</ul>
+
+<h3>时间分配策略（第28天）</h3>
+
+<table>
+<tr><td>时间段</td><td>时长</td><td>内容</td><td>方法</td></tr>
+<tr><td>08:00-09:30</td><td>1.5h</td><td>通胀与失业（菲利普斯曲线）</td><td>图形分析+公式</td></tr>
+<tr><td>09:45-11:00</td><td>1.25h</td><td>经济增长+国际经济</td><td>比较优势计算+索洛模型</td></tr>
+<tr><td>13:30-15:00</td><td>1.5h</td><td>财政体制（分税制+转移支付）</td><td>框架梳理+重点背诵</td></tr>
+<tr><td>15:15-16:30</td><td>1.25h</td><td>公共规制+公共政策</td><td>理论对比+案例分析</td></tr>
+<tr><td>19:00-21:00</td><td>2h</td><td>冲刺练习+错题整理</td><td>闭卷完成+模拟计时</td></tr>
+</table>
+
+<h3>答题顺序建议</h3>
+
+<ul>
+<li><b>建议从现在开始按照考试时间训练</b>：经济学原理150分钟，公共经济学150分钟</li>
+<li><b>多选题策略</b>：选错扣分型→不确定的不选；选对得分型→排除法做答</li>
+</ul>
+
+<h3>考前小贴士</h3>
+
+<blockquote>- 菲利普斯曲线是<b>宏观经济学必考点</b>，短期负相关、长期垂直这个结论必须印在脑子里</blockquote>
+<blockquote>- 索洛模型不要死记硬背公式，要理解"稳态"和"黄金律"的经济学含义</blockquote>
+<blockquote>- 分税制改革是中国公共经济学的重要考点，记住1994年、增值税共享比例变化</blockquote>
+<blockquote>- <b>贵州高频考点特别提醒</b>：贵州省真题中，<b>菲利普斯曲线</b>和<b>分税制改革</b>是近3年重复率最高的考点；此外，<b>平台经济规制</b>作为热点话题，2023年已出现在贵州试卷中，今年大概率继续考</blockquote>
+<blockquote>- 今日学习时间建议：<b>8小时</b></blockquote>
+
+</body>
+</html>
