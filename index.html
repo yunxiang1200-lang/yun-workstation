@@ -722,6 +722,91 @@ body {
 .news-count { font-size: 11px; color: var(--dim); margin-left: auto; }
 .order-progress-item { padding: 10px 0; border-bottom: 1px solid var(--border-light); }
 .order-progress-item:last-child { border-bottom: none; }
+
+/* ── Empty state & add button ── */
+.empty-state {
+  padding: 24px 16px; text-align: center; color: var(--dim);
+  font-size: 13px; border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm); background: var(--border-light);
+}
+.add-btn {
+  padding: 6px 14px; border-radius: 10px; font-size: 12px; font-weight: 600;
+  border: 1.5px solid var(--blue); background: var(--blue-bg); color: var(--blue);
+  cursor: pointer; font-family: inherit; transition: all .2s ease;
+}
+.add-btn:hover { background: var(--blue); color: #fff; transform: translateY(-1px); }
+
+.item-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid var(--border-light);
+}
+.item-row:last-child { border-bottom: none; }
+.item-main { flex: 1; min-width: 0; }
+.item-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.item-sub { font-size: 11px; color: var(--dim); }
+.item-actions { display: flex; gap: 6px; margin-left: 10px; flex-shrink: 0; }
+.mini-btn {
+  font-size: 11px; padding: 3px 10px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--panel); color: var(--dim); cursor: pointer; font-family: inherit;
+  transition: all .15s ease; white-space: nowrap;
+}
+.mini-btn:hover { border-color: var(--blue); color: var(--blue); }
+.mini-btn.danger:hover { border-color: var(--red); color: var(--red); background: var(--red-bg); }
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 10000; background: rgba(15,23,42,0.5);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.modal-overlay.hidden { display: none; }
+.modal {
+  width: 420px; max-width: 100%; background: var(--panel);
+  border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden;
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+}
+.modal-header span { font-size: 15px; font-weight: 700; }
+.modal-close { background: none; border: none; font-size: 22px; color: var(--dim); cursor: pointer; line-height: 1; }
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 18px 20px; max-height: 62vh; overflow-y: auto; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--border); }
+.modal-save {
+  padding: 8px 20px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  border: none; background: var(--blue); color: #fff; cursor: pointer; font-family: inherit;
+}
+.modal-save:hover { background: var(--blue-dark); }
+.form-field { margin-bottom: 14px; }
+.form-field label { display: block; font-size: 12px; color: var(--dim); margin-bottom: 5px; font-weight: 600; }
+.form-field input, .form-field select, .form-field textarea {
+  width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--border);
+  font-size: 13px; color: var(--text); font-family: inherit; outline: none; background: var(--panel);
+  transition: border-color .2s;
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--blue); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ── Economics plan ── */
+.econ-hero { text-align: center; margin-bottom: 20px; }
+.econ-hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.econ-hero .sub { font-size: 13px; color: var(--dim); }
+.econ-resource {
+  padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 14px;
+  background: var(--blue-bg); border: 1.5px solid rgba(59,130,246,0.18); font-size: 13px; line-height: 1.9;
+}
+.econ-resource a { color: var(--red); font-weight: 700; }
+.econ-phase { margin-bottom: 18px; }
+.econ-phase-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+.econ-days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.econ-day {
+  display: block; padding: 10px 6px; text-align: center; border-radius: 8px;
+  background: var(--border-light); color: var(--text-secondary); text-decoration: none;
+  font-size: 13px; font-weight: 600; border: 1.5px solid transparent; transition: all .2s ease;
+}
+.econ-day:hover { background: var(--blue); color: #fff; transform: translateY(-2px); }
+@media (max-width: 768px) { .econ-days { grid-template-columns: repeat(3, 1fr); } }
 </style>
 </head>
 <body>
@@ -767,25 +852,23 @@ body {
   <nav class="sidebar">
     <div class="sidebar-header">导航</div>
 
-    <button class="nav-item active" onclick="switchPage('data')">
+    <button class="nav-item active" data-page="data" onclick="goPage('data')">
       <span class="nav-icon data">总</span>总览
     </button>
 
-    <button class="nav-item" onclick="switchPage('design')">
+    <button class="nav-item" data-page="design" onclick="goPage('design')">
       <span class="nav-icon design">设</span>交互设计工作
-      <span class="nav-badge">2</span>
     </button>
 
-    <button class="nav-item" onclick="switchPage('study')">
+    <button class="nav-item" data-page="study" onclick="goPage('study')">
       <span class="nav-icon study">学</span>学习计划
     </button>
 
-    <button class="nav-item" onclick="switchPage('stock')">
+    <button class="nav-item" data-page="stock" onclick="goPage('stock')">
       <span class="nav-icon stock">股</span>股票专题
-      <span class="nav-badge">3</span>
     </button>
 
-    <button class="nav-item" onclick="switchPage('biz')">
+    <button class="nav-item" data-page="biz" onclick="goPage('biz')">
       <span class="nav-icon biz">副</span>副业发展
     </button>
 
@@ -804,55 +887,7 @@ body {
           <span class="card-badge">今日概览</span>
         </div>
         <div class="card-body">
-          <div class="cols-2">
-            <div class="summary-card">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="dot dot-cyan" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
-                <span class="section-label" style="margin:0;" onclick="switchPage('design')" title="点击进入交互设计工作">交互设计工作</span>
-              </div>
-              <div class="summary-stats">总项目 <span class="s-num">5</span>个</div>
-              <div class="summary-stats">进行中 <span class="s-num">2</span> · 已完成 <span class="s-num">3</span></div>
-              <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill progress-cyan" style="width:60%"></div></div>
-              <div style="font-size:10px;color:var(--dim);margin-top:3px;">完成进度 60%</div>
-            </div>
-
-            <div class="summary-card">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="dot dot-red" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
-                <span class="section-label" style="margin:0;" onclick="switchPage('stock')" title="点击进入股票专题">股票市场</span>
-              </div>
-              <div class="summary-stats">持有股票 <span class="s-num">2</span>只</div>
-              <div class="summary-stats">今日收益率</div>
-              <div class="s-num up" style="font-size:24px;margin:6px 0;">+2.1%</div>
-              <div style="font-size:11px;color:var(--dim);">持仓市值 68,500</div>
-            </div>
-
-            <div class="summary-card">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="dot dot-purple" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
-                <span class="section-label" style="margin:0;" onclick="switchPage('study')" title="点击进入学习计划">学习计划</span>
-              </div>
-              <div class="summary-stats">今日学习进度</div>
-              <div class="s-num" style="font-size:24px;margin:4px 0;">67%</div>
-              <div class="progress-bar" style="margin-top:6px;"><div class="progress-fill progress-purple" style="width:67%"></div></div>
-              <div class="summary-stats" style="margin-top:8px;">学习时长 <span class="s-num">1h50min</span></div>
-              <div class="summary-stats">待完成 <span class="s-num">2</span> · 已完成 <span class="s-num">4</span></div>
-            </div>
-
-            <div class="summary-card">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="dot dot-orange" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
-                <span class="section-label" style="margin:0;" onclick="switchPage('biz')" title="点击进入副业发展">副业发展</span>
-              </div>
-              <div class="summary-stats">孵化数量 <span class="s-num">4</span>个</div>
-              <div class="summary-stats">今日待阅读 <span class="s-num">3</span>篇</div>
-              <div class="summary-stats">待执行 <span class="s-num">2</span>项</div>
-              <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
-                <span style="font-size:11px;color:var(--dim);">执行状态:</span>
-                <span style="font-size:13px;font-weight:600;color:var(--green);">正常推进中</span>
-              </div>
-            </div>
-          </div>
+          <div class="cols-2" id="overviewGrid"></div>
         </div>
       </div>
     </section>
@@ -862,75 +897,9 @@ body {
       <div class="card" style="flex:1;">
         <div class="card-header">
           <span class="card-title"><span class="dot dot-purple"></span>学习计划</span>
-          <span class="card-badge">第32周</span>
+          <span class="card-badge">经济学 · 30天</span>
         </div>
-        <div class="card-body">
-          <div class="cols-2">
-            <div>
-              <div class="progress-ring-wrap">
-                <div class="progress-ring">
-                  <div class="progress-ring-inner">4/6</div>
-                </div>
-                <div class="progress-info">
-                  <div class="pct">66%</div>
-                  <div class="sub">本周进度 · 还差2项</div>
-                </div>
-              </div>
-
-              <div class="section-label">今日任务</div>
-              <div class="study-task">
-                <span class="check"></span>读《交互设计精髓》第5章
-                <span class="tag tag-book">读书</span>
-                <span class="study-duration">30min</span>
-              </div>
-              <div class="study-task">
-                <span class="check"></span>完成 Coursera 用研课程
-                <span class="tag tag-course">课程</span>
-                <span class="study-duration">1h</span>
-              </div>
-              <div class="study-task">
-                <span class="check"></span>整理竞品分析笔记
-                <span class="tag tag-research">研究</span>
-                <span class="study-duration">20min</span>
-              </div>
-
-              <div class="quick-actions">
-                <button class="quick-btn">+ 新建笔记</button>
-                <button class="quick-btn">搜索笔记</button>
-              </div>
-            </div>
-            <div>
-              <div class="section-label">知识库</div>
-              <div class="knowledge-tags">
-                <span class="knowledge-tag">交互原则</span>
-                <span class="knowledge-tag">设计规范</span>
-                <span class="knowledge-tag">用户研究</span>
-                <span class="knowledge-tag">读书摘录</span>
-                <span class="knowledge-tag">竞品分析</span>
-                <span class="knowledge-tag">动效设计</span>
-              </div>
-
-              <div class="section-label">最近笔记</div>
-              <div class="todo-item">交互设计自查清单</div>
-              <div class="todo-item">iOS 设计规范摘要</div>
-              <div class="todo-item">用户访谈技巧总结</div>
-
-              <div class="section-label">学习统计</div>
-              <div class="watch-item">
-                <span class="watch-name">本周学习时长</span>
-                <span class="watch-price">8.5h</span>
-              </div>
-              <div class="watch-item">
-                <span class="watch-name">笔记总数</span>
-                <span class="watch-price">23篇</span>
-              </div>
-              <div class="watch-item">
-                <span class="watch-name">阅读书籍</span>
-                <span class="watch-price">3本</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="card-body" id="studyBody"></div>
       </div>
     </section>
 
@@ -939,47 +908,14 @@ body {
       <div class="card" style="flex:1;">
         <div class="card-header">
           <span class="card-title"><span class="dot dot-cyan"></span>交互设计工作</span>
-          <span class="card-badge">2个项目</span>
+          <button class="add-btn" onclick="openAddModal('design.project')">+ 添加项目</button>
         </div>
         <div class="card-body">
-          <div class="cols-2">
-            <div>
-              <div class="section-label">进行中的项目</div>
-              <div class="project-item">
-                <div style="flex:1;">
-                  <div class="project-name">XX App 改版</div>
-                  <div class="project-meta">Figma · 移动端 · 迭代中</div>
-                  <div class="progress-bar"><div class="progress-fill progress-cyan" style="width:60%"></div></div>
-                </div>
-                <span class="project-status" style="margin-left:12px;">原型阶段<br>60%</span>
-              </div>
-              <div class="project-item">
-                <div style="flex:1;">
-                  <div class="project-name">YY 后台管理系统</div>
-                  <div class="project-meta">Figma · Web端 · 评审中</div>
-                  <div class="progress-bar"><div class="progress-fill progress-purple" style="width:30%"></div></div>
-                </div>
-                <span class="project-status" style="margin-left:12px;">设计评审<br>30%</span>
-              </div>
-
-              <div class="quick-actions">
-                <button class="quick-btn">+ 新建项目</button>
-                <button class="quick-btn">打开交付清单</button>
-                <button class="quick-btn">查看归档</button>
-              </div>
-            </div>
-            <div>
-              <div class="section-label">待办清单</div>
-              <div class="todo-item"><span class="check"></span>完成 ZZ 模块交互稿<span class="todo-date">今天</span></div>
-              <div class="todo-item"><span class="check"></span>发送设计验收邮件<span class="todo-date">明天</span></div>
-              <div class="todo-item"><span class="check"></span>更新组件库文档<span class="todo-date">本周</span></div>
-              <div class="todo-item"><span class="check"></span>准备周五设计评审<span class="todo-date">周五</span></div>
-
-              <div class="section-label">最近交付</div>
-              <div class="todo-item" style="color:var(--text);">XX App v2.3 交互稿</div>
-              <div class="todo-item" style="color:var(--text);">YY 后台 · 信息架构图</div>
-            </div>
-          </div>
+          <div class="section-label">项目</div>
+          <div id="designProjects"></div>
+          <div class="section-label" style="margin-top:18px;">待办清单</div>
+          <div id="designTodos"></div>
+          <div style="margin-top:14px;"><button class="add-btn" onclick="openAddModal('design.todo')">+ 添加待办</button></div>
         </div>
       </div>
     </section>
@@ -989,148 +925,14 @@ body {
       <div class="card" style="flex:1;">
         <div class="card-header">
           <span class="card-title"><span class="dot dot-red"></span>股票专题</span>
-        </div>
-        <div class="tab-bar">
-          <button class="tab-btn active" onclick="switchTab('daily', event)">日报</button>
-          <button class="tab-btn" onclick="switchTab('analysis', event)">盘后分析</button>
-          <button class="tab-btn" onclick="switchTab('ttrade', event)">做T建议</button>
+          <button class="add-btn" onclick="openAddModal('stock.holding')">+ 添加持仓</button>
         </div>
         <div class="card-body">
-
-          <div class="tab-content active" id="tab-daily">
-            <div class="pnl-row">
-              <div class="pnl-item">
-                <div class="pnl-label">今日盈亏</div>
-                <div class="pnl-value up">+1,250</div>
-              </div>
-              <div class="pnl-item">
-                <div class="pnl-label">持仓市值</div>
-                <div class="pnl-value">68,500</div>
-              </div>
-              <div class="pnl-item">
-                <div class="pnl-label">总收益率</div>
-                <div class="pnl-value up">+2.1%</div>
-              </div>
-              <div class="pnl-item">
-                <div class="pnl-label">可用资金</div>
-                <div class="pnl-value">12,300</div>
-              </div>
-            </div>
-
-            <div class="cols-2">
-              <div>
-                <div class="section-label">今日操作</div>
-                <div class="holdings-list">
-                  <div class="holding-row">
-                    <span class="holding-name">09:35</span>
-                    <span class="holding-info">买入 东山精密 1手</span>
-                    <span class="holding-pnl">@181.2</span>
-                  </div>
-                  <div class="holding-row">
-                    <span class="holding-name">10:15</span>
-                    <span class="holding-info">卖出 XX科技 0.5手</span>
-                    <span class="holding-pnl up">@46.8</span>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="section-label">持仓明细</div>
-                <div class="holdings-list">
-                  <div class="holding-row">
-                    <span class="holding-name">东山精密</span>
-                    <span class="holding-info">1手 | 成本162.05</span>
-                    <span class="holding-pnl up">+2,045</span>
-                  </div>
-                  <div class="holding-row">
-                    <span class="holding-name">XX 科技</span>
-                    <span class="holding-info">2手 | 成本43.80</span>
-                    <span class="holding-pnl up">+280</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="tab-analysis">
-            <div class="section-label">大盘情绪</div>
-            <div class="analysis-row">
-              <div class="analysis-chip chip-bullish">偏多 60%</div>
-              <div class="analysis-chip chip-neutral">震荡 25%</div>
-              <div class="analysis-chip chip-bearish">偏空 15%</div>
-            </div>
-
-            <div class="cols-2">
-              <div>
-                <div class="section-label">板块热度</div>
-                <div class="holdings-list">
-                  <div class="holding-row">
-                    <span class="holding-name">PCB</span>
-                    <span class="holding-info">资金净流入</span>
-                    <span class="holding-pnl up">+3.2%</span>
-                  </div>
-                  <div class="holding-row">
-                    <span class="holding-name">AI 算力</span>
-                    <span class="holding-info">资金净流入</span>
-                    <span class="holding-pnl up">+2.8%</span>
-                  </div>
-                  <div class="holding-row">
-                    <span class="holding-name">新能源</span>
-                    <span class="holding-info">资金净流出</span>
-                    <span class="holding-pnl down">-1.5%</span>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="section-label">明日关注</div>
-                <div class="holdings-list">
-                  <div class="holding-row">
-                    <span class="holding-name">东山精密</span>
-                    <span class="holding-info">支撑 178 · 压力 188</span>
-                  </div>
-                  <div class="holding-row">
-                    <span class="holding-name">XX 科技</span>
-                    <span class="holding-info">支撑 43.5 · 压力 47.0</span>
-                  </div>
-                  <div class="holding-row">
-                    <span class="holding-name">上证指数</span>
-                    <span class="holding-info">支撑 3300 · 压力 3400</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-content" id="tab-ttrade">
-            <div class="cols-2">
-              <div>
-                <div class="section-label">东山精密 (002384)</div>
-                <div class="t-tips">
-                  <div class="t-tip-row"><span class="t-tip-label">今日振幅</span><span class="t-tip-value">4.2%</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">建议区间</span><span class="t-tip-value">179 - 185</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">T点高抛</span><span class="t-tip-value" style="color:var(--red)">182.3 附近</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">T点低吸</span><span class="t-tip-value" style="color:var(--green)">180.1 附近</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">做T仓位</span><span class="t-tip-value">0.3 - 0.5手</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">风险等级</span><span class="t-tip-value" style="color:var(--orange)">中等</span></div>
-                </div>
-              </div>
-              <div>
-                <div class="section-label">XX 科技</div>
-                <div class="t-tips">
-                  <div class="t-tip-row"><span class="t-tip-label">今日振幅</span><span class="t-tip-value">2.8%</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">建议区间</span><span class="t-tip-value">44.5 - 46.5</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">T点高抛</span><span class="t-tip-value" style="color:var(--red)">46.2 附近</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">T点低吸</span><span class="t-tip-value" style="color:var(--green)">44.8 附近</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">做T仓位</span><span class="t-tip-value">0.5 - 1.0手</span></div>
-                  <div class="t-tip-row"><span class="t-tip-label">风险等级</span><span class="t-tip-value" style="color:var(--green)">较低</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="strategy-box">
-              <strong style="color:var(--blue);">操作策略</strong><br>
-              东山精密：振幅适中，适合做T。在180以下分批低吸0.3-0.5手，反弹至182.3以上抛掉底仓对应数量。切忌追高，严格止损178下方。<br>
-              XX科技：振幅偏小，建议观察为主。若跌破44.5可适量加仓0.5手做反弹T。
-            </div>
-          </div>
+          <div class="section-label">持仓明细</div>
+          <div id="stockHoldings"></div>
+          <div class="section-label" style="margin-top:18px;">关注列表</div>
+          <div id="stockWatch"></div>
+          <div style="margin-top:14px;"><button class="add-btn" onclick="openAddModal('stock.watch')">+ 添加关注</button></div>
         </div>
       </div>
     </section>
@@ -1140,131 +942,19 @@ body {
       <div class="card" style="flex:1;">
         <div class="card-header">
           <span class="card-title"><span class="dot dot-orange"></span>副业发展</span>
+          <button class="add-btn" onclick="openAddModal('biz.income')">编辑收入</button>
         </div>
         <div class="card-body">
-          <div class="income-row">
-            <div class="income-card">
-              <div class="income-label">本月收入</div>
-              <div class="income-value" style="color:var(--green);">3,200</div>
-            </div>
-            <div class="income-card">
-              <div class="income-label">本月目标</div>
-              <div class="income-value" style="color:var(--orange);">5,000</div>
-            </div>
-            <div class="income-card">
-              <div class="income-label">累计收入</div>
-              <div class="income-value">12,500</div>
-            </div>
-            <div class="income-card">
-              <div class="income-label">收入进度</div>
-              <div class="income-value" style="color:var(--blue);">64%</div>
-            </div>
-          </div>
-          <div class="progress-bar" style="margin-bottom:20px;"><div class="progress-fill progress-cyan" style="width:64%"></div></div>
-
-          <div style="margin-bottom:16px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-              <span class="section-label" style="margin:0;">资讯区</span>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <input type="date" id="newsDatePicker" style="font-size:11px;padding:4px 8px;border:1px solid var(--border);border-radius:8px;font-family:inherit;color:var(--text);background:var(--panel);" onchange="onDateChange(this.value)">
-                <button class="quick-btn" style="padding:4px 12px;font-size:11px;" onclick="goNewsToday()">今天</button>
-              </div>
-            </div>
-            <div class="tab-bar" style="margin-bottom:14px;">
-              <button class="tab-btn active" onclick="switchBizTab('designer', this)">设计师副业</button>
-              <button class="tab-btn" onclick="switchBizTab('hot', this)">热门副业</button>
-              <button class="tab-btn" onclick="switchBizTab('order', this)">推荐接单</button>
-            </div>
-
-            <div class="biz-tab-content active" id="biz-tab-designer">
-              <div class="news-filter-bar" data-tab="designer">
-                <button class="news-filter-btn active" onclick="filterNews('designer','all',this)">全部</button>
-                <button class="news-filter-btn" onclick="filterNews('designer','unread',this)">未阅读</button>
-                <button class="news-filter-btn" onclick="filterNews('designer','bookmarked',this)">已收藏</button>
-                <span class="news-count" id="newsCount-designer"></span>
-              </div>
-              <div class="biz-news-list" id="bizNewsDesigner"></div>
-            </div>
-            <div class="biz-tab-content" id="biz-tab-hot">
-              <div class="news-filter-bar" data-tab="hot">
-                <button class="news-filter-btn active" onclick="filterNews('hot','all',this)">全部</button>
-                <button class="news-filter-btn" onclick="filterNews('hot','unread',this)">未阅读</button>
-                <button class="news-filter-btn" onclick="filterNews('hot','bookmarked',this)">已收藏</button>
-                <span class="news-count" id="newsCount-hot"></span>
-              </div>
-              <div class="biz-news-list" id="bizNewsHot"></div>
-            </div>
-            <div class="biz-tab-content" id="biz-tab-order">
-              <div class="news-filter-bar" data-tab="order">
-                <button class="news-filter-btn active" onclick="filterNews('order','all',this)">全部</button>
-                <button class="news-filter-btn" onclick="filterNews('order','unread',this)">未阅读</button>
-                <button class="news-filter-btn" onclick="filterNews('order','bookmarked',this)">已收藏</button>
-                <span class="news-count" id="newsCount-order"></span>
-              </div>
-              <div class="biz-news-list" id="bizNewsOrder"></div>
-            </div>
-          </div>
-
-          <div style="margin-bottom:16px;">
-            <div class="section-label">已接单</div>
-            <div class="summary-stats" style="margin-bottom:10px;">接单数量 <span class="s-num">3</span>单</div>
-            <div class="cols-3">
-              <div class="summary-card">
-                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-                  <span style="font-size:13px;font-weight:500;">App UI 设计改版</span>
-                  <span style="font-size:12px;color:var(--green);">进行中</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill progress-cyan" style="width:70%"></div></div>
-                <div style="font-size:10px;color:var(--dim);margin-top:2px;">进度 70%</div>
-              </div>
-              <div class="summary-card">
-                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-                  <span style="font-size:13px;font-weight:500;">官网页面设计</span>
-                  <span style="font-size:12px;color:var(--orange);">待验收</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill progress-purple" style="width:95%"></div></div>
-                <div style="font-size:10px;color:var(--dim);margin-top:2px;">进度 95%</div>
-              </div>
-              <div class="summary-card">
-                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-                  <span style="font-size:13px;font-weight:500;">小程序交互稿</span>
-                  <span style="font-size:12px;color:var(--blue);">刚启动</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill progress-cyan" style="width:15%"></div></div>
-                <div style="font-size:10px;color:var(--dim);margin-top:2px;">进度 15%</div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="section-label">孵化项目</div>
-            <div class="cols-3">
-              <div class="summary-card">
-                <div class="summary-stats"><span class="s-num" style="font-size:20px;">设计知识星球</span></div>
-                <div class="summary-stats" style="margin-top:4px;">目标: 积累500付费用户</div>
-                <div class="summary-stats">数量: 内容52篇 · 成员128人</div>
-                <div style="margin-top:6px;">
-                  <span style="font-size:11px;padding:3px 10px;border-radius:10px;background:var(--green-bg);color:var(--green);font-weight:600;">运营中</span>
-                </div>
-              </div>
-              <div class="summary-card">
-                <div class="summary-stats"><span class="s-num" style="font-size:20px;">设计课程录制</span></div>
-                <div class="summary-stats" style="margin-top:4px;">目标: 产出10节课程</div>
-                <div class="summary-stats">数量: 已完成3节 · 大纲完成</div>
-                <div style="margin-top:6px;">
-                  <span style="font-size:11px;padding:3px 10px;border-radius:10px;background:var(--blue-bg);color:var(--blue);font-weight:600;">录制中</span>
-                </div>
-              </div>
-              <div class="summary-card">
-                <div class="summary-stats"><span class="s-num" style="font-size:20px;">Figma 插件</span></div>
-                <div class="summary-stats" style="margin-top:4px;">目标: 上线插件市场</div>
-                <div class="summary-stats">数量: 原型完成 · 开发中</div>
-                <div style="margin-top:6px;">
-                  <span style="font-size:11px;padding:3px 10px;border-radius:10px;background:var(--orange-bg);color:var(--orange);font-weight:600;">规划中</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="income-row" id="bizIncome"></div>
+          <div class="section-label">资讯区</div>
+          <div id="bizNews"></div>
+          <div style="margin-top:14px;"><button class="add-btn" onclick="openAddModal('biz.news')">+ 添加资讯</button></div>
+          <div class="section-label" style="margin-top:18px;">已接单</div>
+          <div id="bizOrders"></div>
+          <div style="margin-top:14px;"><button class="add-btn" onclick="openAddModal('biz.order')">+ 添加接单</button></div>
+          <div class="section-label" style="margin-top:18px;">孵化项目</div>
+          <div id="bizProjects"></div>
+          <div style="margin-top:14px;"><button class="add-btn" onclick="openAddModal('biz.project')">+ 添加项目</button></div>
         </div>
       </div>
     </section>
@@ -1274,23 +964,37 @@ body {
 
 <nav class="mobile-nav" id="mobileNav">
   <div class="mnav-inner">
-    <button onclick="switchMobilePage('data', this)">
+    <button data-page="data" onclick="goPage('data')">
       <span class="mn-icon">总</span>总览
     </button>
-    <button onclick="switchMobilePage('design', this)">
+    <button data-page="design" onclick="goPage('design')">
       <span class="mn-icon">设</span>设计
     </button>
-    <button onclick="switchMobilePage('study', this)">
+    <button data-page="study" onclick="goPage('study')">
       <span class="mn-icon">学</span>学习
     </button>
-    <button onclick="switchMobilePage('stock', this)">
+    <button data-page="stock" onclick="goPage('stock')">
       <span class="mn-icon">股</span>股票
     </button>
-    <button onclick="switchMobilePage('biz', this)">
+    <button data-page="biz" onclick="goPage('biz')">
       <span class="mn-icon">副</span>副业
     </button>
   </div>
 </nav>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="modalTitle">添加</span>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="quick-btn" onclick="closeModal()">取消</button>
+      <button class="modal-save" onclick="submitModal()">保存</button>
+    </div>
+  </div>
+</div>
 
 <script>
 var LOGIN_EMAIL = '530586264@qq.com'
@@ -1378,46 +1082,6 @@ function updateClock() {
 updateClock()
 setInterval(updateClock, 1000)
 
-function switchPage(name, evt) {
-  document.querySelectorAll('.nav-item').forEach(function(b) { b.classList.remove('active') })
-  document.querySelectorAll('.page-section').forEach(function(p) { p.classList.remove('active') })
-
-  document.getElementById('page-' + name).classList.add('active')
-  var target = evt ? evt.currentTarget : document.querySelector('.nav-item[onclick*="' + name + '"]')
-  if (target) target.classList.add('active')
-
-  if (name === 'stock') switchTab('daily')
-
-  document.querySelectorAll('#mobileNav button').forEach(function(b) { b.classList.remove('active') })
-  var mobTarget = document.querySelector('#mobileNav button[onclick*="' + name + '"]')
-  if (mobTarget) mobTarget.classList.add('active')
-}
-
-function switchMobilePage(name, btn) {
-  switchPage(name, { currentTarget: document.querySelector('.nav-item[onclick*="' + name + '"]') })
-  document.querySelectorAll('#mobileNav button').forEach(function(b) { b.classList.remove('active') })
-  if (btn) btn.classList.add('active')
-}
-
-function switchTab(name, e, silent) {
-  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active') })
-  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active') })
-  document.getElementById('tab-' + name).classList.add('active')
-  if (e && e.target) e.target.classList.add('active')
-}
-
-document.querySelectorAll('.nav-item').forEach(function(btn) {
-  var onclick = btn.getAttribute('onclick')
-  btn.removeAttribute('onclick')
-  if (!onclick) return
-  btn.addEventListener('click', function() {
-    var match = onclick.match(/switchPage\('(\w+)'/)
-    if (match) {
-      switchPage(match[1], { currentTarget: btn })
-    }
-  })
-})
-
 function shuffle(arr) {
   var a = arr.slice()
   for (var i = a.length - 1; i > 0; i--) {
@@ -1427,317 +1091,377 @@ function shuffle(arr) {
   return a
 }
 
-var fallbackNews = {
-  designer: [
-    { tag: 'skill', tagText: '技能', text: 'AI结构打样：为小批量电商卖家提供包装结构设计+3D预览，客单500-3000元，可月入过万', link: 'https://heyijiapack.com/news/read-59579.html' },
-    { tag: 'skill', tagText: '技能', text: 'AI绘画+交互设计：用Midjourney/SD生成灵感图并出售Prompt套装，AI绘画接单仍占闲鱼AI订单大头', link: 'https://www.woshipm.com/ai/' },
-    { tag: 'income', tagText: '收入', text: '海外接单平台：Fiverr/Upwork平面设计时薪15-35美元，按结果定价更值钱', link: 'https://www.upwork.com/' },
-    { tag: 'skill', tagText: '技能', text: 'AI PPT与办公设计：订单同比增长264%，企业汇报美化需求旺盛', link: 'https://www.woshipm.com/tag/AI' },
-    { tag: 'platform', tagText: '平台', text: 'Figma/Notion模板销售：UI Kit与知识管理模板上架，被动收入案例近8万', link: 'https://www.figma.com/community' },
-    { tag: 'income', tagText: '收入', text: '从接单者转型策略顾问：卖"系统"而非卖"图"，月入2万+的设计师都在做解决方案', link: 'https://heyijiapack.com/news/read-58649.html' },
-    { tag: 'skill', tagText: '技能', text: 'AI漫剧设计：动漫人物原型/服化道设计，订单同比增长1425%，增长最快赛道', link: 'https://finance.sina.cn/2026-07-29/detail-inikmumt2740445.d.html' },
-    { tag: 'platform', tagText: '平台', text: '国内垂直接单平台：电鸭、云工网、圆领超级个体，AI匹配与3秒报价成主流', link: 'https://eleduck.com/' },
-    { tag: 'income', tagText: '收入', text: '包装解决方案顾问：从"视觉美工"转型，绑定供应链实现1件起订、最快1天交付', link: 'https://heyijiapack.com/news/read-58046.html' },
-    { tag: 'skill', tagText: '技能', text: '知识付费：把AI设计经验整理成教程/模板，在素材平台销售形成被动收入', link: 'https://www.zcool.com.cn/work/' }
+var DATA_KEY = 'yun_desk_data_v2'
+
+function defaultData() {
+  return {
+    design: { projects: [], todos: [] },
+    stock: { holdings: [], watch: [] },
+    biz: { income: { month: 0, goal: 0, total: 0 }, news: [], orders: [], projects: [] }
+  }
+}
+
+function loadData() {
+  try {
+    var raw = localStorage.getItem(DATA_KEY)
+    if (raw) return JSON.parse(raw)
+  } catch (e) {}
+  return defaultData()
+}
+
+function mergeData(stored) {
+  var def = defaultData()
+  var out = stored || {}
+  for (var section in def) {
+    if (!out[section]) {
+      out[section] = def[section]
+    } else {
+      for (var key in def[section]) {
+        if (out[section][key] === undefined) out[section][key] = def[section][key]
+      }
+    }
+  }
+  return out
+}
+
+var DATA = mergeData(loadData())
+
+function saveData() {
+  try { localStorage.setItem(DATA_KEY, JSON.stringify(DATA)) } catch (e) {}
+}
+
+function uid() {
+  return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8)
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
+
+var MODAL_TITLES = {
+  'design.project': '设计项目',
+  'design.todo': '待办事项',
+  'stock.holding': '持仓',
+  'stock.watch': '关注股票',
+  'biz.income': '收入目标',
+  'biz.news': '副业资讯',
+  'biz.order': '接单记录',
+  'biz.project': '孵化项目'
+}
+
+var MODAL_FIELDS = {
+  'design.project': [
+    { key: 'name', label: '项目名称', type: 'text' },
+    { key: 'status', label: '状态', type: 'text' },
+    { key: 'progress', label: '进度(%)', type: 'number' },
+    { key: 'note', label: '备注', type: 'text' }
   ],
-  hot: [
-    { tag: 'trend', tagText: '趋势', text: '闲鱼AI轻创业爆发：上半年AI服务订单981.6万笔、同比+157%，近500万人购买', link: 'https://finance.sina.cn/2026-07-29/detail-inikmumt2740445.d.html' },
-    { tag: 'trend', tagText: '趋势', text: 'AI编程与建站：订单同比增长1732%，不懂代码也能帮人搭网站/小程序', link: 'https://finance.sina.cn/2026-07-29/detail-inikmumt2740445.d.html' },
-    { tag: 'trend', tagText: '趋势', text: 'AI漫剧制作：订单同比增长1425%，教程半年卖出1.7万份', link: 'https://m.yzwb.net/wap/news/30/4997573.html' },
-    { tag: 'income', tagText: '收入', text: 'AI一人公司(AIOPC)：单人+AI即公司，20+城市扶持，最高800万奖励', link: 'https://www.thepaper.cn/newsDetail_forward_33683806' },
-    { tag: 'trend', tagText: '趋势', text: 'AI室内设计效果图：快速出方案按空间收费，首月净收入约3200元', link: 'https://m.toutiao.com/article/7645832895718556169/' },
-    { tag: 'platform', tagText: '平台', text: '闲鱼成年轻人AI轻创业社区：AI服务交易半年近千万，四线城市卖家占32%', link: 'https://www.xinhuanet.com/tech/20260729/3ba4f5d1aaf044229b890f40ce52f492/c.html' },
-    { tag: 'income', tagText: '收入', text: 'AI视频/配音/写真：AI技能接单占闲鱼全部订单45.1%，门槛低需求大', link: 'https://www.shopify.com/zh/blog/113274373-7-ways-to-start-a-business-without-quitting-your-day-job' },
-    { tag: 'trend', tagText: '趋势', text: '公众号流量主+AI写作：矩阵号运营，新手三个月做到月入3000+', link: 'https://36kr.com/search/articles/公众号副业' },
-    { tag: 'platform', tagText: '平台', text: 'TikTok Shop跨境电商：一件代发零库存起步，适合副业试水', link: 'https://36kr.com/search/articles/跨境电商' },
-    { tag: 'income', tagText: '收入', text: '数据标注/问卷填写：碎片时间日均50-100元，稳定但天花板低', link: 'https://36kr.com/search/articles/数据标注副业' }
+  'design.todo': [
+    { key: 'text', label: '待办内容', type: 'text' },
+    { key: 'done', label: '是否完成', type: 'select', options: [{ v: '0', t: '未完成' }, { v: '1', t: '已完成' }] }
   ],
-  order: [
-    { tag: 'order', tagText: '接单', text: '【UI设计】教育App首页改版，预算3000，3天交付，需Figma', link: 'https://www.zcool.com.cn/work/' },
-    { tag: 'order', tagText: '接单', text: '【交互设计】B端后台数据看板，远程协作，预算8000，2周周期', link: 'https://www.zcool.com.cn/work/' },
-    { tag: 'order', tagText: '接单', text: '【设计系统】初创团队搭建设计系统组件库，预算1.2万', link: 'https://www.zcool.com.cn/work/' },
-    { tag: 'order', tagText: '接单', text: '【AI结构打样】小批量电商包装设计+3D预览，客单500-3000元', link: 'https://heyijiapack.com/news/read-59579.html' },
-    { tag: 'order', tagText: '接单', text: '【海外单】Fiverr/Upwork平面设计，时薪15-35美元，按结果定价', link: 'https://www.upwork.com/' },
-    { tag: 'order', tagText: '接单', text: '【网页设计】企业官网整站设计含响应式，预算5000-8000', link: 'https://www.zcool.com.cn/work/' },
-    { tag: 'order', tagText: '接单', text: '【小程序】电商小程序UX优化，提升转化率，按效果付费+底薪', link: 'https://www.zcool.com.cn/work/' },
-    { tag: 'order', tagText: '接单', text: '【AI漫剧】动漫人物原型与服化道设计，订单增长1425%', link: 'https://m.yzwb.net/wap/news/30/4997573.html' },
-    { tag: 'order', tagText: '接单', text: '【动效设计】APP微交互动效，Lottie/Principle，预算4000', link: 'https://www.zcool.com.cn/work/' },
-    { tag: 'order', tagText: '接单', text: '【PPT设计】品牌路演PPT美化，高端视觉，预算1800', link: 'https://www.zcool.com.cn/work/' }
+  'stock.holding': [
+    { key: 'name', label: '股票名称', type: 'text' },
+    { key: 'code', label: '代码', type: 'text' },
+    { key: 'shares', label: '持仓数量', type: 'number' },
+    { key: 'cost', label: '成本价', type: 'number' },
+    { key: 'price', label: '现价', type: 'number' }
+  ],
+  'stock.watch': [
+    { key: 'name', label: '股票名称', type: 'text' },
+    { key: 'code', label: '代码', type: 'text' },
+    { key: 'price', label: '现价', type: 'number' },
+    { key: 'signal', label: '信号', type: 'select', options: [{ v: 'buy', t: '买入' }, { v: 'hold', t: '持有' }, { v: 'watch', t: '观望' }] }
+  ],
+  'biz.income': [
+    { key: 'month', label: '本月收入', type: 'number' },
+    { key: 'goal', label: '目标收入', type: 'number' },
+    { key: 'total', label: '累计收入', type: 'number' }
+  ],
+  'biz.news': [
+    { key: 'tag', label: '标签', type: 'select', options: [{ v: 'platform', t: '平台' }, { v: 'skill', t: '技能' }, { v: 'income', t: '收入' }, { v: 'trend', t: '趋势' }] },
+    { key: 'text', label: '内容', type: 'text' },
+    { key: 'link', label: '链接', type: 'text' }
+  ],
+  'biz.order': [
+    { key: 'name', label: '订单名称', type: 'text' },
+    { key: 'amount', label: '金额', type: 'number' },
+    { key: 'status', label: '状态', type: 'text' }
+  ],
+  'biz.project': [
+    { key: 'name', label: '项目名称', type: 'text' },
+    { key: 'status', label: '状态', type: 'text' },
+    { key: 'note', label: '备注', type: 'text' }
   ]
 }
 
-var newsState = {}
-var newsByTab = { designer: [], hot: [], order: [] }
-var newsRead = JSON.parse(localStorage.getItem('yun_news_read') || '[]')
-var newsBookmarked = JSON.parse(localStorage.getItem('yun_news_bookmarked') || '[]')
-var newsCurrentDate = ''
+var TAG_MAP = { platform: '平台', skill: '技能', income: '收入', trend: '趋势', order: '接单' }
 
-function todayStr() {
-  var d = new Date()
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0')
+var CURRENT_MODAL = null
+
+function openAddModal(type) {
+  var values = {}
+  if (type === 'biz.income') values = DATA.biz.income || {}
+  CURRENT_MODAL = { type: type, id: null }
+  document.getElementById('modalTitle').textContent = (type === 'biz.income' ? '编辑 · ' : '添加 · ') + (MODAL_TITLES[type] || '')
+  document.getElementById('modalBody').innerHTML = buildForm(type, values)
+  document.getElementById('modalOverlay').classList.remove('hidden')
 }
 
-function saveNewsState() {
-  localStorage.setItem('yun_news_read', JSON.stringify(newsRead))
-  localStorage.setItem('yun_news_bookmarked', JSON.stringify(newsBookmarked))
+function openEditModal(type, id) {
+  CURRENT_MODAL = { type: type, id: id }
+  document.getElementById('modalTitle').textContent = '编辑 · ' + (MODAL_TITLES[type] || '')
+  document.getElementById('modalBody').innerHTML = buildForm(type, findItem(type, id) || {})
+  document.getElementById('modalOverlay').classList.remove('hidden')
 }
 
-function saveNewsCache(tabName, articles) {
-  try {
-    var key = 'yun_news_cache_' + tabName
-    var cache = JSON.parse(localStorage.getItem(key) || '{}')
-    cache[newsCurrentDate] = articles
-    localStorage.setItem(key, JSON.stringify(cache))
-  } catch(e) {}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.add('hidden')
+  CURRENT_MODAL = null
 }
 
-function loadNewsCache(tabName, dateStr) {
-  try {
-    var cache = JSON.parse(localStorage.getItem('yun_news_cache_' + tabName) || '{}')
-    return cache[dateStr] || null
-  } catch(e) { return null }
-}
-
-function makeArticleId(text) {
-  var h = 0
-  for (var i = 0; i < text.length; i++) { h = ((h << 5) - h) + text.charCodeAt(i); h |= 0 }
-  return 'n_' + Math.abs(h)
-}
-
-function formatDate(dateStr) {
-  if (!dateStr) return ''
-  try {
-    var d = new Date(dateStr)
-    if (isNaN(d.getTime())) {
-      var m = dateStr.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/)
-      if (m) return m[1] + '-' + m[2].padStart(2,'0') + '-' + m[3].padStart(2,'0')
-      return ''
+function buildForm(type, values) {
+  var fields = MODAL_FIELDS[type] || []
+  var html = ''
+  for (var i = 0; i < fields.length; i++) {
+    var f = fields[i]
+    var val = values[f.key]
+    if (val === undefined || val === null) val = ''
+    html += '<div class="form-field"><label>' + f.label + '</label>'
+    if (f.type === 'select') {
+      html += '<select data-key="' + f.key + '">'
+      for (var j = 0; j < f.options.length; j++) {
+        var o = f.options[j]
+        html += '<option value="' + o.v + '"' + (String(val) === String(o.v) ? ' selected' : '') + '>' + o.t + '</option>'
+      }
+      html += '</select>'
+    } else if (f.type === 'number') {
+      html += '<input type="number" data-key="' + f.key + '" value="' + escapeHtml(val) + '">'
+    } else {
+      html += '<input type="text" data-key="' + f.key + '" value="' + escapeHtml(val) + '">'
     }
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0')
-  } catch(e) { return '' }
+    html += '</div>'
+  }
+  return html
 }
 
-function renderNewsHTML(tabName) {
-  var items = newsByTab[tabName]
-  var filter = newsState[tabName] || 'all'
-  var el = document.getElementById('bizNews' + (tabName === 'designer' ? 'Designer' : tabName === 'hot' ? 'Hot' : 'Order'))
-  var countEl = document.getElementById('newsCount-' + tabName)
-
-  var unreadCount = 0
-  for (var i = 0; i < items.length; i++) {
-    if (newsRead.indexOf(items[i].id) === -1) unreadCount++
+function submitModal() {
+  if (!CURRENT_MODAL) return
+  var type = CURRENT_MODAL.type
+  var fields = MODAL_FIELDS[type] || []
+  var values = {}
+  var inputs = document.querySelectorAll('#modalBody [data-key]')
+  for (var i = 0; i < inputs.length; i++) {
+    values[inputs[i].getAttribute('data-key')] = inputs[i].value
+  }
+  for (var k = 0; k < fields.length; k++) {
+    var f = fields[k]
+    if (f.type === 'number') values[f.key] = parseFloat(values[f.key]) || 0
   }
 
-  if (countEl) countEl.textContent = '共' + items.length + '条 · ' + unreadCount + '条未读'
-
-  var filtered = items
-  if (filter === 'unread') {
-    filtered = items.filter(function(it) { return newsRead.indexOf(it.id) === -1 })
-  } else if (filter === 'bookmarked') {
-    filtered = items.filter(function(it) { return newsBookmarked.indexOf(it.id) >= 0 })
-  }
-
-  if (filtered.length === 0) {
-    var msg = filter === 'unread' ? '全部已阅读' : filter === 'bookmarked' ? '暂无收藏' : '暂无资讯'
-    if (newsCurrentDate !== todayStr()) msg = '该日期暂无缓存数据'
-    el.innerHTML = '<div class="biz-news-item" style="opacity:0.5;text-align:center;">' + msg + '</div>'
+  if (type === 'biz.income') {
+    for (var key in values) DATA.biz.income[key] = values[key]
+    saveData()
+    renderAll()
+    closeModal()
     return
   }
 
-  var html = ''
-  for (var j = 0; j < filtered.length; j++) {
-    var n = filtered[j]
-    var isRead = newsRead.indexOf(n.id) >= 0
-    var isBookmarked = newsBookmarked.indexOf(n.id) >= 0
-
-    html += '<div class="biz-news-item' + (isRead ? ' read' : '') + '" data-id="' + n.id + '" data-tab="' + tabName + '">'
-    html += '<span class="news-tag news-tag-' + n.tag + '">' + n.tagText + '</span>'
-    if (n.link && (n.link.indexOf('http://') === 0 || n.link.indexOf('https://') === 0)) {
-      html += '<a class="news-link" href="' + n.link + '" target="_blank" rel="noopener noreferrer" onclick="markNewsRead(\'' + n.id + '\')">' + n.text + '</a>'
-    } else {
-      html += '<span class="news-link" style="display:block;">' + n.text + '</span>'
+  var list = getList(type)
+  if (CURRENT_MODAL.id) {
+    var item = findItem(type, CURRENT_MODAL.id)
+    if (item) {
+      for (var key2 in values) item[key2] = values[key2]
     }
-    html += '<div class="news-meta">'
-    html += '<span class="news-date">' + (n.date || '') + '</span>'
-    html += '<div class="news-actions">'
-    html += '<button class="news-action-btn read-btn" onclick="event.stopPropagation();toggleRead(\'' + n.id + '\',\'' + tabName + '\')">' + (isRead ? '已阅读' : '未阅读') + '</button>'
-    html += '<button class="news-action-btn bookmark-btn' + (isBookmarked ? ' bookmarked' : '') + '" onclick="event.stopPropagation();toggleBookmark(\'' + n.id + '\',\'' + tabName + '\')">' + (isBookmarked ? '★ 已收藏' : '☆ 收藏') + '</button>'
-    html += '</div></div></div>'
+  } else {
+    if (!list) {
+      list = []
+      setList(type, list)
+    }
+    values.id = uid()
+    list.push(values)
   }
 
-  html += '<div style="font-size:10px;color:var(--dim);text-align:right;margin-top:4px;">数据日期: ' + newsCurrentDate + '</div>'
+  saveData()
+  renderAll()
+  closeModal()
+}
+
+function getList(type) {
+  var parts = type.split('.')
+  if (parts[0] === 'design') return DATA.design[parts[1]]
+  if (parts[0] === 'stock') return DATA.stock[parts[1]]
+  if (parts[0] === 'biz') return DATA.biz[parts[1]]
+  return null
+}
+
+function setList(type, arr) {
+  var parts = type.split('.')
+  if (parts[0] === 'design') DATA.design[parts[1]] = arr
+  if (parts[0] === 'stock') DATA.stock[parts[1]] = arr
+  if (parts[0] === 'biz') DATA.biz[parts[1]] = arr
+  return arr
+}
+
+function findItem(type, id) {
+  var list = getList(type) || []
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].id === id) return list[i]
+  }
+  return null
+}
+
+function deleteItem(type, id) {
+  var list = getList(type)
+  if (!list) return
+  var idx = -1
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].id === id) { idx = i; break }
+  }
+  if (idx >= 0) list.splice(idx, 1)
+  saveData()
+  renderAll()
+}
+
+function goPage(name) {
+  var sections = document.querySelectorAll('.page-section')
+  for (var i = 0; i < sections.length; i++) {
+    sections[i].classList.toggle('active', sections[i].id === 'page-' + name)
+  }
+  var navs = document.querySelectorAll('.nav-item, .mobile-nav button')
+  for (var j = 0; j < navs.length; j++) {
+    navs[j].classList.toggle('active', navs[j].getAttribute('data-page') === name)
+  }
+  var content = document.querySelector('.content-area')
+  if (content) content.scrollTop = 0
+}
+
+function renderAll() {
+  renderOverview()
+  renderStudy()
+  renderDesign()
+  renderStock()
+  renderBiz()
+}
+
+function renderOverview() {
+  var grid = document.getElementById('overviewGrid')
+  var cards = [
+    { label: '设计项目', value: DATA.design.projects.length, page: 'design' },
+    { label: '待办事项', value: DATA.design.todos.filter(function(t){ return t.done === '1' || t.done === true }).length + '/' + DATA.design.todos.length, page: 'design' },
+    { label: '持仓数量', value: DATA.stock.holdings.length, page: 'stock' },
+    { label: '关注股票', value: DATA.stock.watch.length, page: 'stock' },
+    { label: '本月收入', value: '¥' + (DATA.biz.income.month || 0), page: 'biz' },
+    { label: '接单记录', value: DATA.biz.orders.length, page: 'biz' },
+    { label: '孵化项目', value: DATA.biz.projects.length, page: 'biz' },
+    { label: '副业资讯', value: DATA.biz.news.length, page: 'biz' }
+  ]
+  var html = ''
+  for (var i = 0; i < cards.length; i++) {
+    var c = cards[i]
+    html += '<div class="summary-card" onclick="goPage(\'' + c.page + '\')">'
+    html += '<div class="section-label">' + c.label + '</div>'
+    html += '<div class="summary-stats"><span class="s-num">' + c.value + '</span></div>'
+    html += '</div>'
+  }
+  grid.innerHTML = html
+}
+
+var ECON_PLAN = [
+  { name: '基础阶段', icon: '📖', days: [1, 2, 3, 4, 5, 6], folder: '基础阶段' },
+  { name: '提升阶段', icon: '🚀', days: [7, 8, 9, 10, 11, 12], folder: '提升阶段' },
+  { name: '强化阶段', icon: '💪', days: [13, 14, 15, 16, 17, 18], folder: '强化阶段' },
+  { name: '真题阶段', icon: '📝', days: [19, 20, 21, 22, 23, 24], folder: '真题阶段' },
+  { name: '冲刺阶段', icon: '🎯', days: [25, 26, 27, 28, 29, 30], folder: '冲刺阶段' }
+]
+
+function renderStudy() {
+  var el = document.getElementById('studyBody')
+  var html = ''
+  html += '<div class="econ-hero"><h2>📚 自考经济学 · 30天学习计划</h2>'
+  html += '<div class="sub">经济学原理（中级）＋ 公共经济学 ｜ 基于贵州历年考试重点</div></div>'
+  html += '<div class="econ-resource">📺 视频资源：经济学原理 B站 <strong>BV1uhLb6zEeT</strong>；公共经济学 B站 <strong>BV1V8411V7kv</strong></div>'
+  html += '<div class="econ-resource" style="border-left:4px solid #e74c3c;"><a href="study/练习册.html" target="_blank" rel="noopener">📥 打开完整练习册（30天练习题 + 答案解析）</a></div>'
+  for (var i = 0; i < ECON_PLAN.length; i++) {
+    var phase = ECON_PLAN[i]
+    html += '<div class="econ-phase"><div class="econ-phase-title">' + phase.icon + ' ' + phase.name + '</div><div class="econ-days">'
+    for (var j = 0; j < phase.days.length; j++) {
+      var d = phase.days[j]
+      html += '<a class="econ-day" href="study/' + phase.folder + '/第' + d + '天.html" target="_blank" rel="noopener">第' + d + '天</a>'
+    }
+    html += '</div></div>'
+  }
   el.innerHTML = html
 }
 
-function markNewsRead(id) {
-  if (newsRead.indexOf(id) === -1) { newsRead.push(id); saveNewsState() }
+function renderDesign() {
+  renderList('designProjects', 'design.project', DATA.design.projects, function(it) {
+    return '<div class="item-title">' + escapeHtml(it.name || '未命名项目') + '</div><div class="item-sub">' + escapeHtml(it.status || '') + (it.progress ? ' · 进度 ' + escapeHtml(it.progress) + '%' : '') + '</div>'
+  })
+  renderList('designTodos', 'design.todo', DATA.design.todos, function(it) {
+    var done = it.done === '1' || it.done === true
+    return '<div class="item-title" style="' + (done ? 'text-decoration:line-through;color:var(--dim);' : '') + '">' + escapeHtml(it.text || '') + '</div><div class="item-sub">' + (done ? '已完成' : '未完成') + '</div>'
+  })
 }
 
-function toggleRead(id, tabName) {
-  var idx = newsRead.indexOf(id)
-  if (idx >= 0) { newsRead.splice(idx, 1) } else { newsRead.push(id) }
-  saveNewsState()
-  renderNewsHTML(tabName)
+function renderStock() {
+  renderList('stockHoldings', 'stock.holding', DATA.stock.holdings, function(it) {
+    return '<div class="item-title">' + escapeHtml(it.name || '') + ' <span style="color:var(--dim);font-size:11px;">' + escapeHtml(it.code || '') + '</span></div><div class="item-sub">' + escapeHtml(it.shares || 0) + ' 股 · 成本 ' + escapeHtml(it.cost || 0) + '</div>'
+  })
+  renderList('stockWatch', 'stock.watch', DATA.stock.watch, function(it) {
+    return '<div class="item-title">' + escapeHtml(it.name || '') + ' <span style="color:var(--dim);font-size:11px;">' + escapeHtml(it.code || '') + '</span></div><div class="item-sub">现价 ' + escapeHtml(it.price || 0) + ' · ' + (TAG_MAP[it.signal] || it.signal || '') + '</div>'
+  })
 }
 
-function toggleBookmark(id, tabName) {
-  var idx = newsBookmarked.indexOf(id)
-  if (idx >= 0) { newsBookmarked.splice(idx, 1) } else { newsBookmarked.push(id) }
-  saveNewsState()
-  renderNewsHTML(tabName)
-}
+function renderBiz() {
+  var inc = DATA.biz.income || { month: 0, goal: 0, total: 0 }
+  document.getElementById('bizIncome').innerHTML =
+    '<div class="income-card"><div class="income-label">本月收入</div><div class="income-value">¥' + (inc.month || 0) + '</div></div>' +
+    '<div class="income-card"><div class="income-label">目标收入</div><div class="income-value">¥' + (inc.goal || 0) + '</div></div>' +
+    '<div class="income-card"><div class="income-label">累计收入</div><div class="income-value">¥' + (inc.total || 0) + '</div></div>'
 
-function filterNews(tabName, filterType, btn) {
-  newsState[tabName] = filterType
-  var bar = btn.parentElement
-  bar.querySelectorAll('.news-filter-btn').forEach(function(b) { b.classList.remove('active') })
-  btn.classList.add('active')
-  renderNewsHTML(tabName)
-}
-
-function onDateChange(dateValue) {
-  if (!dateValue) return
-  setNewsDate(dateValue)
-}
-
-function goNewsToday() {
-  var t = todayStr()
-  document.getElementById('newsDatePicker').value = t
-  setNewsDate(t)
-}
-
-function setNewsDate(dateStr) {
-  newsCurrentDate = dateStr
-  var tabs = ['designer', 'hot', 'order']
-  var foundAny = false
-  for (var t = 0; t < tabs.length; t++) {
-    var cached = loadNewsCache(tabs[t], dateStr)
-    if (cached && cached.length > 0) {
-      newsByTab[tabs[t]] = cached
-      newsState[tabs[t]] = 'all'
-      var bar = document.querySelector('.news-filter-bar[data-tab="' + tabs[t] + '"]')
-      if (bar) {
-        bar.querySelectorAll('.news-filter-btn').forEach(function(b) { b.classList.remove('active') })
-        var firstBtn = bar.querySelector('.news-filter-btn')
-        if (firstBtn) firstBtn.classList.add('active')
-      }
-      renderNewsHTML(tabs[t])
-      foundAny = true
+  renderList('bizNews', 'biz.news', DATA.biz.news, function(it) {
+    var tag = it.tag || ''
+    var tagText = TAG_MAP[tag] || tag || ''
+    var text = escapeHtml(it.text || '')
+    var linkHtml = ''
+    if (it.link && (it.link.indexOf('http://') === 0 || it.link.indexOf('https://') === 0)) {
+      linkHtml = '<a class="news-link" href="' + escapeHtml(it.link) + '" target="_blank" rel="noopener noreferrer">' + text + '</a>'
     } else {
-      newsByTab[tabs[t]] = []
-      renderNewsHTML(tabs[t])
+      linkHtml = '<span class="news-link" style="display:block;">' + text + '</span>'
     }
+    return '<span class="news-tag news-tag-' + escapeHtml(tag) + '">' + escapeHtml(tagText) + '</span>' + linkHtml
+  })
+  renderList('bizOrders', 'biz.order', DATA.biz.orders, function(it) {
+    return '<div class="item-title">' + escapeHtml(it.name || '') + '</div><div class="item-sub">' + (it.amount ? '¥' + escapeHtml(it.amount) : '') + ' · ' + escapeHtml(it.status || '') + '</div>'
+  })
+  renderList('bizProjects', 'biz.project', DATA.biz.projects, function(it) {
+    return '<div class="item-title">' + escapeHtml(it.name || '') + '</div><div class="item-sub">' + escapeHtml(it.status || '') + '</div>'
+  })
+}
+
+function renderList(containerId, type, list, itemHtmlFn) {
+  var el = document.getElementById(containerId)
+  if (!list || list.length === 0) {
+    el.innerHTML = '<div class="empty-state">暂无数据，点击上方按钮添加</div>'
+    return
   }
-  if (!foundAny && dateStr !== todayStr()) {
-    document.getElementById('bizNewsDesigner').innerHTML = '<div class="biz-news-item" style="opacity:0.5;text-align:center;padding:20px;">该日期暂无缓存数据，请切回"今天"获取最新资讯</div>'
+  var html = ''
+  for (var i = 0; i < list.length; i++) {
+    var it = list[i]
+    html += '<div class="item-row">'
+    html += '<div class="item-main">' + itemHtmlFn(it) + '</div>'
+    html += '<div class="item-actions">'
+    html += '<button class="mini-btn" onclick="openEditModal(\'' + type + '\',\'' + it.id + '\')">编辑</button>'
+    html += '<button class="mini-btn danger" onclick="deleteItem(\'' + type + '\',\'' + it.id + '\')">删除</button>'
+    html += '</div></div>'
   }
+  el.innerHTML = html
 }
 
-function loadStaticNews(tabName, source) {
-  var items = shuffle(source).slice(0, 6)
-  var articles = []
-  for (var i = 0; i < items.length; i++) {
-    articles.push({
-      id: makeArticleId(items[i].text),
-      tag: items[i].tag,
-      tagText: items[i].tagText,
-      text: items[i].text,
-      link: items[i].link || null,
-      date: ''
-    })
-  }
-  newsByTab[tabName] = articles
-  saveNewsCache(tabName, articles)
-  renderNewsHTML(tabName)
-}
-
-function fetchRSSFeed(tabName, rssUrl, fallbackData, fallbackTag, appendMode, sourceName) {
-  var apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rssUrl)
-
-  fetch(apiUrl, { signal: AbortSignal.timeout(12000) })
-    .then(function(resp) { return resp.json() })
-    .then(function(data) {
-      if (data && data.status === 'ok' && data.items && data.items.length > 0) {
-        var feedHomepage = (data.feed && data.feed.link) ? data.feed.link.replace(/\/+$/, '') : ''
-        console.log('[RSS:' + tabName + ':' + (sourceName||'') + '] feed首页=' + feedHomepage)
-        var items = data.items.slice(0, 8)
-        var articles = []
-        var skipped = 0
-        for (var i = 0; i < items.length; i++) {
-          var rawLink = items[i].link || ''
-          var isHttp = rawLink.indexOf('http://') === 0 || rawLink.indexOf('https://') === 0
-          var isArticle = isHttp && rawLink.replace(/\/+$/, '') !== feedHomepage && rawLink.length > feedHomepage.length + 3
-          console.log('[RSS:' + tabName + ':' + (sourceName||'') + '][' + i + '] article=' + (isArticle?'VALID':'SKIP') + ' link=' + rawLink.substring(0,80) + ' title=' + (items[i].title||'').substring(0,40))
-          if (isArticle) {
-            articles.push({
-              id: makeArticleId(rawLink || items[i].title),
-              tag: fallbackTag,
-              tagText: sourceName || (appendMode ? '聚合' : '实时'),
-              text: items[i].title,
-              link: rawLink,
-              date: formatDate(items[i].pubDate)
-            })
-          } else {
-            skipped++
-          }
-        }
-        console.log('[RSS:' + tabName + ':' + (sourceName||'') + '] 有效=' + articles.length + ' 跳过=' + skipped)
-        if (appendMode && newsByTab[tabName] && newsByTab[tabName].length > 0) {
-          var existingIds = {}
-          for (var k = 0; k < newsByTab[tabName].length; k++) {
-            existingIds[newsByTab[tabName][k].id] = true
-          }
-          for (var m = 0; m < articles.length; m++) {
-            if (!existingIds[articles[m].id]) {
-              newsByTab[tabName].push(articles[m])
-            }
-          }
-        } else {
-          newsByTab[tabName] = articles
-        }
-        saveNewsCache(tabName, newsByTab[tabName])
-        newsState[tabName] = 'all'
-        var bar = document.querySelector('.news-filter-bar[data-tab="' + tabName + '"]')
-        if (bar) {
-          bar.querySelectorAll('.news-filter-btn').forEach(function(b) { b.classList.remove('active') })
-          var firstBtn = bar.querySelector('.news-filter-btn')
-          if (firstBtn) firstBtn.classList.add('active')
-        }
-        renderNewsHTML(tabName)
-      } else {
-        throw new Error('No items')
-      }
-    })
-    .catch(function() {
-      if (appendMode) return
-      newsByTab[tabName] = []
-      loadStaticNews(tabName, fallbackData)
-    })
-}
-
-newsCurrentDate = todayStr()
-document.getElementById('newsDatePicker').value = newsCurrentDate
-
-loadStaticNews('designer', fallbackNews.designer)
-loadStaticNews('hot', fallbackNews.hot)
-loadStaticNews('order', fallbackNews.order)
-
-fetchRSSFeed('designer', 'https://www.woshipm.com/feed', fallbackNews.designer, 'skill', false, '人人产品')
-setTimeout(function() {
-  fetchRSSFeed('designer', 'https://news.google.com/rss/search?q=设计师 副业&hl=zh-CN&gl=CN&ceid=CN:zh-Hans', fallbackNews.designer, 'platform', true, '设计师副业')
-}, 2000)
-
-fetchRSSFeed('hot', 'https://news.google.com/rss/search?q=副业&hl=zh-CN&gl=CN&ceid=CN:zh-Hans', fallbackNews.hot, 'trend', false, '热门副业')
-setTimeout(function() {
-  fetchRSSFeed('hot', 'https://news.google.com/rss/search?q=AI副业&hl=zh-CN&gl=CN&ceid=CN:zh-Hans', fallbackNews.hot, 'income', true, 'AI副业')
-}, 4000)
-
-function switchBizTab(name, btn) {
-  document.querySelectorAll('#page-biz .tab-btn').forEach(function(b) { b.classList.remove('active') })
-  document.querySelectorAll('#page-biz .biz-tab-content').forEach(function(c) { c.classList.remove('active') })
-  document.getElementById('biz-tab-' + name).classList.add('active')
-  btn.classList.add('active')
-}
+renderAll()
 </script>
 
 </body>
