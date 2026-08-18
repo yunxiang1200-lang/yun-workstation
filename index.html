@@ -807,6 +807,50 @@ body {
 }
 .econ-day:hover { background: var(--blue); color: #fff; transform: translateY(-2px); }
 @media (max-width: 768px) { .econ-days { grid-template-columns: repeat(3, 1fr); } }
+
+.econ-day { cursor: pointer; font-family: inherit; -webkit-appearance: none; appearance: none; }
+.econ-day.done { background: var(--green-bg); color: var(--green); border-color: var(--green); }
+.econ-day.done:hover { background: var(--green); color: #fff; }
+.econ-day.current { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
+
+.study-progress { margin: 12px auto 0; max-width: 460px; }
+.study-progress-label { font-size: 12px; color: var(--dim); margin-bottom: 6px; font-weight: 600; }
+.study-progress-bar { height: 8px; background: var(--border-light); border-radius: 6px; overflow: hidden; }
+.study-progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 100%); border-radius: 6px; transition: width .3s ease; }
+
+.study-detail { margin-top: 20px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 22px; background: var(--panel); }
+.study-detail-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.study-detail-title { font-size: 17px; font-weight: 700; line-height: 1.5; color: var(--text); flex: 1; }
+.study-detail-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.study-sections { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; padding: 12px 14px; background: var(--border-light); border-radius: 10px; }
+.study-section-title { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+.ss-tag { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 8px; flex-shrink: 0; }
+.ss-tag.am { background: var(--blue-bg); color: var(--blue); }
+.ss-tag.pm { background: var(--purple-bg); color: var(--purple); }
+.ss-tag.quiz { background: var(--orange-bg); color: var(--orange); }
+
+.study-detail-content { font-size: 14px; line-height: 1.9; color: var(--text-secondary); }
+.study-detail-content h1 { font-size: 20px; color: var(--text); border-bottom: 2px solid var(--border); padding-bottom: 8px; margin: 24px 0 14px; }
+.study-detail-content h2 { font-size: 17px; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin: 22px 0 12px; }
+.study-detail-content h3 { font-size: 15px; color: var(--blue-dark); margin: 18px 0 10px; }
+.study-detail-content h4 { font-size: 14px; color: var(--purple); margin: 14px 0 8px; }
+.study-detail-content p { margin: 10px 0; }
+.study-detail-content ul, .study-detail-content ol { margin: 10px 0; padding-left: 24px; }
+.study-detail-content li { margin: 4px 0; }
+.study-detail-content blockquote { background: var(--blue-bg); border-left: 3px solid var(--blue); padding: 10px 14px; margin: 12px 0; border-radius: 0 8px 8px 0; color: var(--text-secondary); }
+.study-detail-content pre { background: #1e293b; color: #cbd5e1; padding: 14px 16px; border-radius: 8px; overflow-x: auto; margin: 12px 0; font-size: 13px; line-height: 1.6; }
+.study-detail-content code { background: var(--border-light); padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', 'Fira Code', Consolas, monospace; font-size: 13px; color: var(--red); }
+.study-detail-content pre code { background: none; padding: 0; color: #cbd5e1; }
+.study-detail-content table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 13px; }
+.study-detail-content th, .study-detail-content td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
+.study-detail-content th { background: var(--border-light); color: var(--text); }
+.study-detail-content b, .study-detail-content strong { color: var(--red); }
+.study-detail-content a { color: var(--blue); }
+@media (max-width: 768px) {
+  .study-detail { padding: 14px; }
+  .study-detail-header { flex-direction: column; }
+  .study-detail-actions { width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -1097,7 +1141,8 @@ function defaultData() {
   return {
     design: { projects: [], todos: [] },
     stock: { holdings: [], watch: [] },
-    biz: { income: { month: 0, goal: 0, total: 0 }, news: [], orders: [], projects: [] }
+    biz: { income: { month: 0, goal: 0, total: 0 }, news: [], orders: [], projects: [] },
+    study: { done: {} }
   }
 }
 
@@ -1377,23 +1422,161 @@ var ECON_PLAN = [
   { name: '冲刺阶段', icon: '🎯', days: [25, 26, 27, 28, 29, 30], folder: '冲刺阶段' }
 ]
 
+var STUDY_SELECTED = null
+var STUDY_INITIALIZED = false
+
+function isStudyDone(day) {
+  return !!(DATA.study && DATA.study.done && DATA.study.done[day])
+}
+
+function studyDoneCount() {
+  var n = 0
+  for (var d = 1; d <= 30; d++) if (isStudyDone(d)) n++
+  return n
+}
+
+function toggleStudyDone(day) {
+  if (!DATA.study) DATA.study = { done: {} }
+  if (!DATA.study.done) DATA.study.done = {}
+  if (DATA.study.done[day]) delete DATA.study.done[day]
+  else DATA.study.done[day] = true
+  saveData()
+  renderStudy()
+}
+
+function selectStudyDay(phaseIndex, day, scroll) {
+  var phase = ECON_PLAN[phaseIndex] || ECON_PLAN[0]
+  var sel = { phaseIndex: phaseIndex, day: day, html: null }
+  STUDY_SELECTED = sel
+  renderStudy()
+  fetch('study/' + phase.folder + '/第' + day + '天.html')
+    .then(function(resp) { return resp.text() })
+    .then(function(text) {
+      if (STUDY_SELECTED !== sel) return
+      sel.html = text
+      renderStudyDetail()
+      if (scroll) scrollStudyDetail()
+    })
+    .catch(function() {
+      if (STUDY_SELECTED !== sel) return
+      sel.html = '<div class="empty-state">内容加载失败，请稍后重试</div>'
+      renderStudyDetail()
+    })
+}
+
+function closeStudyDetail() {
+  STUDY_SELECTED = null
+  renderStudy()
+}
+
+function scrollStudyDetail() {
+  var el = document.getElementById('studyDetail')
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+function ensureStudySelection() {
+  if (STUDY_INITIALIZED) return
+  STUDY_INITIALIZED = true
+  var pi = 0, day = 1, found = false
+  for (var p = 0; p < ECON_PLAN.length && !found; p++) {
+    for (var d = 0; d < ECON_PLAN[p].days.length; d++) {
+      var dd = ECON_PLAN[p].days[d]
+      if (!isStudyDone(dd)) { pi = p; day = dd; found = true; break }
+    }
+  }
+  selectStudyDay(pi, day, true)
+}
+
 function renderStudy() {
   var el = document.getElementById('studyBody')
   var html = ''
+  var doneCount = studyDoneCount()
+  var pct = Math.round(doneCount / 30 * 100)
+
   html += '<div class="econ-hero"><h2>📚 自考经济学 · 30天学习计划</h2>'
-  html += '<div class="sub">经济学原理（中级）＋ 公共经济学 ｜ 基于贵州历年考试重点</div></div>'
+  html += '<div class="sub">经济学原理（中级）＋ 公共经济学 ｜ 基于贵州历年考试重点</div>'
+  html += '<div class="study-progress"><div class="study-progress-label">学习进度：已完成 ' + doneCount + '/30 天（' + pct + '%）</div>'
+  html += '<div class="study-progress-bar"><div class="study-progress-fill" style="width:' + pct + '%"></div></div></div>'
+  html += '</div>'
+
   html += '<div class="econ-resource">📺 视频资源：经济学原理 B站 <strong>BV1uhLb6zEeT</strong>；公共经济学 B站 <strong>BV1V8411V7kv</strong></div>'
   html += '<div class="econ-resource" style="border-left:4px solid #e74c3c;"><a href="study/练习册.html" target="_blank" rel="noopener">📥 打开完整练习册（30天练习题 + 答案解析）</a></div>'
+
   for (var i = 0; i < ECON_PLAN.length; i++) {
     var phase = ECON_PLAN[i]
     html += '<div class="econ-phase"><div class="econ-phase-title">' + phase.icon + ' ' + phase.name + '</div><div class="econ-days">'
     for (var j = 0; j < phase.days.length; j++) {
       var d = phase.days[j]
-      html += '<a class="econ-day" href="study/' + phase.folder + '/第' + d + '天.html" target="_blank" rel="noopener">第' + d + '天</a>'
+      var done = isStudyDone(d)
+      var current = STUDY_SELECTED && STUDY_SELECTED.phaseIndex === i && STUDY_SELECTED.day === d
+      html += '<button class="econ-day' + (done ? ' done' : '') + (current ? ' current' : '') + '" onclick="selectStudyDay(' + i + ',' + d + ')">第' + d + '天' + (done ? ' ✓' : '') + '</button>'
     }
     html += '</div></div>'
   }
+
+  html += '<div id="studyDetail"></div>'
   el.innerHTML = html
+  renderStudyDetail()
+}
+
+function renderStudyDetail() {
+  var el = document.getElementById('studyDetail')
+  if (!el) return
+  if (!STUDY_SELECTED) {
+    el.innerHTML = ''
+    return
+  }
+  var phase = ECON_PLAN[STUDY_SELECTED.phaseIndex] || ECON_PLAN[0]
+  var day = STUDY_SELECTED.day
+  var done = isStudyDone(day)
+
+  if (!STUDY_SELECTED.html) {
+    el.innerHTML = '<div class="study-detail"><div class="empty-state">正在加载第' + day + '天内容…</div></div>'
+    return
+  }
+
+  var parsed = parseStudyDay(STUDY_SELECTED.html)
+  var html = '<div class="study-detail">'
+  html += '<div class="study-detail-header">'
+  html += '<div class="study-detail-title">' + escapeHtml(parsed.title || ('第' + day + '天')) + '</div>'
+  html += '<div class="study-detail-actions">'
+  html += '<button class="mini-btn" onclick="toggleStudyDone(' + day + ')">' + (done ? '✓ 已完成' : '标记完成') + '</button>'
+  html += '<button class="mini-btn" onclick="closeStudyDetail()">收起</button>'
+  html += '</div></div>'
+
+  html += '<div class="study-sections">'
+  html += '<div class="study-section-title"><span class="ss-tag am">上午</span>' + escapeHtml(parsed.morning || '—') + '</div>'
+  html += '<div class="study-section-title"><span class="ss-tag pm">下午</span>' + escapeHtml(parsed.afternoon || '—') + '</div>'
+  html += '<div class="study-section-title"><span class="ss-tag quiz">练习</span>' + escapeHtml(parsed.practice || '—') + '</div>'
+  html += '</div>'
+
+  html += '<div class="study-detail-content">' + parsed.body + '</div>'
+  html += '</div>'
+  el.innerHTML = html
+}
+
+function parseStudyDay(htmlText) {
+  var doc = new DOMParser().parseFromString(htmlText, 'text/html')
+  var title = ''
+  var h1 = doc.querySelector('h1')
+  if (h1) title = h1.textContent.trim()
+
+  var morning = '', afternoon = '', practice = ''
+  var h2s = doc.querySelectorAll('h2')
+  for (var i = 0; i < h2s.length; i++) {
+    var t = h2s[i].textContent.trim()
+    if (!morning && t.indexOf('上午') >= 0) morning = t
+    if (!afternoon && t.indexOf('下午') >= 0) afternoon = t
+    if (!practice && t.indexOf('练习题') >= 0) practice = t
+  }
+
+  if (doc.body) {
+    if (h1 && h1.parentNode) h1.parentNode.removeChild(h1)
+    var firstHr = doc.body.querySelector('hr')
+    if (firstHr && firstHr.parentNode) firstHr.parentNode.removeChild(firstHr)
+  }
+  var body = doc.body ? doc.body.innerHTML : htmlText
+  return { title: title, morning: morning, afternoon: afternoon, practice: practice, body: body }
 }
 
 function renderDesign() {
@@ -1462,6 +1645,7 @@ function renderList(containerId, type, list, itemHtmlFn) {
 }
 
 renderAll()
+ensureStudySelection()
 </script>
 
 </body>
