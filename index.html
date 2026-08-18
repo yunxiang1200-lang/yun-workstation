@@ -846,10 +846,37 @@ body {
 .study-detail-content th { background: var(--border-light); color: var(--text); }
 .study-detail-content b, .study-detail-content strong { color: var(--red); }
 .study-detail-content a { color: var(--blue); }
+
+.study-crumb { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 14px; color: var(--dim); flex-wrap: wrap; }
+.crumb-link { color: var(--blue); text-decoration: none; cursor: pointer; font-weight: 600; }
+.crumb-link:hover { text-decoration: underline; }
+.crumb-sep { color: var(--dim); }
+.crumb-current { color: var(--text); font-weight: 600; }
+
+.study-detail-page { margin-top: 0; }
+.study-tabs { display: flex; gap: 4px; margin: 16px 0 12px; background: var(--border-light); border-radius: 10px; padding: 4px; }
+.study-tab { flex: 1; padding: 9px 0; text-align: center; font-size: 13px; font-weight: 600; border: none; background: transparent; color: var(--dim); border-radius: 8px; cursor: pointer; font-family: inherit; transition: all .2s ease; }
+.study-tab:hover { color: var(--blue); }
+.study-tab.active { background: var(--blue); color: #fff; box-shadow: 0 2px 8px rgba(59,130,246,0.25); }
+.study-tab-panels { margin-bottom: 16px; }
+.study-tab-panel { display: none; }
+.study-tab-panel.active { display: block; animation: fadeIn .2s ease; }
+.study-panel-title { font-size: 15px; font-weight: 700; color: var(--text); padding: 10px 12px; background: var(--border-light); border-left: 3px solid var(--blue); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+.study-videos { margin-top: 16px; }
+.study-videos-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.video-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--panel); }
+.video-frame { position: relative; padding-top: 56.25%; background: #0f172a; }
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-link { display: block; padding: 8px 12px; font-size: 12px; color: var(--blue); text-decoration: none; font-weight: 600; }
+.video-link:hover { text-decoration: underline; }
+.study-source { margin-top: 14px; padding: 12px 14px; background: var(--border-light); border-radius: 10px; font-size: 12px; color: var(--dim); line-height: 1.7; display: flex; gap: 8px; align-items: flex-start; }
+
 @media (max-width: 768px) {
   .study-detail { padding: 14px; }
   .study-detail-header { flex-direction: column; }
   .study-detail-actions { width: 100%; }
+  .video-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1423,7 +1450,6 @@ var ECON_PLAN = [
 ]
 
 var STUDY_SELECTED = null
-var STUDY_INITIALIZED = false
 
 function isStudyDone(day) {
   return !!(DATA.study && DATA.study.done && DATA.study.done[day])
@@ -1444,9 +1470,14 @@ function toggleStudyDone(day) {
   renderStudy()
 }
 
-function selectStudyDay(phaseIndex, day, scroll) {
+function goBackToStudyList() {
+  STUDY_SELECTED = null
+  renderStudy()
+}
+
+function selectStudyDay(phaseIndex, day) {
   var phase = ECON_PLAN[phaseIndex] || ECON_PLAN[0]
-  var sel = { phaseIndex: phaseIndex, day: day, html: null }
+  var sel = { phaseIndex: phaseIndex, day: day, html: null, tab: 'am' }
   STUDY_SELECTED = sel
   renderStudy()
   fetch('study/' + phase.folder + '/第' + day + '天.html')
@@ -1454,19 +1485,27 @@ function selectStudyDay(phaseIndex, day, scroll) {
     .then(function(text) {
       if (STUDY_SELECTED !== sel) return
       sel.html = text
-      renderStudyDetail()
-      if (scroll) scrollStudyDetail()
+      renderStudy()
+      scrollStudyDetail()
     })
     .catch(function() {
       if (STUDY_SELECTED !== sel) return
       sel.html = '<div class="empty-state">内容加载失败，请稍后重试</div>'
-      renderStudyDetail()
+      renderStudy()
     })
 }
 
-function closeStudyDetail() {
-  STUDY_SELECTED = null
-  renderStudy()
+function switchStudyTab(tab) {
+  if (!STUDY_SELECTED) return
+  STUDY_SELECTED.tab = tab
+  var tabs = document.querySelectorAll('.study-tab')
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.toggle('active', tabs[i].getAttribute('data-tab') === tab)
+  }
+  var panels = document.querySelectorAll('.study-tab-panel')
+  for (var j = 0; j < panels.length; j++) {
+    panels[j].classList.toggle('active', panels[j].id === 'studyPanel-' + tab)
+  }
 }
 
 function scrollStudyDetail() {
@@ -1474,24 +1513,31 @@ function scrollStudyDetail() {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-function ensureStudySelection() {
-  if (STUDY_INITIALIZED) return
-  STUDY_INITIALIZED = true
-  var pi = 0, day = 1, found = false
-  for (var p = 0; p < ECON_PLAN.length && !found; p++) {
-    for (var d = 0; d < ECON_PLAN[p].days.length; d++) {
-      var dd = ECON_PLAN[p].days[d]
-      if (!isStudyDone(dd)) { pi = p; day = dd; found = true; break }
-    }
+function renderStudyBreadcrumb() {
+  if (!STUDY_SELECTED) {
+    return '<div class="study-crumb"><span class="crumb-current">学习计划</span></div>'
   }
-  selectStudyDay(pi, day, true)
+  var phase = ECON_PLAN[STUDY_SELECTED.phaseIndex] || ECON_PLAN[0]
+  return '<div class="study-crumb">' +
+    '<a class="crumb-link" href="javascript:;" onclick="goBackToStudyList()">学习计划</a>' +
+    '<span class="crumb-sep">/</span>' +
+    '<a class="crumb-link" href="javascript:;" onclick="goBackToStudyList()">' + phase.name + '</a>' +
+    '<span class="crumb-sep">/</span>' +
+    '<span class="crumb-current">第' + STUDY_SELECTED.day + '天</span>' +
+    '</div>'
 }
 
 function renderStudy() {
   var el = document.getElementById('studyBody')
-  var html = ''
+  var html = renderStudyBreadcrumb()
+  html += STUDY_SELECTED ? renderStudyDetailPage() : renderStudyList()
+  el.innerHTML = html
+}
+
+function renderStudyList() {
   var doneCount = studyDoneCount()
   var pct = Math.round(doneCount / 30 * 100)
+  var html = ''
 
   html += '<div class="econ-hero"><h2>📚 自考经济学 · 30天学习计划</h2>'
   html += '<div class="sub">经济学原理（中级）＋ 公共经济学 ｜ 基于贵州历年考试重点</div>'
@@ -1508,51 +1554,73 @@ function renderStudy() {
     for (var j = 0; j < phase.days.length; j++) {
       var d = phase.days[j]
       var done = isStudyDone(d)
-      var current = STUDY_SELECTED && STUDY_SELECTED.phaseIndex === i && STUDY_SELECTED.day === d
-      html += '<button class="econ-day' + (done ? ' done' : '') + (current ? ' current' : '') + '" onclick="selectStudyDay(' + i + ',' + d + ')">第' + d + '天' + (done ? ' ✓' : '') + '</button>'
+      html += '<button class="econ-day' + (done ? ' done' : '') + '" onclick="selectStudyDay(' + i + ',' + d + ')">第' + d + '天' + (done ? ' ✓' : '') + '</button>'
     }
     html += '</div></div>'
   }
-
-  html += '<div id="studyDetail"></div>'
-  el.innerHTML = html
-  renderStudyDetail()
+  return html
 }
 
-function renderStudyDetail() {
-  var el = document.getElementById('studyDetail')
-  if (!el) return
-  if (!STUDY_SELECTED) {
-    el.innerHTML = ''
-    return
-  }
+function renderStudyDetailPage() {
   var phase = ECON_PLAN[STUDY_SELECTED.phaseIndex] || ECON_PLAN[0]
   var day = STUDY_SELECTED.day
   var done = isStudyDone(day)
 
   if (!STUDY_SELECTED.html) {
-    el.innerHTML = '<div class="study-detail"><div class="empty-state">正在加载第' + day + '天内容…</div></div>'
-    return
+    return '<div id="studyDetail" class="study-detail-page"><div class="empty-state">正在加载第' + day + '天内容…</div></div>'
   }
 
   var parsed = parseStudyDay(STUDY_SELECTED.html)
-  var html = '<div class="study-detail">'
+  var activeTab = STUDY_SELECTED.tab || 'am'
+  var html = '<div id="studyDetail" class="study-detail-page">'
+
   html += '<div class="study-detail-header">'
   html += '<div class="study-detail-title">' + escapeHtml(parsed.title || ('第' + day + '天')) + '</div>'
   html += '<div class="study-detail-actions">'
   html += '<button class="mini-btn" onclick="toggleStudyDone(' + day + ')">' + (done ? '✓ 已完成' : '标记完成') + '</button>'
-  html += '<button class="mini-btn" onclick="closeStudyDetail()">收起</button>'
+  html += '<button class="mini-btn" onclick="goBackToStudyList()">返回列表</button>'
   html += '</div></div>'
 
-  html += '<div class="study-sections">'
-  html += '<div class="study-section-title"><span class="ss-tag am">上午</span>' + escapeHtml(parsed.morning || '—') + '</div>'
-  html += '<div class="study-section-title"><span class="ss-tag pm">下午</span>' + escapeHtml(parsed.afternoon || '—') + '</div>'
-  html += '<div class="study-section-title"><span class="ss-tag quiz">练习</span>' + escapeHtml(parsed.practice || '—') + '</div>'
+  var tabs = [
+    { key: 'am', label: '上午' },
+    { key: 'pm', label: '下午' },
+    { key: 'quiz', label: '今日练习' }
+  ]
+
+  html += '<div class="study-tabs">'
+  for (var t = 0; t < tabs.length; t++) {
+    html += '<button class="study-tab' + (tabs[t].key === activeTab ? ' active' : '') + '" data-tab="' + tabs[t].key + '" onclick="switchStudyTab(\'' + tabs[t].key + '\')">' + tabs[t].label + '</button>'
+  }
   html += '</div>'
 
-  html += '<div class="study-detail-content">' + parsed.body + '</div>'
+  html += '<div class="study-tab-panels">'
+  for (var p = 0; p < tabs.length; p++) {
+    var sec = getStudySection(parsed.sections, tabs[p].key)
+    html += '<div class="study-tab-panel' + (tabs[p].key === activeTab ? ' active' : '') + '" id="studyPanel-' + tabs[p].key + '">'
+    html += '<div class="study-panel-title">' + escapeHtml(sec.title || tabs[p].label) + '</div>'
+    html += '<div class="study-detail-content">' + (sec.html || '<div class="empty-state">本部分暂无内容</div>') + '</div>'
+    html += '</div>'
+  }
   html += '</div>'
-  el.innerHTML = html
+
+  html += '<div class="study-videos">'
+  html += '<div class="study-videos-title">🎬 教学视频</div>'
+  html += '<div class="video-grid">'
+  html += '<div class="video-card"><div class="video-frame"><iframe src="https://player.bilibili.com/player.html?bvid=BV1uhLb6zEeT&amp;page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe></div><a class="video-link" href="https://www.bilibili.com/video/BV1uhLb6zEeT" target="_blank" rel="noopener">经济学原理（中级）· 40集</a></div>'
+  html += '<div class="video-card"><div class="video-frame"><iframe src="https://player.bilibili.com/player.html?bvid=BV1V8411V7kv&amp;page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe></div><a class="video-link" href="https://www.bilibili.com/video/BV1V8411V7kv" target="_blank" rel="noopener">公共经济学</a></div>'
+  html += '</div></div>'
+
+  html += '<div class="study-source"><span class="ss-tag am">来源</span><span>数据来源：教材《经济学原理（中级）》《公共经济学》 + 贵州历年自考真题高频考点 + B站课程（BV1uhLb6zEeT / BV1V8411V7kv）整理，仅供个人学习参考。</span></div>'
+
+  html += '</div>'
+  return html
+}
+
+function getStudySection(sections, key) {
+  for (var i = 0; i < sections.length; i++) {
+    if (sections[i].key === key) return sections[i]
+  }
+  return { key: key, title: '', html: '' }
 }
 
 function parseStudyDay(htmlText) {
@@ -1561,22 +1629,35 @@ function parseStudyDay(htmlText) {
   var h1 = doc.querySelector('h1')
   if (h1) title = h1.textContent.trim()
 
-  var morning = '', afternoon = '', practice = ''
-  var h2s = doc.querySelectorAll('h2')
-  for (var i = 0; i < h2s.length; i++) {
-    var t = h2s[i].textContent.trim()
-    if (!morning && t.indexOf('上午') >= 0) morning = t
-    if (!afternoon && t.indexOf('下午') >= 0) afternoon = t
-    if (!practice && t.indexOf('练习题') >= 0) practice = t
+  var sections = []
+  var current = null
+  var body = doc.body
+
+  if (body) {
+    var nodes = body.childNodes
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i]
+      if (node.nodeType === 1 && node.tagName === 'H2') {
+        var text = node.textContent.trim()
+        var key = ''
+        if (text.indexOf('上午') >= 0) key = 'am'
+        else if (text.indexOf('下午') >= 0) key = 'pm'
+        else if (text.indexOf('练习') >= 0) key = 'quiz'
+        if (key) {
+          current = { key: key, title: text, html: '' }
+          sections.push(current)
+        } else {
+          current = null
+        }
+        continue
+      }
+      if (current && node.nodeType === 1) {
+        current.html += node.outerHTML
+      }
+    }
   }
 
-  if (doc.body) {
-    if (h1 && h1.parentNode) h1.parentNode.removeChild(h1)
-    var firstHr = doc.body.querySelector('hr')
-    if (firstHr && firstHr.parentNode) firstHr.parentNode.removeChild(firstHr)
-  }
-  var body = doc.body ? doc.body.innerHTML : htmlText
-  return { title: title, morning: morning, afternoon: afternoon, practice: practice, body: body }
+  return { title: title, sections: sections }
 }
 
 function renderDesign() {
@@ -1645,7 +1726,6 @@ function renderList(containerId, type, list, itemHtmlFn) {
 }
 
 renderAll()
-ensureStudySelection()
 </script>
 
 </body>
