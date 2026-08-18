@@ -872,6 +872,57 @@ body {
 .video-link:hover { text-decoration: underline; }
 .study-source { margin-top: 14px; padding: 12px 14px; background: var(--border-light); border-radius: 10px; font-size: 12px; color: var(--dim); line-height: 1.7; display: flex; gap: 8px; align-items: flex-start; }
 
+/* ── Quiz mode ── */
+.quiz-wrap { font-size: 14px; }
+.quiz-toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.quiz-btn {
+  padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--border); background: var(--panel); color: var(--text-secondary);
+  cursor: pointer; font-family: inherit; transition: all .2s ease;
+}
+.quiz-btn:hover { border-color: var(--blue); color: var(--blue); }
+.quiz-btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+.quiz-btn.primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); color: #fff; }
+.quiz-list { display: flex; flex-direction: column; gap: 12px; }
+.quiz-question { border: 1.5px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--panel); transition: border-color .2s, box-shadow .2s; }
+.quiz-question.q-correct { border-color: rgba(16,185,129,0.5); background: var(--green-bg); }
+.quiz-question.q-wrong { border-color: rgba(239,68,68,0.5); background: var(--red-bg); }
+.quiz-q-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.quiz-q-num { width: 24px; height: 24px; border-radius: 8px; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.quiz-q-type { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 8px; background: var(--purple-bg); color: var(--purple); }
+.quiz-q-subject { font-size: 11px; color: var(--dim); font-weight: 600; }
+.quiz-q-stem { font-size: 14px; color: var(--text); line-height: 1.8; white-space: pre-line; margin-bottom: 10px; }
+.quiz-options { display: flex; flex-direction: column; gap: 6px; }
+.quiz-option { display: flex; align-items: flex-start; gap: 8px; padding: 7px 10px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; transition: all .15s ease; font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+.quiz-option:hover { background: var(--border-light); }
+.quiz-option input { margin-top: 4px; flex-shrink: 0; cursor: pointer; }
+.quiz-option.correct-option { background: var(--green-bg); border-color: rgba(16,185,129,0.4); }
+.quiz-option.correct-option span { color: var(--green); font-weight: 600; }
+.quiz-textarea { width: 100%; min-height: 90px; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--border); font-size: 13px; color: var(--text); font-family: inherit; line-height: 1.7; resize: vertical; outline: none; background: var(--panel); }
+.quiz-textarea:focus { border-color: var(--blue); }
+.quiz-result { margin-top: 12px; padding: 12px 14px; background: var(--panel); border-radius: 10px; border: 1px solid var(--border); font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
+.quiz-feedback { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.quiz-feedback.correct { color: var(--green); }
+.quiz-feedback.wrong { color: var(--red); }
+.quiz-answer { margin-top: 6px; }
+.quiz-answer b, .quiz-explain b { color: var(--red); }
+.quiz-ref-answer { white-space: pre-line; margin-top: 6px; color: var(--text); }
+.quiz-explain { margin-top: 8px; }
+.quiz-selfmark { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.quiz-selfmark .mini-btn.self-on { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+.quiz-selfmark .mini-btn.self-on.danger { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+.quiz-history { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; }
+.quiz-history-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.quiz-history-empty { font-size: 13px; color: var(--dim); padding: 12px; border: 1.5px dashed var(--border); border-radius: 10px; }
+.quiz-attempt { padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; background: var(--panel); }
+.quiz-attempt-head { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.quiz-attempt-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.quiz-dot { width: 24px; height: 24px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; background: var(--border-light); color: var(--dim); }
+.quiz-dot.correct { background: var(--green-bg); color: var(--green); }
+.quiz-dot.wrong { background: var(--red-bg); color: var(--red); }
+.quiz-dot.pending { background: var(--border-light); color: var(--dim); }
+.quiz-attempt-summary { font-size: 12px; color: var(--dim); }
+
 @media (max-width: 768px) {
   .study-detail { padding: 14px; }
   .study-detail-header { flex-direction: column; }
@@ -1169,7 +1220,7 @@ function defaultData() {
     design: { projects: [], todos: [] },
     stock: { holdings: [], watch: [] },
     biz: { income: { month: 0, goal: 0, total: 0 }, news: [], orders: [], projects: [] },
-    study: { done: {} }
+    study: { done: {}, quiz: {} }
   }
 }
 
@@ -1598,7 +1649,11 @@ function renderStudyDetailPage() {
     var sec = getStudySection(parsed.sections, tabs[p].key)
     html += '<div class="study-tab-panel' + (tabs[p].key === activeTab ? ' active' : '') + '" id="studyPanel-' + tabs[p].key + '">'
     html += '<div class="study-panel-title">' + escapeHtml(sec.title || tabs[p].label) + '</div>'
-    html += '<div class="study-detail-content">' + (sec.html || '<div class="empty-state">本部分暂无内容</div>') + '</div>'
+    if (tabs[p].key === 'quiz') {
+      html += renderQuizPanel(day, sec)
+    } else {
+      html += '<div class="study-detail-content">' + (sec.html || '<div class="empty-state">本部分暂无内容</div>') + '</div>'
+    }
     html += '</div>'
   }
   html += '</div>'
@@ -1658,6 +1713,320 @@ function parseStudyDay(htmlText) {
   }
 
   return { title: title, sections: sections }
+}
+
+function getQuizHistory(day) {
+  if (!DATA.study) DATA.study = { done: {}, quiz: {} }
+  if (!DATA.study.quiz) DATA.study.quiz = {}
+  if (!DATA.study.quiz[day]) DATA.study.quiz[day] = []
+  return DATA.study.quiz[day]
+}
+
+function parseQuizQuestions(html) {
+  var doc = new DOMParser().parseFromString('<div>' + (html || '') + '</div>', 'text/html')
+  var container = doc.body.firstElementChild
+  var questions = []
+  if (!container) return questions
+
+  var subject = ''
+  var type = 'single'
+  var typeLabel = '单项选择题'
+
+  function classify(text) {
+    if (text.indexOf('单项') >= 0) return { type: 'single', label: '单项选择题' }
+    if (text.indexOf('多项') >= 0) return { type: 'multiple', label: '多项选择题' }
+    if (text.indexOf('简答') >= 0) return { type: 'short', label: '简答题' }
+    if (text.indexOf('计算') >= 0) return { type: 'calc', label: '计算题' }
+    return { type: 'short', label: text }
+  }
+
+  var current = null
+  var children = container.children
+  for (var i = 0; i < children.length; i++) {
+    var node = children[i]
+    var tag = node.tagName
+
+    if (tag === 'H3') {
+      subject = node.textContent.replace(/^[一二三四五六七八九十]+[、.．]\s*/, '').trim()
+    } else if (tag === 'H4') {
+      var c = classify(node.textContent.trim())
+      type = c.type
+      typeLabel = c.label
+    } else if (tag === 'HR') {
+      if (current) { questions.push(current); current = null }
+    } else if (tag === 'P') {
+      var bold = node.querySelector('b')
+      var boldText = bold ? bold.textContent.trim() : ''
+      var text = node.textContent.trim()
+
+      if (/^第\d+题/.test(boldText)) {
+        if (current) { questions.push(current); current = null }
+        var numMatch = boldText.match(/^第(\d+)题/)
+        var num = numMatch ? parseInt(numMatch[1], 10) : 0
+        var stem = node.textContent.replace(/^第\d+题\s*[:：]?\s*/, '').trim()
+        current = {
+          subject: subject,
+          type: type,
+          typeLabel: typeLabel,
+          number: num,
+          stem: stem,
+          options: [],
+          answer: '',
+          explanation: '',
+          inAnswer: false
+        }
+      } else if (current && boldText === '答案') {
+        current.answer = node.textContent.replace(/^答案\s*[:：]\s*/, '').trim()
+        current.inAnswer = true
+      } else if (current && boldText === '解析') {
+        current.inAnswer = false
+        current.explanation = node.textContent.replace(/^解析\s*[:：]\s*/, '').trim()
+      } else if (current && current.inAnswer) {
+        current.answer += (current.answer ? '\n' : '') + text
+      } else if (current && (current.type === 'single' || current.type === 'multiple')) {
+        var optMatch = text.match(/^([A-F])[.、．]\s*/)
+        if (optMatch) {
+          current.options.push({ label: optMatch[1], text: text.replace(/^[A-F][.、．]\s*/, '') })
+        } else {
+          current.stem += (current.stem ? '\n' : '') + text
+        }
+      } else if (current) {
+        current.stem += (current.stem ? '\n' : '') + text
+      }
+    }
+  }
+  if (current) questions.push(current)
+
+  return questions
+}
+
+function ensureQuizState(day, sec) {
+  if (STUDY_SELECTED && STUDY_SELECTED.quiz && STUDY_SELECTED.quiz.day === day && STUDY_SELECTED.quiz.questions) {
+    return STUDY_SELECTED.quiz
+  }
+  var questions = parseQuizQuestions(sec.html || '')
+  var order = []
+  for (var i = 0; i < questions.length; i++) order.push(i)
+  order = shuffle(order)
+  STUDY_SELECTED.quiz = {
+    day: day,
+    questions: questions,
+    order: order,
+    submitted: false,
+    results: {}
+  }
+  return STUDY_SELECTED.quiz
+}
+
+function normalizeAnswer(s) {
+  return String(s == null ? '' : s).replace(/[、，,.\s]/g, '').toUpperCase()
+}
+
+function parseAnswerLetters(s) {
+  var str = normalizeAnswer(s)
+  var out = []
+  for (var i = 0; i < str.length; i++) {
+    var ch = str.charAt(i)
+    if (ch >= 'A' && ch <= 'Z') out.push(ch)
+  }
+  return out
+}
+
+function sameSet(a, b) {
+  if (a.length !== b.length) return false
+  var sa = a.slice().sort().join('')
+  var sb = b.slice().sort().join('')
+  return sa === sb
+}
+
+function formatTime(ts) {
+  var d = new Date(ts)
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')
+}
+
+function renderQuizPanel(day, sec) {
+  var q = ensureQuizState(day, sec)
+  var html = '<div class="quiz-wrap">'
+
+  if (!q.questions.length) {
+    html += '<div class="empty-state">本日练习题暂未解析到题目，请打开练习册查看。</div>'
+    html += '</div>'
+    return html
+  }
+
+  html += '<div class="quiz-toolbar">'
+  if (!q.submitted) {
+    html += '<button class="quiz-btn primary" onclick="submitQuiz()">提交批改</button>'
+  }
+  html += '<button class="quiz-btn" onclick="reshuffleQuiz()">重新打乱做题</button>'
+  html += '</div>'
+
+  html += '<div class="quiz-list">'
+  for (var i = 0; i < q.order.length; i++) {
+    var qi = q.order[i]
+    html += renderQuizQuestion(qi, i, q, q.submitted)
+  }
+  html += '</div>'
+
+  html += renderQuizHistory(day)
+
+  html += '</div>'
+  return html
+}
+
+function renderQuizQuestion(qi, displayIndex, q, submitted) {
+  var question = q.questions[qi]
+  var result = q.results ? q.results[qi] : null
+  var isCorrect = submitted && result === true
+  var isWrong = submitted && result === false
+
+  var html = '<div class="quiz-question' + (isCorrect ? ' q-correct' : (isWrong ? ' q-wrong' : '')) + '">'
+
+  html += '<div class="quiz-q-head">'
+  html += '<span class="quiz-q-num">' + (displayIndex + 1) + '</span>'
+  html += '<span class="quiz-q-type">' + escapeHtml(question.typeLabel) + '</span>'
+  html += '<span class="quiz-q-subject">' + escapeHtml(question.subject) + '</span>'
+  html += '</div>'
+
+  html += '<div class="quiz-q-stem">' + escapeHtml(question.stem) + '</div>'
+
+  if (question.type === 'single' || question.type === 'multiple') {
+    html += '<div class="quiz-options">'
+    var correctLetters = parseAnswerLetters(question.answer)
+    for (var o = 0; o < question.options.length; o++) {
+      var opt = question.options[o]
+      var isCorrectOpt = submitted && correctLetters.indexOf(opt.label) >= 0
+      html += '<label class="quiz-option' + (isCorrectOpt ? ' correct-option' : '') + '">'
+      if (question.type === 'single') {
+        html += '<input type="radio" name="quiz-opt-' + qi + '" value="' + opt.label + '"' + (submitted ? ' disabled' : '') + '>'
+      } else {
+        html += '<input type="checkbox" name="quiz-opt-' + qi + '" value="' + opt.label + '"' + (submitted ? ' disabled' : '') + '>'
+      }
+      html += '<span>' + opt.label + '. ' + escapeHtml(opt.text) + '</span>'
+      html += '</label>'
+    }
+    html += '</div>'
+  } else {
+    html += '<textarea class="quiz-textarea" id="quiz-text-' + qi + '" rows="5" placeholder="请在此输入你的答案…"' + (submitted ? ' disabled' : '') + '></textarea>'
+  }
+
+  if (submitted) {
+    html += '<div class="quiz-result">'
+    if (question.type === 'single' || question.type === 'multiple') {
+      html += '<div class="quiz-feedback ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? '✓ 回答正确' : '✗ 回答错误') + '</div>'
+      html += '<div class="quiz-answer"><b>正确答案：</b>' + escapeHtml(question.answer) + '</div>'
+    } else {
+      html += '<div class="quiz-answer"><b>参考答案：</b></div>'
+      html += '<div class="quiz-ref-answer">' + escapeHtml(question.answer) + '</div>'
+      html += '<div class="quiz-selfmark"><span>自我评价：</span>'
+      html += '<button class="mini-btn' + (result === true ? ' self-on' : '') + '" onclick="selfMarkQuiz(' + qi + ', true)">✓ 答对了</button>'
+      html += '<button class="mini-btn' + (result === false ? ' self-on danger' : '') + '" onclick="selfMarkQuiz(' + qi + ', false)">✗ 答错了</button>'
+      html += '</div>'
+    }
+    if (question.explanation) {
+      html += '<div class="quiz-explain"><b>解析：</b>' + escapeHtml(question.explanation) + '</div>'
+    }
+    html += '</div>'
+  }
+
+  html += '</div>'
+  return html
+}
+
+function renderQuizHistory(day) {
+  var history = getQuizHistory(day)
+  var total = (STUDY_SELECTED && STUDY_SELECTED.quiz && STUDY_SELECTED.quiz.questions) ? STUDY_SELECTED.quiz.questions.length : 0
+  var html = '<div class="quiz-history">'
+  html += '<div class="quiz-history-title">答题记录 · 已做 ' + history.length + ' 次</div>'
+  if (!history.length) {
+    html += '<div class="quiz-history-empty">还没有答题记录。完成一次提交后，这里会显示每一次的题目对错情况。</div>'
+  } else {
+    for (var a = history.length - 1; a >= 0; a--) {
+      var att = history[a]
+      html += '<div class="quiz-attempt">'
+      html += '<div class="quiz-attempt-head">第 ' + (a + 1) + ' 次 · ' + formatTime(att.time) + '</div>'
+      html += '<div class="quiz-attempt-grid">'
+      for (var i = 0; i < total; i++) {
+        var r = att.results ? att.results[i] : null
+        var cls = 'pending'
+        var label = String(i + 1)
+        var tip = '第' + (i + 1) + '题：未标记'
+        if (r === true) { cls = 'correct'; label = '✓'; tip = '第' + (i + 1) + '题：答对' }
+        else if (r === false) { cls = 'wrong'; label = '✗'; tip = '第' + (i + 1) + '题：答错' }
+        html += '<span class="quiz-dot ' + cls + '" title="' + tip + '">' + label + '</span>'
+      }
+      html += '</div>'
+      html += '<div class="quiz-attempt-summary">' + summarizeAttempt(att, total) + '</div>'
+      html += '</div>'
+    }
+  }
+  html += '</div>'
+  return html
+}
+
+function summarizeAttempt(att, total) {
+  var right = 0, wrong = 0, pending = 0
+  var results = att.results || {}
+  for (var i = 0; i < total; i++) {
+    var r = results[i]
+    if (r === true) right++
+    else if (r === false) wrong++
+    else pending++
+  }
+  return '答对 ' + right + ' 题 · 答错 ' + wrong + ' 题' + (pending ? ' · 待自评 ' + pending + ' 题' : '')
+}
+
+function submitQuiz() {
+  if (!STUDY_SELECTED || !STUDY_SELECTED.quiz) return
+  var q = STUDY_SELECTED.quiz
+  if (q.submitted) return
+
+  var results = {}
+  for (var i = 0; i < q.questions.length; i++) {
+    var question = q.questions[i]
+    if (question.type === 'single') {
+      var sel = document.querySelector('input[name="quiz-opt-' + i + '"]:checked')
+      var user = sel ? sel.value : ''
+      results[i] = (normalizeAnswer(user) === normalizeAnswer(question.answer))
+    } else if (question.type === 'multiple') {
+      var checks = document.querySelectorAll('input[name="quiz-opt-' + i + '"]:checked')
+      var userArr = []
+      for (var c = 0; c < checks.length; c++) userArr.push(checks[c].value)
+      results[i] = sameSet(userArr, parseAnswerLetters(question.answer))
+    } else {
+      results[i] = null
+    }
+  }
+
+  q.submitted = true
+  q.results = results
+
+  var history = getQuizHistory(STUDY_SELECTED.day)
+  history.push({ time: Date.now(), results: results })
+  saveData()
+  renderStudy()
+}
+
+function reshuffleQuiz() {
+  if (!STUDY_SELECTED || !STUDY_SELECTED.quiz) return
+  var q = STUDY_SELECTED.quiz
+  q.order = shuffle(q.order)
+  q.submitted = false
+  q.results = {}
+  renderStudy()
+}
+
+function selfMarkQuiz(qi, correct) {
+  if (!STUDY_SELECTED || !STUDY_SELECTED.quiz) return
+  var day = STUDY_SELECTED.day
+  var history = getQuizHistory(day)
+  if (!history.length) return
+  var attempt = history[history.length - 1]
+  if (!attempt.results) attempt.results = {}
+  attempt.results[qi] = correct
+  if (STUDY_SELECTED.quiz.results) STUDY_SELECTED.quiz.results[qi] = correct
+  saveData()
+  renderStudy()
 }
 
 function renderDesign() {
