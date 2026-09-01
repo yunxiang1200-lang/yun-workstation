@@ -846,6 +846,14 @@ body {
 .study-detail-content th { background: var(--border-light); color: var(--text); }
 .study-detail-content b, .study-detail-content strong { color: var(--red); }
 .study-detail-content a { color: var(--blue); }
+.study-detail-content .structure-node { border: 1px solid var(--border); border-radius: 10px; margin: 10px 0; overflow: hidden; background: var(--panel); }
+.study-detail-content .structure-head { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 14px; background: var(--border-light); border: 0; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--text); text-align: left; font-family: inherit; transition: background .15s ease; }
+.study-detail-content .structure-head:hover { background: var(--blue-bg); }
+.study-detail-content .structure-title { flex: 1; }
+.study-detail-content .structure-toggle { flex: none; font-size: 12px; font-weight: 600; color: var(--blue); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; }
+.study-detail-content .structure-body { display: none; padding: 12px 14px; border-top: 1px solid var(--border); }
+.study-detail-content .structure-node.open .structure-body { display: block; }
+.study-detail-content .structure-node.open .structure-toggle { color: var(--red); }
 
 .study-crumb { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 14px; color: var(--dim); flex-wrap: wrap; }
 .crumb-link { color: var(--blue); text-decoration: none; cursor: pointer; font-weight: 600; }
@@ -1855,6 +1863,14 @@ function getStudySection(sections, key) {
   return { key: key, title: '', html: '' }
 }
 
+function toggleStructureNode(btn) {
+  var node = btn.closest ? btn.closest('.structure-node') : btn.parentElement
+  if (!node) return
+  var open = node.classList.toggle('open')
+  var t = btn.querySelector('.structure-toggle')
+  if (t) t.textContent = open ? '收起' : '展开'
+}
+
 function parseStudyDay(htmlText) {
   var doc = new DOMParser().parseFromString(htmlText, 'text/html')
   var title = ''
@@ -2059,11 +2075,11 @@ function renderQuizPanelContent(day, q) {
 
   html += '<div class="quiz-main">'
   html += renderQuizQuestionView(q)
+  html += renderQuizControls(q)
   html += '</div>'
 
   html += '<div class="quiz-nav">'
   html += renderQuizNavigator(q)
-  html += renderQuizControls(q)
   html += '</div>'
 
   html += '</div>'
