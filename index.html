@@ -847,18 +847,18 @@ body {
 .study-detail-content b, .study-detail-content strong { color: var(--red); }
 .study-detail-content a { color: var(--blue); }
 .study-detail-content .structure-node { border: 1px solid var(--border); border-radius: 10px; margin: 10px 0; overflow: hidden; background: var(--panel); }
-.study-detail-content .structure-head { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 14px; background: var(--border-light); border: 0; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--text); text-align: left; font-family: inherit; transition: background .15s ease; }
+.study-detail-content .structure-head { width: 100%; display: flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 11px 14px; background: var(--border-light); border: 0; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--text); text-align: left; font-family: inherit; transition: background .15s ease; }
 .study-detail-content .structure-head:hover { background: var(--blue-bg); }
-.study-detail-content .structure-title { flex: 1; }
-.study-detail-content .structure-toggle { flex: none; font-size: 12px; font-weight: 600; color: var(--blue); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; }
+.study-detail-content .structure-title { flex: 0 1 auto; }
+.study-detail-content .structure-toggle { flex: none; margin-left: auto; font-size: 12px; font-weight: 600; color: var(--blue); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; }
 .study-detail-content .structure-body { display: none; padding: 12px 14px; border-top: 1px solid var(--border); }
 .study-detail-content .structure-node.open .structure-body { display: block; }
 .study-detail-content .structure-node.open .structure-toggle { color: var(--red); }
 .study-detail-content .structure-play { flex: none; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--blue); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; cursor: pointer; user-select: none; white-space: nowrap; transition: all .15s ease; }
 .study-detail-content .structure-play:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
 .study-detail-content .structure-play.playing { background: var(--red); color: #fff; border-color: var(--red); }
-.study-detail-content .structure-node .tts-highlight { background: var(--blue-bg); box-shadow: 0 0 0 2px var(--blue); border-radius: 6px; color: var(--text); transition: background .2s ease; }
-.study-detail-content .structure-body p.tts-highlight, .study-detail-content .structure-body li.tts-highlight { background: var(--blue-bg); box-shadow: 0 0 0 2px var(--blue); border-radius: 6px; padding: 4px 8px; margin: 6px -8px; }
+.study-detail-content .tts-highlight { background: #bfdbfe; border-radius: 4px; }
+.study-detail-content .tts-seg.tts-highlight { box-decoration-break: clone; padding: 1px 3px; }
 
 .study-crumb { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 14px; color: var(--dim); flex-wrap: wrap; }
 .crumb-link { color: var(--blue); text-decoration: none; cursor: pointer; font-weight: 600; }
@@ -1908,6 +1908,37 @@ function normalizeTtsText(s) {
   return String(s == null ? '' : s).replace(/\s+/g, ' ').trim()
 }
 
+function splitSentences(text) {
+  var s = normalizeTtsText(text)
+  if (!s) return []
+  var parts = s.match(/[^。！？!?]+[。！？!?]*/g)
+  if (!parts) return [s]
+  var out = []
+  for (var i = 0; i < parts.length; i++) {
+    var t = normalizeTtsText(parts[i])
+    if (t) out.push(t)
+  }
+  return out.length ? out : [s]
+}
+
+function wrapParagraphSentences(el) {
+  var existing = el.querySelectorAll('.tts-seg')
+  if (existing && existing.length) return existing
+  if (el.children && el.children.length) return null
+  var sentences = splitSentences(el.textContent)
+  if (sentences.length <= 1) return null
+  el.textContent = ''
+  var spans = []
+  for (var i = 0; i < sentences.length; i++) {
+    var sp = document.createElement('span')
+    sp.className = 'tts-seg'
+    sp.textContent = sentences[i]
+    el.appendChild(sp)
+    spans.push(sp)
+  }
+  return spans
+}
+
 function buildTtsSegments(node) {
   var segments = []
   var titleEl = node.querySelector('.structure-title')
@@ -1921,8 +1952,17 @@ function buildTtsSegments(node) {
     var kids = body.children
     if (kids && kids.length) {
       for (var i = 0; i < kids.length; i++) {
-        var kt = normalizeTtsText(kids[i].textContent)
-        if (kt) segments.push({ el: kids[i], text: kt })
+        var child = kids[i]
+        var spans = wrapParagraphSentences(child)
+        if (spans && spans.length) {
+          for (var j = 0; j < spans.length; j++) {
+            var st = normalizeTtsText(spans[j].textContent)
+            if (st) segments.push({ el: spans[j], text: st })
+          }
+        } else {
+          var kt = normalizeTtsText(child.textContent)
+          if (kt) segments.push({ el: child, text: kt })
+        }
       }
     } else {
       var bt = normalizeTtsText(body.textContent)
@@ -2023,12 +2063,13 @@ function setupNodePlayback() {
     node.setAttribute('data-tts-ready', '1')
     var head = node.querySelector('.structure-head')
     if (!head) continue
+    var toggle = node.querySelector('.structure-toggle')
     var play = document.createElement('span')
     play.className = 'structure-play'
     play.innerHTML = '🔊 播放'
     play.setAttribute('role', 'button')
     play.onclick = function(e) { playNode(e, this) }
-    head.appendChild(play)
+    head.insertBefore(play, toggle || null)
   }
 }
 
