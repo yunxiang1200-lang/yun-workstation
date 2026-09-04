@@ -857,6 +857,9 @@ body {
 .study-detail-content .structure-play { flex: none; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--blue); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; cursor: pointer; user-select: none; white-space: nowrap; transition: all .15s ease; }
 .study-detail-content .structure-play:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
 .study-detail-content .structure-play.playing { background: var(--red); color: #fff; border-color: var(--red); }
+.study-detail-content .structure-play.paused { background: var(--orange); color: #fff; border-color: var(--orange); }
+.study-detail-content .structure-play.structure-replay { display: none; }
+.study-detail-content .structure-play.structure-replay.show { display: inline-flex; }
 .study-detail-content .tts-highlight { background: #bfdbfe; border-radius: 4px; }
 .study-detail-content .tts-seg.tts-highlight { box-decoration-break: clone; padding: 1px 3px; }
 
@@ -1877,7 +1880,7 @@ function toggleStructureNode(btn) {
   if (t) t.textContent = open ? '收起' : '展开'
 }
 
-var NODE_PLAYER = { btn: null, utter: null, highlightEl: null }
+var NODE_PLAYER = { btn: null, replayBtn: null, utter: null, highlightEl: null, node: null, segments: null, paused: false }
 
 function initVoices() {
   if (typeof speechSynthesis === 'undefined') return
@@ -1891,17 +1894,40 @@ function clearTtsHighlight() {
   }
 }
 
+function resetPlayButton(btn) {
+  if (!btn) return
+  btn.classList.remove('playing', 'paused')
+  btn.innerHTML = '🔊 播放'
+}
+
+function showReplayButton(btn, show) {
+  if (!btn) return
+  if (show) btn.classList.add('show')
+  else btn.classList.remove('show')
+}
+
+function clearNodePlaybackState() {
+  clearTtsHighlight()
+  resetPlayButton(NODE_PLAYER.btn)
+  showReplayButton(NODE_PLAYER.replayBtn, false)
+  NODE_PLAYER.btn = null
+  NODE_PLAYER.replayBtn = null
+  NODE_PLAYER.utter = null
+  NODE_PLAYER.node = null
+  NODE_PLAYER.segments = null
+  NODE_PLAYER.paused = false
+}
+
 function stopNodePlayback() {
+  if (NODE_PLAYER.utter) {
+    NODE_PLAYER.utter.onend = null
+    NODE_PLAYER.utter.onerror = null
+    NODE_PLAYER.utter.onboundary = null
+  }
   if (typeof speechSynthesis !== 'undefined') {
     try { speechSynthesis.cancel() } catch (e) {}
   }
-  if (NODE_PLAYER.btn) {
-    NODE_PLAYER.btn.classList.remove('playing')
-    NODE_PLAYER.btn.innerHTML = '🔊 播放'
-    NODE_PLAYER.btn = null
-  }
-  clearTtsHighlight()
-  NODE_PLAYER.utter = null
+  clearNodePlaybackState()
 }
 
 function normalizeTtsText(s) {
@@ -1995,26 +2021,9 @@ function openStructureNode(node) {
   if (t) t.textContent = '收起'
 }
 
-function playNode(event, btn) {
-  if (event && event.stopPropagation) event.stopPropagation()
-  if (typeof speechSynthesis === 'undefined' || typeof SpeechSynthesisUtterance === 'undefined') {
-    alert('当前浏览器不支持语音播放，请使用 Chrome、Edge 或 Safari 浏览器。')
-    return
-  }
-  var node = btn.closest ? btn.closest('.structure-node') : null
-  if (!node) return
-
-  if (NODE_PLAYER.btn === btn) {
-    stopNodePlayback()
-    return
-  }
-  stopNodePlayback()
-
+function buildUtteranceForNode(node) {
   var segments = buildTtsSegments(node)
-  if (!segments.length) {
-    alert('该节点暂无文字内容。')
-    return
-  }
+  if (!segments.length) return null
 
   var parts = []
   var offset = 0
@@ -2044,14 +2053,83 @@ function playNode(event, btn) {
   utter.onend = function() { stopNodePlayback() }
   utter.onerror = function() { stopNodePlayback() }
 
+  return { utter: utter, segments: segments }
+}
+
+function startNodePlayback(node, btn, replayBtn) {
+  var built = buildUtteranceForNode(node)
+  if (!built) {
+    alert('该节点暂无文字内容。')
+    return
+  }
+
   openStructureNode(node)
-  highlightTtsSegment(segments, 0)
+  highlightTtsSegment(built.segments, 0)
 
   NODE_PLAYER.btn = btn
-  NODE_PLAYER.utter = utter
+  NODE_PLAYER.replayBtn = replayBtn
+  NODE_PLAYER.utter = built.utter
+  NODE_PLAYER.node = node
+  NODE_PLAYER.segments = built.segments
+  NODE_PLAYER.paused = false
+
+  btn.classList.remove('paused')
   btn.classList.add('playing')
-  btn.innerHTML = '⏹ 停止'
-  speechSynthesis.speak(utter)
+  btn.innerHTML = '⏸ 暂停'
+  showReplayButton(replayBtn, false)
+  speechSynthesis.speak(built.utter)
+}
+
+function playNode(event, btn) {
+  if (event && event.stopPropagation) event.stopPropagation()
+  if (typeof speechSynthesis === 'undefined' || typeof SpeechSynthesisUtterance === 'undefined') {
+    alert('当前浏览器不支持语音播放，请使用 Chrome、Edge 或 Safari 浏览器。')
+    return
+  }
+  var node = btn.closest ? btn.closest('.structure-node') : null
+  if (!node) return
+
+  var head = btn.parentElement
+  var replayBtn = head ? head.querySelector('.structure-replay') : null
+
+  if (NODE_PLAYER.btn === btn) {
+    if (NODE_PLAYER.paused) {
+      try { speechSynthesis.resume() } catch (e) {}
+      NODE_PLAYER.paused = false
+      btn.classList.remove('paused')
+      btn.classList.add('playing')
+      btn.innerHTML = '⏸ 暂停'
+      showReplayButton(replayBtn, false)
+    } else {
+      try { speechSynthesis.pause() } catch (e) {}
+      NODE_PLAYER.paused = true
+      btn.classList.remove('playing')
+      btn.classList.add('paused')
+      btn.innerHTML = '▶ 继续'
+      showReplayButton(replayBtn, true)
+    }
+    return
+  }
+
+  stopNodePlayback()
+  startNodePlayback(node, btn, replayBtn)
+}
+
+function replayNode(event, btn) {
+  if (event && event.stopPropagation) event.stopPropagation()
+  if (typeof speechSynthesis === 'undefined' || typeof SpeechSynthesisUtterance === 'undefined') {
+    alert('当前浏览器不支持语音播放，请使用 Chrome、Edge 或 Safari 浏览器。')
+    return
+  }
+  var node = btn.closest ? btn.closest('.structure-node') : null
+  if (!node) return
+
+  var head = btn.parentElement
+  var playBtn = head ? head.querySelector('.structure-play:not(.structure-replay)') : null
+  if (!playBtn) return
+
+  stopNodePlayback()
+  startNodePlayback(node, playBtn, btn)
 }
 
 function setupNodePlayback() {
@@ -2069,7 +2147,15 @@ function setupNodePlayback() {
     play.innerHTML = '🔊 播放'
     play.setAttribute('role', 'button')
     play.onclick = function(e) { playNode(e, this) }
+
+    var replay = document.createElement('span')
+    replay.className = 'structure-play structure-replay'
+    replay.innerHTML = '🔁 重复播放'
+    replay.setAttribute('role', 'button')
+    replay.onclick = function(e) { replayNode(e, this) }
+
     head.insertBefore(play, toggle || null)
+    head.insertBefore(replay, toggle || null)
   }
 }
 
