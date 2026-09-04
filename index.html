@@ -854,6 +854,11 @@ body {
 .study-detail-content .structure-body { display: none; padding: 12px 14px; border-top: 1px solid var(--border); }
 .study-detail-content .structure-node.open .structure-body { display: block; }
 .study-detail-content .structure-node.open .structure-toggle { color: var(--red); }
+.study-detail-content .structure-play { flex: none; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--blue); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; cursor: pointer; user-select: none; white-space: nowrap; transition: all .15s ease; }
+.study-detail-content .structure-play:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+.study-detail-content .structure-play.playing { background: var(--red); color: #fff; border-color: var(--red); }
+.study-detail-content .structure-node .tts-highlight { background: var(--blue-bg); box-shadow: 0 0 0 2px var(--blue); border-radius: 6px; color: var(--text); transition: background .2s ease; }
+.study-detail-content .structure-body p.tts-highlight, .study-detail-content .structure-body li.tts-highlight { background: var(--blue-bg); box-shadow: 0 0 0 2px var(--blue); border-radius: 6px; padding: 4px 8px; margin: 6px -8px; }
 
 .study-crumb { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 14px; color: var(--dim); flex-wrap: wrap; }
 .crumb-link { color: var(--blue); text-decoration: none; cursor: pointer; font-weight: 600; }
@@ -1699,6 +1704,7 @@ function renderStudy() {
   html += STUDY_SELECTED ? renderStudyDetailPage() : renderStudyList()
   el.innerHTML = html
   renderStudyBadge()
+  setupNodePlayback()
 }
 
 function renderStudyList() {
@@ -1869,6 +1875,161 @@ function toggleStructureNode(btn) {
   var open = node.classList.toggle('open')
   var t = btn.querySelector('.structure-toggle')
   if (t) t.textContent = open ? '收起' : '展开'
+}
+
+var NODE_PLAYER = { btn: null, utter: null, highlightEl: null }
+
+function initVoices() {
+  if (typeof speechSynthesis === 'undefined') return
+  try { speechSynthesis.getVoices() } catch (e) {}
+}
+
+function clearTtsHighlight() {
+  if (NODE_PLAYER.highlightEl) {
+    NODE_PLAYER.highlightEl.classList.remove('tts-highlight')
+    NODE_PLAYER.highlightEl = null
+  }
+}
+
+function stopNodePlayback() {
+  if (typeof speechSynthesis !== 'undefined') {
+    try { speechSynthesis.cancel() } catch (e) {}
+  }
+  if (NODE_PLAYER.btn) {
+    NODE_PLAYER.btn.classList.remove('playing')
+    NODE_PLAYER.btn.innerHTML = '🔊 播放'
+    NODE_PLAYER.btn = null
+  }
+  clearTtsHighlight()
+  NODE_PLAYER.utter = null
+}
+
+function normalizeTtsText(s) {
+  return String(s == null ? '' : s).replace(/\s+/g, ' ').trim()
+}
+
+function buildTtsSegments(node) {
+  var segments = []
+  var titleEl = node.querySelector('.structure-title')
+  var body = node.querySelector('.structure-body')
+
+  if (titleEl) {
+    var tt = normalizeTtsText(titleEl.textContent)
+    if (tt) segments.push({ el: titleEl, text: tt + '。' })
+  }
+  if (body) {
+    var kids = body.children
+    if (kids && kids.length) {
+      for (var i = 0; i < kids.length; i++) {
+        var kt = normalizeTtsText(kids[i].textContent)
+        if (kt) segments.push({ el: kids[i], text: kt })
+      }
+    } else {
+      var bt = normalizeTtsText(body.textContent)
+      if (bt) segments.push({ el: body, text: bt })
+    }
+  }
+  return segments
+}
+
+function highlightTtsSegment(segments, idx) {
+  var target = null
+  for (var i = segments.length - 1; i >= 0; i--) {
+    if (idx >= segments[i].start) {
+      target = segments[i]
+      break
+    }
+  }
+  if (!target) target = segments[0]
+  if (!target) return
+  if (NODE_PLAYER.highlightEl === target.el) return
+  clearTtsHighlight()
+  NODE_PLAYER.highlightEl = target.el
+  target.el.classList.add('tts-highlight')
+}
+
+function openStructureNode(node) {
+  if (!node) return
+  node.classList.add('open')
+  var t = node.querySelector('.structure-toggle')
+  if (t) t.textContent = '收起'
+}
+
+function playNode(event, btn) {
+  if (event && event.stopPropagation) event.stopPropagation()
+  if (typeof speechSynthesis === 'undefined' || typeof SpeechSynthesisUtterance === 'undefined') {
+    alert('当前浏览器不支持语音播放，请使用 Chrome、Edge 或 Safari 浏览器。')
+    return
+  }
+  var node = btn.closest ? btn.closest('.structure-node') : null
+  if (!node) return
+
+  if (NODE_PLAYER.btn === btn) {
+    stopNodePlayback()
+    return
+  }
+  stopNodePlayback()
+
+  var segments = buildTtsSegments(node)
+  if (!segments.length) {
+    alert('该节点暂无文字内容。')
+    return
+  }
+
+  var parts = []
+  var offset = 0
+  for (var i = 0; i < segments.length; i++) {
+    segments[i].start = offset
+    parts.push(segments[i].text)
+    offset += segments[i].text.length + 1
+  }
+  var text = parts.join(' ')
+
+  var utter = new SpeechSynthesisUtterance(text)
+  utter.lang = 'zh-CN'
+  utter.rate = 1
+  utter.pitch = 1
+
+  var voices = speechSynthesis.getVoices()
+  for (var v = 0; v < voices.length; v++) {
+    if (/zh|cmn|Chinese|中文/i.test(voices[v].lang + ' ' + voices[v].name)) {
+      utter.voice = voices[v]
+      break
+    }
+  }
+
+  utter.onboundary = function(evt) {
+    highlightTtsSegment(segments, evt.charIndex || 0)
+  }
+  utter.onend = function() { stopNodePlayback() }
+  utter.onerror = function() { stopNodePlayback() }
+
+  openStructureNode(node)
+  highlightTtsSegment(segments, 0)
+
+  NODE_PLAYER.btn = btn
+  NODE_PLAYER.utter = utter
+  btn.classList.add('playing')
+  btn.innerHTML = '⏹ 停止'
+  speechSynthesis.speak(utter)
+}
+
+function setupNodePlayback() {
+  if (typeof speechSynthesis === 'undefined') return
+  var nodes = document.querySelectorAll('.study-detail-content .structure-node')
+  for (var i = 0; i < nodes.length; i++) {
+    var node = nodes[i]
+    if (node.getAttribute('data-tts-ready')) continue
+    node.setAttribute('data-tts-ready', '1')
+    var head = node.querySelector('.structure-head')
+    if (!head) continue
+    var play = document.createElement('span')
+    play.className = 'structure-play'
+    play.innerHTML = '🔊 播放'
+    play.setAttribute('role', 'button')
+    play.onclick = function(e) { playNode(e, this) }
+    head.appendChild(play)
+  }
 }
 
 function parseStudyDay(htmlText) {
@@ -2407,6 +2568,10 @@ function renderList(containerId, type, list, itemHtmlFn) {
 }
 
 renderAll()
+initVoices()
+if (typeof speechSynthesis !== 'undefined') {
+  try { speechSynthesis.onvoiceschanged = initVoices } catch (e) {}
+}
 </script>
 
 </body>
